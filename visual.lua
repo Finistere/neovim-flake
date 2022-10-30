@@ -3,7 +3,16 @@
 --
 
 require('nvim-web-devicons').setup()
-require('nvim-tree').setup()
+
+require('nvim-tree').setup({
+  diagnostics = {
+    enable = true,
+    show_on_dirs = true,
+  },
+  filters = {
+    custom = { "^\\.git$" }
+  }
+})
 vim.cmd([[
   noremap <silent><C-n> <cmd>NvimTreeToggle<cr>
   noremap <silent><leader>tf <cmd>NvimTreeFocus<cr>
@@ -26,15 +35,22 @@ vim.cmd([[
   nnoremap <silent><leader>fh <cmd>Telescope help_tags<cr>
 ]])
 
-require('gitsigns').setup()
+require('gitsigns').setup({
+  current_line_blame_opts = {
+    delay = 100,
+  },
+  on_attach = function(bufnr)
+    local gs = package.loaded.gitsigns
+    local bopts = { noremap = true, silent = true, buffer = bufnr }
+    vim.keymap.set('n', '<leader>hb', function() gs.blame_line { full = true } end, bopts)
+    vim.keymap.set('n', '<leader>tb', gs.toggle_current_line_blame, bopts)
+  end
+})
 require('bufferline').setup({
   options = {
     show_close_icon = false,
     show_buffer_close_icons = false,
     separator_style = 'slant',
-    numbers = function(opts)
-      return string.format('%s|%s', opts.id, opts.raise(opts.ordinal))
-    end,
     diagnostics = 'nvim_lsp',
     diagnostics_update_in_insert = true,
     diagnostics_indicator = function(count, level, diagnostics_dict, context)
@@ -47,18 +63,21 @@ require('bufferline').setup({
   }
 })
 vim.cmd([[
-  nnoremap <silent>gb <Cmd>BufferLinePick<CR>
-  nnoremap <silent>gD <Cmd>BufferLinePickClose<CR>
-  nnoremap <silent><leader>1 <Cmd>BufferLineGoToBuffer 1<CR>
-  nnoremap <silent><leader>2 <Cmd>BufferLineGoToBuffer 2<CR>
-  nnoremap <silent><leader>3 <Cmd>BufferLineGoToBuffer 3<CR>
-  nnoremap <silent><leader>4 <Cmd>BufferLineGoToBuffer 4<CR>
-  nnoremap <silent><leader>5 <Cmd>BufferLineGoToBuffer 5<CR>
-  nnoremap <silent><leader>6 <Cmd>BufferLineGoToBuffer 6<CR>
-  nnoremap <silent><leader>7 <Cmd>BufferLineGoToBuffer 7<CR>
-  nnoremap <silent><leader>8 <Cmd>BufferLineGoToBuffer 8<CR>
-  nnoremap <silent><leader>9 <Cmd>BufferLineGoToBuffer 9<CR>
-  nnoremap <silent><leader>$ <Cmd>BufferLineGoToBuffer -1<CR>
+  nnoremap <silent><leader>s <cmd>BufferLinePick<cr>
+  nnoremap <silent><leader>d <cmd>BufferLinePickClose<cr>
+  nnoremap <silent><leader>1 <cmd>BufferLineGoToBuffer 1<cr>
+  nnoremap <silent><leader>2 <cmd>BufferLineGoToBuffer 2<cr>
+  nnoremap <silent><leader>3 <cmd>BufferLineGoToBuffer 3<cr>
+  nnoremap <silent><leader>4 <cmd>BufferLineGoToBuffer 4<cr>
+  nnoremap <silent><leader>5 <cmd>BufferLineGoToBuffer 5<cr>
+  nnoremap <silent><leader>6 <cmd>BufferLineGoToBuffer 6<cr>
+  nnoremap <silent><leader>7 <cmd>BufferLineGoToBuffer 7<cr>
+  nnoremap <silent><leader>8 <cmd>BufferLineGoToBuffer 8<cr>
+  nnoremap <silent><leader>9 <cmd>BufferLineGoToBuffer 9<cr>
+  nnoremap <silent><A-left> <cmd>BufferLineCyclePrev<cr>
+  nnoremap <silent><A-right> <cmd>BufferLineCycleNext<cr>
+  nnoremap <silent><S-left> <cmd>BufferLineMovePrev<cr>
+  nnoremap <silent><S-right> <cmd>BufferLineMoveNext<cr>
 ]])
 
 require('lualine').setup()
@@ -70,6 +89,6 @@ require('lualine').setup()
 
 require('indent_blankline').setup({
   show_current_context = true,
-  show_current_context_start = true
+  show_current_context_start = false
 })
 require('nvim-cursorline').setup()

@@ -2,6 +2,10 @@
 " Native config
 "
 
+" Preventing netrw to load, for nvim-tree
+let g:loaded_netrw       = 1
+let g:loaded_netrwPlugin = 1
+
 " Text
 set encoding=utf-8
 set expandtab             " Insert spaces for a <tab>.
