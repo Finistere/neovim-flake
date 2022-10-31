@@ -31,6 +31,70 @@
         "type": "github"
       }
     },
+    "inc-rename-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1666954012,
+        "narHash": "sha256-//A+LxR7gBpI6C1YhG0Ldo5db4POeZswHHwlcjdXdGc=",
+        "owner": "smjonas",
+        "repo": "inc-rename.nvim",
+        "rev": "b71ff4b6dd761a59b36b85bdb3294ac8f49ea86d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "smjonas",
+        "repo": "inc-rename.nvim",
+        "type": "github"
+      }
+    },
+    "leap-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1667133942,
+        "narHash": "sha256-Tg+tx1dCcsFnpxJWoifPjnVAqBFKeSR0+V8R9fzfLJ8=",
+        "owner": "ggandor",
+        "repo": "leap.nvim",
+        "rev": "ba4241754451e6bb4d8e9e4000caba0a35fba75b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ggandor",
+        "repo": "leap.nvim",
+        "type": "github"
+      }
+    },
+    "neotest": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1666858295,
+        "narHash": "sha256-7aKATkhPRqhC+5cJVM/WFXD/SEcwc8JFk2VKgThqxyE=",
+        "owner": "nvim-neotest",
+        "repo": "neotest",
+        "rev": "0be9899e859da147ad28c23a30a1df2081c16741",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nvim-neotest",
+        "repo": "neotest",
+        "type": "github"
+      }
+    },
+    "neotest-rust": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1666996506,
+        "narHash": "sha256-j4DVBodhvo3w1oHwlZFqdCl1G+7wXGr9g9CFXTzrloA=",
+        "owner": "rouge8",
+        "repo": "neotest-rust",
+        "rev": "e6ac944dc729c4bb98e364ebdf420894ce1f6669",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rouge8",
+        "repo": "neotest-rust",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1667139158,
@@ -50,6 +114,10 @@
       "inputs": {
         "cmp-git": "cmp-git",
         "flake-utils": "flake-utils",
+        "inc-rename-nvim": "inc-rename-nvim",
+        "leap-nvim": "leap-nvim",
+        "neotest": "neotest",
+        "neotest-rust": "neotest-rust",
         "nixpkgs": "nixpkgs"
       }
     }

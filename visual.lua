@@ -35,17 +35,6 @@ vim.cmd([[
   nnoremap <silent><leader>fh <cmd>Telescope help_tags<cr>
 ]])
 
-require('gitsigns').setup({
-  current_line_blame_opts = {
-    delay = 100,
-  },
-  on_attach = function(bufnr)
-    local gs = package.loaded.gitsigns
-    local bopts = { noremap = true, silent = true, buffer = bufnr }
-    vim.keymap.set('n', '<leader>hb', function() gs.blame_line { full = true } end, bopts)
-    vim.keymap.set('n', '<leader>tb', gs.toggle_current_line_blame, bopts)
-  end
-})
 require('bufferline').setup({
   options = {
     show_close_icon = false,
@@ -82,13 +71,38 @@ vim.cmd([[
 
 require('lualine').setup()
 
+require('neotest').setup({
+  adapters = {
+    require("neotest-rust")
+  }
+})
+
 
 --
 -- EDITOR
 --
+require('leap').add_default_mappings()
 
+require('gitsigns').setup({
+  current_line_blame_opts = {
+    delay = 100,
+  },
+  on_attach = function(bufnr)
+    local gs = package.loaded.gitsigns
+    local bopts = { noremap = true, silent = true, buffer = bufnr }
+    vim.keymap.set('n', '<leader>hb', function() gs.blame_line { full = true } end, bopts)
+    vim.keymap.set('n', '<leader>tb', gs.toggle_current_line_blame, bopts)
+  end
+})
 require('indent_blankline').setup({
   show_current_context = true,
   show_current_context_start = false
 })
 require('nvim-cursorline').setup()
+
+
+--
+-- Debug
+--
+require('dapui').setup()
+require('nvim-dap-virtual-text').setup()

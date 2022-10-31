@@ -9,6 +9,26 @@
       url = "github:petertriho/cmp-git";
       flake = false;
     };
+
+    leap-nvim = {
+      url = "github:ggandor/leap.nvim";
+      flake = false;
+    };
+
+    inc-rename-nvim = {
+      url = "github:smjonas/inc-rename.nvim";
+      flake = false;
+    };
+
+    neotest = {
+      url = "github:nvim-neotest/neotest";
+      flake = false;
+    };
+
+    neotest-rust = {
+      url = "github:rouge8/neotest-rust";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -86,7 +106,7 @@
                 (lib.strings.fileContents ./base.vim)
                 ''
                   lua << EOF
-                  ${lib.strings.fileContents ./syntax.lua}
+                  ${lib.strings.fileContents ./tree-sitter.lua}
                   ${lib.strings.fileContents ./cmp.lua}
                   ${lib.strings.fileContents ./lsp.lua}
                   ${lib.strings.fileContents ./visual.lua}
@@ -96,6 +116,7 @@
               packages.myVimPackage = {
                 start = with vimPlugins; [
                   which-key-nvim
+                  (plugin "leap-nvim")
 
                   # Syntax
                   (nvim-treesitter.withPlugins (plugins: pkgs.tree-sitter.allGrammars))
@@ -126,6 +147,8 @@
                   nvim-lightbulb
                   trouble-nvim
                   lspkind-nvim
+                  fidget-nvim
+                  (plugin "inc-rename-nvim")
 
                   # Null-ls
                   null-ls-nvim
@@ -134,7 +157,11 @@
                   rust-tools-nvim
 
                   # Debug
+                  (plugin "neotest")
+                  (plugin "neotest-rust")
                   nvim-dap
+                  nvim-dap-ui
+                  nvim-dap-virtual-text
 
                   # Completion
                   nvim-cmp

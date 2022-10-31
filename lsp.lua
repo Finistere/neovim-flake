@@ -2,12 +2,14 @@
 -- LSP
 --
 
-require("lsp_signature").setup()
-require("lspsaga").setup({
+require('lsp_signature').setup()
+require('fidget').setup()
+require('lspsaga').setup({
   finder_action_keys = {
-    open = "<cr>"
+    open = '<cr>'
   }
 })
+require('inc_rename').setup()
 
 require('nvim-lightbulb').setup({ autocmd = { enabled = true } })
 
@@ -15,16 +17,17 @@ vim.cmd([[
   nnoremap <silent><leader>ca <cmd>CodeActionMenu<cr>
 ]])
 
-require('trouble').setup()
+require('trouble').setup({
+  padding = false,
+  auto_jump = { 'lsp_definitions', 'lsp_type_definitions' },
+})
 vim.cmd([[
   nnoremap <silent><leader>xx <cmd>TroubleToggle<cr>
   nnoremap <silent><leader>xw <cmd>TroubleToggle workspace_diagnostics<cr>
   nnoremap <silent><leader>xd <cmd>TroubleToggle document_diagnostics<cr>
   nnoremap <silent><leader>xq <cmd>TroubleToggle quickfix<cr>
   nnoremap <silent><leader>xl <cmd>TroubleToggle loclist<cr>
-  nnoremap <silent>gR <cmd>TroubleToggle lsp_references<cr>
 ]])
-
 
 local lspconfig = require('lspconfig')
 
@@ -50,17 +53,16 @@ local function on_attach(client, bufnr)
   local bopts = { noremap = true, silent = true, buffer = bufnr }
 
   -- TODO: preview_definition doesn't work & smart scrolling broken, not sure why...
-  keymap('<leader>cr', require('lspsaga.rename').rename, bopts)
+  -- keymap('<leader>cr', require('lspsaga.rename').rename, bopts)
+  keymap('<leader>cr', ':IncRename ', bopts)
   keymap('<leader>cf', function() vim.lsp.buf.format({ bufnr = bufnr }) end, bopts)
-
-
 
   keymap('gh', require('lspsaga.provider').lsp_finder, bopts)
   keymap('gD', vim.lsp.buf.declaration, bopts)
-  keymap('gd', vim.lsp.buf.definition, bopts)
-  keymap('gt', vim.lsp.buf.type_definition, bopts)
-  keymap('gr', vim.lsp.buf.references, bopts)
-  keymap('gi', vim.lsp.buf.implementation, bopts)
+  keymap('gd', '<cmd>TroubleToggle lsp_definitions<cr>', bopts)
+  keymap('gt', '<cmd>TroubleToggle lsp_type_definitions<cr>', bopts)
+  keymap('gr', '<cmd>TroubleToggle lsp_references<cr>', bopts)
+  keymap('gi', '<cmd>TroubleToggle lsp_implementations<cr>', bopts)
 
   keymap('H', vim.lsp.buf.hover, bopts)
 end
@@ -102,3 +104,5 @@ null_ls.setup({
   },
   on_attach = on_attach
 })
+
+require('crates').setup { null_ls = { enabled = true } }
