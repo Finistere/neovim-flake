@@ -29,6 +29,11 @@
       url = "github:rouge8/neotest-rust";
       flake = false;
     };
+
+    nvim-semantic-tokens = {
+      url = "github:theHamsta/nvim-semantic-tokens";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -53,6 +58,7 @@
 
         extraPackages = with pkgs; [
           tree-sitter
+          lldb
 
           # language servers
           rnix-lsp
@@ -131,6 +137,7 @@
                   gitsigns-nvim
                   bufferline-nvim
                   lualine-nvim
+                  vim-floaterm
 
                   # Editor visuals
                   indent-blankline-nvim
@@ -181,6 +188,8 @@
 
                   # Colorscheme
                   tokyonight-nvim
+                  papercolor-theme
+                  (plugin "nvim-semantic-tokens")
                 ];
               };
             };

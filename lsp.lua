@@ -29,6 +29,16 @@ vim.cmd([[
   nnoremap <silent><leader>xl <cmd>TroubleToggle loclist<cr>
 ]])
 
+require("nvim-semantic-tokens").setup {
+  preset = "default",
+  -- highlighters is a list of modules following the interface of nvim-semantic-tokens.table-highlighter or
+  -- function with the signature: highlight_token(ctx, token, highlight) where
+  --        ctx (as defined in :h lsp-handler)
+  --        token  (as defined in :h vim.lsp.semantic_tokens.on_full())
+  --        highlight (a helper function that you can call (also multiple times) with the determined highlight group(s) as the only parameter)
+  highlighters = { require 'nvim-semantic-tokens.table-highlighter' }
+}
+
 local lspconfig = require('lspconfig')
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
@@ -65,6 +75,20 @@ local function on_attach(client, bufnr)
   keymap('gi', '<cmd>TroubleToggle lsp_implementations<cr>', bopts)
 
   keymap('H', vim.lsp.buf.hover, bopts)
+
+  local caps = client.server_capabilities
+  if caps.semanticTokensProvider and caps.semanticTokensProvider.full then
+    local augroup = vim.api.nvim_create_augroup("SemanticTokens", {})
+    vim.api.nvim_create_autocmd("TextChanged", {
+      group = augroup,
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.semantic_tokens_full()
+      end,
+    })
+    -- fire it first time on load as well
+    vim.lsp.buf.semantic_tokens_full()
+  end
 end
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
@@ -92,7 +116,12 @@ lspconfig.sumneko_lua.setup {
 require('rust-tools').setup({
   server = {
     on_attach = on_attach
-  }
+  },
+  tools = {
+    hover_actions = {
+      auto_focus = true,
+    },
+  },
 })
 
 local null_ls = require('null-ls')

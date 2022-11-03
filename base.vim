@@ -47,7 +47,8 @@ set nofoldenable
 
 " True colors
 set termguicolors
-colorscheme tokyonight
+colorscheme tokyonight-moon
+
 
 " Search
 set ignorecase            " Search is case insensitive 

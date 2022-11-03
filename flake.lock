@@ -110,6 +110,22 @@
         "type": "github"
       }
     },
+    "nvim-semantic-tokens": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1664933150,
+        "narHash": "sha256-jgq+/MvGFFC/DlaiX5Uu1/wT0dZJCxQ472D/gnVEDDQ=",
+        "owner": "theHamsta",
+        "repo": "nvim-semantic-tokens",
+        "rev": "c3c19dcfe2d8c22708f4be4738730b6fe0c64097",
+        "type": "github"
+      },
+      "original": {
+        "owner": "theHamsta",
+        "repo": "nvim-semantic-tokens",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "cmp-git": "cmp-git",
@@ -118,7 +134,8 @@
         "leap-nvim": "leap-nvim",
         "neotest": "neotest",
         "neotest-rust": "neotest-rust",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "nvim-semantic-tokens": "nvim-semantic-tokens"
       }
     }
   },
