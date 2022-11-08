@@ -49,6 +49,13 @@ require('bufferline').setup({
       local icon = level:match("error") and " " or ""
       return " " .. icon .. count
     end,
+    name_formatter = function(buf)
+      capture = string.match(buf.path, 'cargo/registry/.*/(.*)-%d+%.%d+%.%d+/src')
+      if capture then
+        return buf.name .. ' @ ' .. capture
+      end
+      return buf.name
+    end,
   }
 })
 vim.cmd([[

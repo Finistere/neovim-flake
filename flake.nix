@@ -131,42 +131,41 @@
                   playground
 
                   # UI
-                  telescope-nvim
-                  nvim-web-devicons
-                  nvim-tree-lua
-                  gitsigns-nvim
-                  bufferline-nvim
-                  lualine-nvim
-                  vim-floaterm
+                  telescope-nvim # find/search popup
+                  nvim-web-devicons # icons pack
+                  nvim-tree-lua # file tree
+                  gitsigns-nvim # git signs in the editor
+                  bufferline-nvim # tab manager
+                  lualine-nvim # bottom status line
+                  vim-floaterm # floating terminal window
 
                   # Editor visuals
-                  indent-blankline-nvim
-                  nvim-cursorline
+                  indent-blankline-nvim # indentation guides
+                  nvim-cursorline # underlines word & hight curent line
 
                   # Utilities
-                  plenary-nvim
+                  plenary-nvim # Utility library for lots of plugins
 
                   # LSP
                   nvim-lspconfig
-                  lsp_signature-nvim
-                  lspsaga-nvim
-                  nvim-code-action-menu
-                  nvim-lightbulb
-                  trouble-nvim
-                  lspkind-nvim
-                  fidget-nvim
-                  (plugin "inc-rename-nvim")
+                  lsp_signature-nvim # show signature when writing arguments
+                  lspsaga-nvim # mostly for LSP finder showing small popup
+                  nvim-code-action-menu # preview code actions
+                  nvim-lightbulb # shows lightbulb for LSP actions/errors
+                  trouble-nvim # friendlier bottom window for search results
+                  fidget-nvim # LSP status fidget
+                  (plugin "inc-rename-nvim") # in-place rename preview
 
                   # Null-ls
-                  null-ls-nvim
+                  null-ls-nvim # LSP adapter for other plugins
 
                   # Rust
-                  rust-tools-nvim
+                  rust-tools-nvim # advanced rust-analyzer integration
 
-                  # Debug
+                  # Debug / Test
                   (plugin "neotest")
                   (plugin "neotest-rust")
-                  nvim-dap
+                  nvim-dap # debuger
                   nvim-dap-ui
                   nvim-dap-virtual-text
 
@@ -182,6 +181,7 @@
                   cmp_luasnip
                   nvim-autopairs
                   nvim-ts-autotag
+                  lspkind-nvim # VS-code pictograms for auto-completion
 
                   # Rust
                   crates-nvim
