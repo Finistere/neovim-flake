@@ -58,6 +58,7 @@
 
         extraPackages = with pkgs; [
           tree-sitter
+          gcc
           lldb
 
           # language servers
@@ -125,7 +126,7 @@
                   (plugin "leap-nvim")
 
                   # Syntax
-                  (nvim-treesitter.withPlugins (plugins: pkgs.tree-sitter.allGrammars))
+                  nvim-treesitter
                   nvim-ts-rainbow
                   nvim-treesitter-context
                   playground

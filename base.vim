@@ -63,8 +63,8 @@ set undodir=~/.vim/undo
 " File type specific
 "
 
-" Nix
-autocmd filetype nix,lua setlocal tabstop=2 shiftwidth=2 softtabstop=2
+" 2 space width
+autocmd filetype nix,lua,typescript setlocal tabstop=2 shiftwidth=2 softtabstop=2
 
 " Sudo tee hack, write as root
 cmap w!! w !sudo tee > /dev/null %
