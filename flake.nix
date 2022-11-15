@@ -29,11 +29,6 @@
       url = "github:rouge8/neotest-rust";
       flake = false;
     };
-
-    nvim-semantic-tokens = {
-      url = "github:theHamsta/nvim-semantic-tokens";
-      flake = false;
-    };
   };
 
   outputs = {
@@ -79,6 +74,7 @@
           fd
           git
           gh # for cmp-git
+          ranger
 
           graphviz # for rust-tools crate graph
         ];
@@ -141,6 +137,7 @@
                   bufferline-nvim # tab manager
                   lualine-nvim # bottom status line
                   vim-floaterm # floating terminal window
+                  rnvimr # ranger integration
 
                   # Editor visuals
                   indent-blankline-nvim # indentation guides
@@ -192,7 +189,6 @@
                   # Colorscheme
                   tokyonight-nvim
                   papercolor-theme
-                  (plugin "nvim-semantic-tokens")
                 ];
               };
             };

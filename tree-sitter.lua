@@ -5,10 +5,7 @@
 -- If not specified, it uses a nix store path instead which is read-only.
 local parser_install_dir = '~/.local/share/nvim/site/parser'
 require('nvim-treesitter.configs').setup {
-  -- not really necessary
-  ensure_installed = {
-    'rust', 'bash', 'nix', 'json', 'typescript', 'javascript', 'python', 'toml',
-  },
+  ensure_installed = {},
   -- install a language if missing. Both this and previous option should be deactivated if
   -- languages are installed through Nix which currently doesn't work properly.
   auto_install = true,

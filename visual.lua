@@ -33,6 +33,7 @@ vim.cmd([[
   nnoremap <silent><leader>fg <cmd>Telescope live_grep<cr>
   nnoremap <silent><leader>fb <cmd>Telescope buffers<cr>
   nnoremap <silent><leader>fh <cmd>Telescope help_tags<cr>
+  nnoremap <silent><leader>fs <cmd>Telescope git_status<cr>
 ]])
 
 require('bufferline').setup({
@@ -83,6 +84,18 @@ require('neotest').setup({
     require("neotest-rust")
   }
 })
+
+-- ranger
+vim.cmd([[
+  " Hide ranger after picking a file
+  let g:rnvimr_enable_picker = 1
+  " Hide the files included in gitignore
+  let g:rnvimr_hide_gitignore = 1
+  " wipe buffers associated with deleted files
+  let g:rnvimr_enable_bw = 1
+  nnoremap <silent><leader>rt <cmd>RnvimrToggle<cr>
+  tnoremap <silent><leader>r <cmd>RnvimrResize<cr>
+]])
 
 
 --
