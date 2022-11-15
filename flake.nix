@@ -2,7 +2,7 @@
   description = "custom neovim";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
 
     cmp-git = {
@@ -113,6 +113,8 @@
                 (lib.strings.fileContents ./base.vim)
                 ''
                   lua << EOF
+                  -- Tresitter may use the another compiler in the environment otherwise.
+                  require('nvim-treesitter.install').compilers = { "${gcc.out}/bin/gcc" }
                   ${lib.strings.fileContents ./tree-sitter.lua}
                   ${lib.strings.fileContents ./cmp.lua}
                   ${lib.strings.fileContents ./lsp.lua}
