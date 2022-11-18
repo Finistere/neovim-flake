@@ -29,6 +29,11 @@
       url = "github:rouge8/neotest-rust";
       flake = false;
     };
+
+    ranger = {
+      url = "github:ranger/ranger";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -68,13 +73,19 @@
           alejandra # nix formatting
           shfmt # shell formatting
           shellcheck # shell check
+          statix # code actions on nix
+          deadnix # dead code
 
           # Utilities
           ripgrep
           fd
           git
           gh # for cmp-git
-          ranger
+          (ranger.overridePythonAttrs (old: {
+            version = "1.9.4-master";
+            src = inputs.ranger;
+            checkInputs = with python3Packages; old.checkInputs ++ [astroid pylint];
+          }))
 
           graphviz # for rust-tools crate graph
         ];
@@ -97,7 +108,7 @@
           packages.default = wrapNeovim neovim-unwrapped {
             viAlias = true;
             vimAlias = true;
-            withPython3 = false;
+            withPython3 = true;
             withNodeJs = false;
             withRuby = false;
             extraMakeWrapperArgs = ''--prefix PATH : "${lib.makeBinPath extraPackages}"'';
@@ -142,6 +153,10 @@
                   # Editor visuals
                   indent-blankline-nvim # indentation guides
                   nvim-cursorline # underlines word & hight curent line
+                  nvim-colorizer-lua # show color for #000000
+                  comment-nvim # toggle comment
+                  range-highlight-nvim # highlight ranges (:20,+4)
+                  todo-comments-nvim # highlight todo comments and list them in Trouble/Telescope
 
                   # Utilities
                   plenary-nvim # Utility library for lots of plugins

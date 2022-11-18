@@ -20,6 +20,10 @@ vim.cmd([[
 require('trouble').setup({
   padding = false,
   auto_jump = { 'lsp_definitions', 'lsp_type_definitions' },
+  action_keys = {
+    jump_close = { '<cr>' },
+    jump = { "o", "<tab>" }
+  }
 })
 vim.cmd([[
   nnoremap <silent><leader>xx <cmd>TroubleToggle<cr>
@@ -104,7 +108,11 @@ require('rust-tools').setup({
 local null_ls = require('null-ls')
 null_ls.setup({
   sources = {
+    -- Nix
     null_ls.builtins.formatting.alejandra,
+    null_ls.builtins.diagnostics.deadnix,
+    null_ls.builtins.diagnostics.staticx,
+    -- Shell
     null_ls.builtins.code_actions.shellcheck,
     null_ls.builtins.formatting.shfmt
   },

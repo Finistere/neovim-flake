@@ -6,6 +6,7 @@ require('nvim-ts-autotag').setup()
 require('nvim-autopairs').setup()
 
 vim.o.completeopt = 'menu,menuone,noselect'
+vim.o.pumheight = 15 -- max items suggested
 
 local cmp = require('cmp')
 local luasnip = require('luasnip')
@@ -20,7 +21,7 @@ end
 cmp.setup({
   snippet = {
     expand = function(args)
-      luasnip.lsp_expand(args.body) 
+      luasnip.lsp_expand(args.body)
     end,
   },
   window = {
@@ -35,7 +36,7 @@ cmp.setup({
 
       -- The function below will be called before any actual modifications from lspkind
       -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
-      before = function (entry, vim_item)
+      before = function(entry, vim_item)
         return vim_item
       end
     })
@@ -112,11 +113,9 @@ cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
 
 -- Lazy loading for crates
 vim.api.nvim_create_autocmd("BufRead", {
-    group = vim.api.nvim_create_augroup("CmpSourceCargo", { clear = true }),
-    pattern = "Cargo.toml",
-    callback = function()
-        cmp.setup.buffer({ sources = { { name = "crates" } } })
-    end,
+  group = vim.api.nvim_create_augroup("CmpSourceCargo", { clear = true }),
+  pattern = "Cargo.toml",
+  callback = function()
+    cmp.setup.buffer({ sources = { { name = "crates" } } })
+  end,
 })
-
-

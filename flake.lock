@@ -50,11 +50,11 @@
     "leap-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1667950522,
-        "narHash": "sha256-J5CyNJdj8gWLAa/0u5woACm81BG42g1DgSCkhOOvsvE=",
+        "lastModified": 1668770628,
+        "narHash": "sha256-K5I3nqRaXNBcghXqak9JCnMQNb2NHo6yznIo/UTadmM=",
         "owner": "ggandor",
         "repo": "leap.nvim",
-        "rev": "c19e974cfd9d52dc5070ec7b68183da39702c877",
+        "rev": "dfbc749f44e1a992750b83277f3725e2e55c8784",
         "type": "github"
       },
       "original": {
@@ -66,11 +66,11 @@
     "neotest": {
       "flake": false,
       "locked": {
-        "lastModified": 1668417824,
-        "narHash": "sha256-aY4mqX6uYq1iNJH0YEZpfZU54oBU3iq+DGYAfm/iNTg=",
+        "lastModified": 1668797039,
+        "narHash": "sha256-qHT17v4XWeAqJvfx5y/2jEOho/acjf3NSkEM5bejA+E=",
         "owner": "nvim-neotest",
         "repo": "neotest",
-        "rev": "779e04fdadadcad9cdca1a2d4feb2420364cdb99",
+        "rev": "cf4d935253cacd50e939e7ae717c5a858222964b",
         "type": "github"
       },
       "original": {
@@ -97,17 +97,33 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1668443372,
-        "narHash": "sha256-lXNlVyNWwO22/JUdBtUWz68jZB3DM+Jq/irlsbwncI0=",
+        "lastModified": 1668681245,
+        "narHash": "sha256-IH8t+b9hCfNwEvdC55UEymn8jL457Fo/hx3N/kNTZso=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "dad4de1694cd92d9a0e123bfdf134d0047b836a5",
+        "rev": "bd4bfd814e96488febb38b4b4d0549c56b840c7f",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
         "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "ranger": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1668769079,
+        "narHash": "sha256-TKvS4GHbcCcOKHHzoXsc4jNyCcebPAggXoAToaIeE5g=",
+        "owner": "ranger",
+        "repo": "ranger",
+        "rev": "ae3af7cae4a4f652984adf88fb5f2d06f8decb85",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ranger",
+        "repo": "ranger",
         "type": "github"
       }
     },
@@ -119,7 +135,8 @@
         "leap-nvim": "leap-nvim",
         "neotest": "neotest",
         "neotest-rust": "neotest-rust",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "ranger": "ranger"
       }
     }
   },

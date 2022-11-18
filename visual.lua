@@ -2,6 +2,7 @@
 -- UI
 --
 
+require('colorizer').setup {}
 require('nvim-web-devicons').setup()
 
 require('nvim-tree').setup({
@@ -77,7 +78,7 @@ vim.cmd([[
   nnoremap <silent><S-right> <cmd>BufferLineMoveNext<cr>
 ]])
 
-require('lualine').setup()
+require('lualine').setup {}
 
 require('neotest').setup({
   adapters = {
@@ -93,7 +94,7 @@ vim.cmd([[
   let g:rnvimr_hide_gitignore = 1
   " wipe buffers associated with deleted files
   let g:rnvimr_enable_bw = 1
-  nnoremap <silent><leader>rt <cmd>RnvimrToggle<cr>
+  nnoremap <silent><leader>r <cmd>RnvimrToggle<cr>
   tnoremap <silent><leader>r <cmd>RnvimrResize<cr>
 ]])
 
@@ -120,6 +121,9 @@ require('indent_blankline').setup({
 })
 require('nvim-cursorline').setup()
 
+require('Comment').setup()
+require('range-highlight').setup()
+require('todo-comments').setup()
 
 --
 -- Debug
@@ -132,7 +136,7 @@ vim.cmd([[
 local dap = require('dap')
 local dapui = require('dapui')
 
-require('nvim-dap-virtual-text').setup()
+require('nvim-dap-virtual-text').setup {}
 
 dapui.setup()
 dap.listeners.after.event_initialized["dapui_config"] = function()
