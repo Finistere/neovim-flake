@@ -125,7 +125,9 @@
                   ${lib.strings.fileContents ./tree-sitter.lua}
                   ${lib.strings.fileContents ./cmp.lua}
                   ${lib.strings.fileContents ./lsp.lua}
-                  ${lib.strings.fileContents ./visual.lua}
+                  ${lib.strings.fileContents ./ui.lua}
+                  ${lib.strings.fileContents ./editor.lua}
+                  ${lib.strings.fileContents ./debug.lua}
                   EOF
                 ''
               ];
@@ -142,13 +144,14 @@
 
                   # UI
                   telescope-nvim # find/search popup
+                  telescope-fzf-native-nvim # Native search, for faster search
                   nvim-web-devicons # icons pack
                   nvim-tree-lua # file tree
                   gitsigns-nvim # git signs in the editor
                   bufferline-nvim # tab manager
                   lualine-nvim # bottom status line
                   vim-floaterm # floating terminal window
-                  rnvimr # ranger integration
+                  # rnvimr # ranger integration
 
                   # Editor visuals
                   indent-blankline-nvim # indentation guides
@@ -164,7 +167,6 @@
                   # LSP
                   nvim-lspconfig
                   lsp_signature-nvim # show signature when writing arguments
-                  lspsaga-nvim # mostly for LSP finder showing small popup
                   nvim-code-action-menu # preview code actions
                   nvim-lightbulb # shows lightbulb for LSP actions/errors
                   trouble-nvim # friendlier bottom window for search results
