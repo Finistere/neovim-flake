@@ -6,9 +6,21 @@ require('colorizer').setup {}
 require('nvim-web-devicons').setup()
 
 require('nvim-tree').setup({
+  open_on_setup = true,
   diagnostics = {
     enable = true,
     show_on_dirs = true,
+  },
+  view = {
+    hide_root_folder = true,
+  },
+  renderer = {
+    highlight_git = true,
+    icons = {
+      show = {
+        git = false,
+      },
+    },
   },
   filters = {
     custom = { "^\\.git$" }
@@ -25,8 +37,16 @@ local telescope = require('telescope')
 telescope.setup({
   defaults = {
     mappings = {
-      i = { ["<C-t>"] = trouble.open_with_trouble },
+      i = {
+        ["<C-t>"] = trouble.open_with_trouble,
+        ["<esc>"] = require('telescope.actions').close
+      },
       n = { ["<C-t>"] = trouble.open_with_trouble },
+    }
+  },
+  pickers = {
+    buffers = {
+      theme = "dropdown"
     }
   }
 })
@@ -39,20 +59,20 @@ vim.cmd([[
   nnoremap <silent><leader>fs <cmd>Telescope git_status<cr>
 ]])
 
+require('scope').setup()
 require('bufferline').setup({
   options = {
     show_close_icon = false,
     show_buffer_close_icons = false,
-    separator_style = 'slant',
-    diagnostics = 'nvim_lsp',
-    diagnostics_update_in_insert = true,
-    diagnostics_indicator = function(count, level, diagnostics_dict, context)
-      if context.buffer:current() then
-        return ''
-      end
-      local icon = level:match("error") and " " or ""
-      return " " .. icon .. count
-    end,
+    separator_style = 'thin',
+    -- diagnostics = 'nvim_lsp',
+    -- diagnostics_indicator = function(count, level, diagnostics_dict, context)
+    --   if context.buffer:current() then
+    --     return ''
+    --   end
+    --   local icon = level:match("error") and " " or ""
+    --   return " " .. icon .. count
+    -- end,
     name_formatter = function(buf)
       capture = string.match(buf.path, 'cargo/registry/.*/(.*)-%d+%.%d+%.%d+/src')
       if capture then
@@ -80,24 +100,22 @@ vim.cmd([[
   nnoremap <silent><S-right> <cmd>BufferLineMoveNext<cr>
 ]])
 
-require('lualine').setup {}
-
-require('neotest').setup({
-  adapters = {
-    require("neotest-rust")
-  }
+require('lualine').setup({
+  extensions = { 'nvim-dap-ui', 'symbols-outline', 'nvim-tree' }
 })
 
+require("auto-session").setup {}
+
 -- ranger
--- vim.cmd([[
---   " Hide ranger after picking a file
---   let g:rnvimr_enable_picker = 1
---   " Hide the files included in gitignore
---   let g:rnvimr_hide_gitignore = 1
---   " wipe buffers associated with deleted files
---   let g:rnvimr_enable_bw = 1
---   nnoremap <silent><leader>r <cmd>RnvimrToggle<cr>
--- ]])
+vim.cmd([[
+  " Hide ranger after picking a file
+  let g:rnvimr_enable_picker = 1
+  " Hide the files included in gitignore
+  let g:rnvimr_hide_gitignore = 1
+  " wipe buffers associated with deleted files
+  let g:rnvimr_enable_bw = 1
+  nnoremap <silent><leader>r <cmd>RnvimrToggle<cr>
+]])
 
 vim.cmd([[
   let g:floaterm_width  = 0.7
@@ -108,7 +126,8 @@ vim.cmd([[
   " let g:floaterm_keymap_next   = '<C-n>'
   let g:floaterm_keymap_toggle = '<F1>'
   " let g:floaterm_keymap_kill   = '<C-k>'
-  nnoremap <silent><leader>r <cmd>FloatermNew ranger<cr>
+  " rnvimr is slight faster as it keeps ranger process in the background
+  " nnoremap <silent><leader>r <cmd>FloatermNew ranger<cr>
 ]])
 
 -- Heavily inspired by: https://www.reddit.com/r/neovim/comments/r74647/comment/hmx0w58/
@@ -164,3 +183,9 @@ end
 
 -- Doesn't work yet...
 -- vim.keymap.set('n', '<leader>fl', telescope_live_grep_in_ranger_folder, { noremap = true, silent = true })
+
+require('neotest').setup({
+  adapters = {
+    require("neotest-rust")
+  }
+})

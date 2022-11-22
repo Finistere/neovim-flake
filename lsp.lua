@@ -4,6 +4,12 @@
 
 require('lsp_signature').setup()
 require('fidget').setup()
+require("symbols-outline").setup({
+  autofold_depth = 2
+})
+vim.cmd([[
+  nnoremap <silent><leader>l <cmd>SymbolsOutline<cr>
+]])
 require('inc_rename').setup()
 
 require('nvim-lightbulb').setup({ autocmd = { enabled = true } })

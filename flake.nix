@@ -133,14 +133,11 @@
               ];
               packages.myVimPackage = {
                 start = with vimPlugins; [
-                  which-key-nvim
-                  (plugin "leap-nvim")
-
                   # Syntax
                   nvim-treesitter
-                  nvim-ts-rainbow
-                  nvim-treesitter-context
-                  playground
+                  nvim-ts-rainbow # matching brackets... pairs
+                  nvim-treesitter-context # Show a top bar with current code context
+                  playground # playground for tree-sitter queries
 
                   # UI
                   telescope-nvim # find/search popup
@@ -148,18 +145,24 @@
                   nvim-web-devicons # icons pack
                   nvim-tree-lua # file tree
                   gitsigns-nvim # git signs in the editor
-                  bufferline-nvim # tab manager
+                  bufferline-nvim # buffer manager
+                  scope-nvim # associate buffers to tabs
                   lualine-nvim # bottom status line
                   vim-floaterm # floating terminal window
-                  # rnvimr # ranger integration
+                  rnvimr # ranger integration, it's a bit faster to show up than vim-floaterm integration
+
+                  # Nvim behavior
+                  which-key-nvim
+                  auto-session # reload & save automatically session for each cwd.
 
                   # Editor visuals
                   indent-blankline-nvim # indentation guides
-                  nvim-cursorline # underlines word & hight curent line
+                  nvim-cursorline # underlines word & highlight curent line
                   nvim-colorizer-lua # show color for #000000
                   comment-nvim # toggle comment
                   range-highlight-nvim # highlight ranges (:20,+4)
                   todo-comments-nvim # highlight todo comments and list them in Trouble/Telescope
+                  (plugin "leap-nvim") # faster navigation within a file
 
                   # Utilities
                   plenary-nvim # Utility library for lots of plugins
@@ -172,19 +175,17 @@
                   trouble-nvim # friendlier bottom window for search results
                   fidget-nvim # LSP status fidget
                   (plugin "inc-rename-nvim") # in-place rename preview
+                  symbols-outline-nvim # lists function,class,... in separate window
 
                   # Null-ls
-                  null-ls-nvim # LSP adapter for other plugins
-
-                  # Rust
-                  rust-tools-nvim # advanced rust-analyzer integration
+                  null-ls-nvim # LSP adapter for other plugins (formatter, linter, etc.)
 
                   # Debug / Test
                   (plugin "neotest")
                   (plugin "neotest-rust")
                   nvim-dap # debuger
-                  nvim-dap-ui
-                  nvim-dap-virtual-text
+                  nvim-dap-ui # friendly debuger UI
+                  nvim-dap-virtual-text # show variable values as virtual text
 
                   # Completion
                   nvim-cmp
@@ -201,11 +202,11 @@
                   lspkind-nvim # VS-code pictograms for auto-completion
 
                   # Rust
-                  crates-nvim
+                  crates-nvim # Show current version of rust dependencies within Cargo.toml
+                  rust-tools-nvim # advanced rust-analyzer integration
 
                   # Colorscheme
                   tokyonight-nvim
-                  papercolor-theme
                 ];
               };
             };
