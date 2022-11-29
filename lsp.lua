@@ -48,7 +48,7 @@ local function on_attach(client, bufnr)
   keymap('gr', '<cmd>Telescope lsp_references<cr>', bopts)
   keymap('gc', '<cmd>Telescope lsp_incoming_calls<cr>', bopts)
   keymap('go', '<cmd>Telescope lsp_outgoing_calls<cr>', bopts)
-  keymap('H', vim.lsp.buf.hover, bopts)
+  keymap('K', vim.lsp.buf.hover, bopts)
 
   require('lsp_signature').on_attach({
     toggle_key = '<C-e>'
@@ -78,9 +78,15 @@ lspconfig.sumneko_lua.setup {
 }
 
 -- Rust pre-configured by rust-tools
-require('rust-tools').setup({
+local rt = require('rust-tools')
+rt.setup({
   server = {
-    on_attach = on_attach
+    on_attach = function(client, bufnr)
+      on_attach(client, bufnr)
+      local bopts = { noremap = true, silent = true, buffer = bufnr }
+      keymap('<C-space>', rt.hover_actions.hover_actions, bopts)
+      -- keymap('K', rt.hover_range.hover_range, bopts)
+    end
   },
   tools = {
     hover_actions = {

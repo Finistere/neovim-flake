@@ -7,6 +7,9 @@ vim.cmd([[
 ]])
 
 local dap = require('dap')
+vim.cmd([[
+    nnoremap <silent> <Leader>dl <Cmd>lua require'dap'.run_last()<CR>
+]])
 local dapui = require('dapui')
 
 require('nvim-dap-virtual-text').setup {}
@@ -19,10 +22,11 @@ dap.listeners.after.event_initialized["dapui_config"] = function()
     nnoremap <silent> <F8> <cmd>lua require'dap'.step_over()<cr>
     nnoremap <silent> <F9> <cmd>lua require'dap'.step_out()<cr>
     nnoremap <silent> <F10> <cmd> lua require'dap'.terminate()<cr>
-    nnoremap <silent> <S-F10> <cmd> lua require'dap'.run_last()<cr>
 
     nnoremap <silent> <F2> <cmd> lua require'dap'.down()<cr>
     nnoremap <silent> <F4> <cmd> lua require'dap'.up()<cr>
+
+    nnoremap <silent> <Leader>dr <Cmd>lua require'dap'.repl.open()<CR>
   ]])
   dapui.open()
 
