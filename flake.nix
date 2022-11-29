@@ -34,6 +34,11 @@
       url = "github:ranger/ranger";
       flake = false;
     };
+
+    typescript-nvim = {
+      url = "github:jose-elias-alvarez/typescript.nvim";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -66,7 +71,7 @@
           rust-analyzer
           terraform-ls
           nodePackages.pyright
-          nodePackages."@prisma/language-server"
+          nodePackages."typescript-language-server"
           sumneko-lua-language-server
 
           # null-ls
@@ -75,6 +80,8 @@
           shellcheck # shell check
           statix # code actions on nix
           deadnix # dead code
+          nodePackages.prettier_d_slim # js/html/markdown/... formatting
+          taplo # toml formatting
 
           # Utilities
           ripgrep
@@ -86,8 +93,6 @@
             src = inputs.ranger;
             checkInputs = with python3Packages; old.checkInputs ++ [astroid pylint];
           }))
-
-          graphviz # for rust-tools crate graph
         ];
 
         # installs a vim plugin from git
@@ -180,6 +185,13 @@
                   # Null-ls
                   null-ls-nvim # LSP adapter for other plugins (formatter, linter, etc.)
 
+                  # Rust
+                  crates-nvim # Show current version of rust dependencies within Cargo.toml
+                  rust-tools-nvim # advanced rust-analyzer integration
+
+                  # Typescript
+                  (plugin "typescript-nvim") # advanced typescript integration
+
                   # Debug / Test
                   (plugin "neotest")
                   (plugin "neotest-rust")
@@ -200,10 +212,6 @@
                   nvim-autopairs
                   nvim-ts-autotag
                   lspkind-nvim # VS-code pictograms for auto-completion
-
-                  # Rust
-                  crates-nvim # Show current version of rust dependencies within Cargo.toml
-                  rust-tools-nvim # advanced rust-analyzer integration
 
                   # Colorscheme
                   tokyonight-nvim

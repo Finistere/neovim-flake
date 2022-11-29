@@ -34,6 +34,7 @@ set splitright
 set signcolumn=yes        " When to draw the sign column
 syntax on
 set number relativenumber
+autocmd TermOpen * setlocal nonumber norelativenumber
 
 " Toggle invisible characters
 set list
@@ -69,4 +70,8 @@ autocmd filetype nix,lua,typescript setlocal tabstop=2 shiftwidth=2 softtabstop=
 " Sudo tee hack, write as root
 cmap w!! w !sudo tee > /dev/null %
 
+map <S-up> <C-w><up>
+map <S-down> <C-w><down>
+map <S-left> <C-w><left>
+map <S-right> <C-w><right>
 

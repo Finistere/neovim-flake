@@ -2,7 +2,6 @@
 -- LSP
 --
 
-require('lsp_signature').setup()
 require('fidget').setup()
 require("symbols-outline").setup({
   autofold_depth = 2
@@ -17,23 +16,6 @@ require('nvim-lightbulb').setup({ autocmd = { enabled = true } })
 vim.cmd([[
   nnoremap <silent><leader>ca <cmd>CodeActionMenu<cr>
 ]])
-
-require('trouble').setup({
-  padding = false,
-  auto_jump = { 'lsp_definitions', 'lsp_type_definitions' },
-  action_keys = {
-    jump_close = { '<cr>' },
-    jump = { "o", "<tab>" }
-  }
-})
-vim.cmd([[
-  nnoremap <silent><leader>xx <cmd>TroubleToggle<cr>
-  nnoremap <silent><leader>xw <cmd>TroubleToggle workspace_diagnostics<cr>
-  nnoremap <silent><leader>xd <cmd>TroubleToggle document_diagnostics<cr>
-  nnoremap <silent><leader>xq <cmd>TroubleToggle quickfix<cr>
-  nnoremap <silent><leader>xl <cmd>TroubleToggle loclist<cr>
-]])
-
 local lspconfig = require('lspconfig')
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
@@ -67,6 +49,10 @@ local function on_attach(client, bufnr)
   keymap('gc', '<cmd>Telescope lsp_incoming_calls<cr>', bopts)
   keymap('go', '<cmd>Telescope lsp_outgoing_calls<cr>', bopts)
   keymap('H', vim.lsp.buf.hover, bopts)
+
+  require('lsp_signature').on_attach({
+    toggle_key = '<C-e>'
+  }, bufnr)
 
 end
 
@@ -103,16 +89,25 @@ require('rust-tools').setup({
   },
 })
 
+require('typescript').setup({
+  server = {
+    on_attach = on_attach
+  }
+})
+
 local null_ls = require('null-ls')
 null_ls.setup({
   sources = {
     -- Nix
     null_ls.builtins.formatting.alejandra,
     null_ls.builtins.diagnostics.deadnix,
-    null_ls.builtins.diagnostics.staticx,
+    null_ls.builtins.diagnostics.statix,
     -- Shell
     null_ls.builtins.code_actions.shellcheck,
-    null_ls.builtins.formatting.shfmt
+    null_ls.builtins.formatting.shfmt,
+    --
+    null_ls.builtins.formatting.prettier_d_slim, -- HTML/JS/Markdown/... formatting
+    null_ls.builtins.formatting.taplo -- TOML
   },
   on_attach = on_attach
 })

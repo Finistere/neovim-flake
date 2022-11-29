@@ -12,6 +12,9 @@ require('nvim-tree').setup({
     show_on_dirs = true,
   },
   view = {
+    mappings = {
+      { key = "<C-h>", action = "toggle_git_ignored" }
+    },
     hide_root_folder = true,
   },
   renderer = {
@@ -32,10 +35,29 @@ vim.cmd([[
 ]])
 
 
-local trouble = require('trouble.providers.telescope')
+
+require('trouble').setup({
+  padding = false,
+  auto_jump = { 'lsp_definitions', 'lsp_type_definitions' },
+  action_keys = {
+    jump_close = { '<cr>' },
+    jump = { "o", "<tab>" }
+  }
+})
+vim.cmd([[
+  nnoremap <silent><leader>xx <cmd>TroubleToggle<cr>
+  nnoremap <silent><leader>xw <cmd>TroubleToggle workspace_diagnostics<cr>
+  nnoremap <silent><leader>xd <cmd>TroubleToggle document_diagnostics<cr>
+  nnoremap <silent><leader>xq <cmd>TroubleToggle quickfix<cr>
+  nnoremap <silent><leader>xl <cmd>TroubleToggle loclist<cr>
+]])
+
+
 local telescope = require('telescope')
+local trouble = require('trouble.providers.telescope')
 telescope.setup({
   defaults = {
+    -- path_display = { 'smart' },
     mappings = {
       i = {
         ["<C-t>"] = trouble.open_with_trouble,
@@ -46,8 +68,10 @@ telescope.setup({
   },
   pickers = {
     buffers = {
-      theme = "dropdown"
-    }
+      theme = "dropdown",
+      sort_mru = true,
+      ignore_current_buffer = true
+    },
   }
 })
 telescope.load_extension('fzf')
@@ -57,7 +81,14 @@ vim.cmd([[
   nnoremap <silent><leader>fb <cmd>Telescope buffers<cr>
   nnoremap <silent><leader>fh <cmd>Telescope help_tags<cr>
   nnoremap <silent><leader>fs <cmd>Telescope git_status<cr>
+  nnoremap <silent><leader>fc <cmd>Telescope grep_string<cr>
 ]])
+
+vim.api.nvim_create_user_command('Rg', function(opts)
+  require('telescope.builtin').live_grep({
+    additional_args = opts.fargs
+  })
+end, { nargs = '*' })
 
 require('scope').setup()
 require('bufferline').setup({
@@ -96,8 +127,6 @@ vim.cmd([[
   nnoremap <silent><leader>9 <cmd>BufferLineGoToBuffer 9<cr>
   nnoremap <silent><A-left> <cmd>BufferLineCyclePrev<cr>
   nnoremap <silent><A-right> <cmd>BufferLineCycleNext<cr>
-  nnoremap <silent><S-left> <cmd>BufferLineMovePrev<cr>
-  nnoremap <silent><S-right> <cmd>BufferLineMoveNext<cr>
 ]])
 
 require('lualine').setup({
@@ -114,7 +143,8 @@ vim.cmd([[
   let g:rnvimr_hide_gitignore = 1
   " wipe buffers associated with deleted files
   let g:rnvimr_enable_bw = 1
-  nnoremap <silent><leader>r <cmd>RnvimrToggle<cr>
+  nnoremap <silent><C-.> <cmd>RnvimrToggle<cr>
+  tnoremap <silent><C-.> <cmd>RnvimrToggle<CR>
 ]])
 
 vim.cmd([[
