@@ -11,10 +11,18 @@ require('nvim-tree').setup({
     enable = true,
     show_on_dirs = true,
   },
+  on_attach = function(bufnr)
+    local inject_node = require("nvim-tree.utils").inject_node
+    local telescope = require('telescope.builtin')
+    vim.keymap.set("n", "<leader>fg", inject_node(function(node)
+      if node and node.type == "directory" then
+        telescope.live_grep({
+          search_dirs = { node.absolute_path }
+        })
+      end
+    end), { buffer = bufnr, noremap = true })
+  end,
   view = {
-    mappings = {
-      { key = "<C-h>", action = "toggle_git_ignored" }
-    },
     hide_root_folder = true,
   },
   renderer = {
@@ -85,11 +93,34 @@ vim.cmd([[
 ]])
 
 vim.api.nvim_create_user_command('Rg', function(opts)
+  local api = require("nvim-tree.api")
+  local node = api.tree.get_node_under_cursor()
+  local path = vim.fn.getcwd()
+  if node and node.type == "directory" then
+    local abs_path = node.absolute_path
+    local local_path = string.sub(abs_path, string.len(path) + 1, string.len(abs_path))
+    local choice = vim.fn.input({
+      prompt = "Use " .. local_path .. " ? (y/N) ",
+      default = ""
+    })
+    if choice == "y" then
+      path = node.absolute_path
+    end
+  end
+  vim.cmd("echo \"\"")
   require('telescope.builtin').live_grep({
+    search_dirs = { path },
     additional_args = opts.fargs
   })
 end, { nargs = '*' })
 
+-- Add last modification date to buffer
+vim.cmd([[
+  aug ChangedTime
+    au!
+    au TextChangedI,TextChanged * let b:changedtime = localtime()
+  aug END
+]])
 require('scope').setup()
 require('bufferline').setup({
   options = {
@@ -111,11 +142,16 @@ require('bufferline').setup({
       end
       return buf.name
     end,
+    sort_by = function(buffer_a, buffer_b)
+      local a = tonumber(vim.fn.getbufvar(buffer_a.id, 'changedtime')) or 0
+      local b = tonumber(vim.fn.getbufvar(buffer_b.id, 'changedtime')) or 0
+      return a > b
+    end
   }
 })
 vim.cmd([[
   nnoremap <silent><leader>s <cmd>BufferLinePick<cr>
-  nnoremap <silent><leader>d <cmd>BufferLinePickClose<cr>
+  nnoremap <silent><leader>p <cmd>BufferLineTogglePin<cr>
   nnoremap <silent><leader>1 <cmd>BufferLineGoToBuffer 1<cr>
   nnoremap <silent><leader>2 <cmd>BufferLineGoToBuffer 2<cr>
   nnoremap <silent><leader>3 <cmd>BufferLineGoToBuffer 3<cr>
@@ -130,6 +166,14 @@ vim.cmd([[
 ]])
 
 require('lualine').setup({
+  sections = {
+    lualine_c = {
+      {
+        'filename',
+        path = 1,
+      }
+    }
+  },
   extensions = { 'nvim-dap-ui', 'symbols-outline', 'nvim-tree' }
 })
 
@@ -159,60 +203,6 @@ vim.cmd([[
   " rnvimr is slight faster as it keeps ranger process in the background
   " nnoremap <silent><leader>r <cmd>FloatermNew ranger<cr>
 ]])
-
--- Heavily inspired by: https://www.reddit.com/r/neovim/comments/r74647/comment/hmx0w58/
--- Doesn't work though...
-local telescope_live_grep_in_ranger_folder = function(opts)
-  local Path = require "plenary.path"
-  local action_set = require "telescope.actions.set"
-  local action_state = require "telescope.actions.state"
-  local actions = require "telescope.actions"
-  local conf = require("telescope.config").values
-  local finders = require "telescope.finders"
-  local make_entry = require "telescope.make_entry"
-  local os_sep = Path.path.sep
-  local pickers = require "telescope.pickers"
-  local scan = require "plenary.scandir"
-
-  opts = opts or {}
-  local data = {}
-  scan.scan_dir(vim.loop.cwd(), {
-    hidden = opts.hidden,
-    only_dirs = true,
-    respect_gitignore = opts.respect_gitignore,
-    on_insert = function(entry)
-      table.insert(data, entry .. os_sep)
-    end,
-  })
-  table.insert(data, 1, "." .. os_sep)
-
-  pickers.new(opts, {
-    prompt_title = "Folders for Live Grep",
-    finder = finders.new_table { results = data, entry_maker = make_entry.gen_from_file(opts) },
-    previewer = conf.grep_previewer(opts),
-    sorter = conf.file_sorter(opts),
-    attach_mappings = function(prompt_bufnr)
-      action_set.select:replace(function()
-        local current_picker = action_state.get_current_picker(prompt_bufnr)
-        local dirs = {}
-        local selections = current_picker:get_multi_selection()
-        if vim.tbl_isempty(selections) then
-          table.insert(dirs, action_state.get_selected_entry().value)
-        else
-          for _, selection in ipairs(selections) do
-            table.insert(dirs, selection.value)
-          end
-        end
-        actions._close(prompt_bufnr, current_picker.initial_mode == "insert")
-        require("telescope.builtin").live_grep { search_dirs = dirs }
-      end)
-      return true
-    end,
-  }):find()
-end
-
--- Doesn't work yet...
--- vim.keymap.set('n', '<leader>fl', telescope_live_grep_in_ranger_folder, { noremap = true, silent = true })
 
 require('neotest').setup({
   adapters = {

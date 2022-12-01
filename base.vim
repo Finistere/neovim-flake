@@ -1,7 +1,7 @@
 "
 " Native config
 "
-
+" --tes
 " Preventing netrw to load, for nvim-tree
 let g:loaded_netrw       = 1
 let g:loaded_netrwPlugin = 1

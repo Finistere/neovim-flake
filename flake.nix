@@ -60,11 +60,15 @@
           # enable all packages
           config = {allowUnfree = true;};
         };
+        inherit (pkgs.vscode-extensions.vadimcn) vscode-lldb;
 
         extraPackages = with pkgs; [
           tree-sitter
           gcc
+
+          # Debug
           lldb
+          vscode-lldb
 
           # language servers
           rnix-lsp
@@ -116,7 +120,10 @@
             withPython3 = true;
             withNodeJs = false;
             withRuby = false;
-            extraMakeWrapperArgs = ''--prefix PATH : "${lib.makeBinPath extraPackages}"'';
+            extraMakeWrapperArgs = builtins.concatStringsSep " " [
+              ''--prefix PATH : "${lib.makeBinPath extraPackages}"''
+              ''--set VSCODE_EXTENSION_LLDB "${vscode-lldb}/${vscode-lldb.installPrefix}"''
+            ];
             configure = {
               # import your individual vim config files here
               # you can import from files

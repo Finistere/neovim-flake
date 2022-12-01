@@ -93,6 +93,15 @@ rt.setup({
       auto_focus = true,
     },
   },
+  -- https://github.com/simrat39/rust-tools.nvim/wiki/Debugging#codelldb-a-better-debugging-experience
+  dap = {
+    adapter = (function()
+      local extension_path = vim.fn.environ()["VSCODE_EXTENSION_LLDB"]
+      local codelldb_path = extension_path .. '/adapter/codelldb'
+      local liblldb_path = extension_path .. '/lldb/lib/liblldb.so'
+      return require('rust-tools.dap').get_codelldb_adapter(codelldb_path, liblldb_path)
+    end)()
+  }
 })
 
 require('typescript').setup({

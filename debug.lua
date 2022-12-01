@@ -6,6 +6,7 @@ vim.cmd([[
   nnoremap <silent> <leader>B <cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>
 ]])
 
+-- Rust configuration done by rust-tools in lsp.lua
 local dap = require('dap')
 vim.cmd([[
     nnoremap <silent> <Leader>dl <Cmd>lua require'dap'.run_last()<CR>

@@ -71,7 +71,7 @@ cmp.setup({
     end, { "i", "s" }),
   }),
   sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
+    { name = 'nvim_lsp', priority = 100 },
     { name = 'luasnip' },
     { name = 'treesitter' }
   }, {
