@@ -11,8 +11,6 @@ vim.cmd([[
 ]])
 require('inc_rename').setup()
 
-require('nvim-lightbulb').setup({ autocmd = { enabled = true } })
-
 vim.cmd([[
   nnoremap <silent><leader>ca <cmd>CodeActionMenu<cr>
 ]])
@@ -48,12 +46,7 @@ local function on_attach(client, bufnr)
   keymap('gr', '<cmd>Telescope lsp_references<cr>', bopts)
   keymap('gc', '<cmd>Telescope lsp_incoming_calls<cr>', bopts)
   keymap('go', '<cmd>Telescope lsp_outgoing_calls<cr>', bopts)
-  keymap('K', vim.lsp.buf.hover, bopts)
-
-  require('lsp_signature').on_attach({
-    toggle_key = '<C-e>'
-  }, bufnr)
-
+  vim.keymap.set('', 'K', vim.lsp.buf.hover, bopts)
 end
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()

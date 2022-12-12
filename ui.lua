@@ -72,7 +72,8 @@ telescope.setup({
         ["<esc>"] = require('telescope.actions').close
       },
       n = { ["<C-t>"] = trouble.open_with_trouble },
-    }
+    },
+    dynamic_preview_title = true,
   },
   pickers = {
     buffers = {
@@ -93,21 +94,29 @@ vim.cmd([[
 ]])
 
 vim.api.nvim_create_user_command('Rg', function(opts)
-  local api = require("nvim-tree.api")
-  local node = api.tree.get_node_under_cursor()
   local path = vim.fn.getcwd()
-  if node and node.type == "directory" then
-    local abs_path = node.absolute_path
-    local local_path = string.sub(abs_path, string.len(path) + 1, string.len(abs_path))
-    local choice = vim.fn.input({
-      prompt = "Use " .. local_path .. " ? (y/N) ",
-      default = ""
-    })
-    if choice == "y" then
-      path = node.absolute_path
+
+  -- try retrieving current node from nvim-tree-lua
+  local view = require("nvim-tree.view")
+  if view.is_visible() then
+    local api = require("nvim-tree.api")
+    local node = api.tree.get_node_under_cursor()
+    if node and node.type == "directory" then
+      local abs_path = node.absolute_path
+      local local_path = string.sub(abs_path, string.len(path) + 1, string.len(abs_path))
+      local choice = vim.fn.input({
+        prompt = "Use " .. local_path .. " ? (y/N) ",
+        default = ""
+      })
+      if choice == "y" then
+        path = node.absolute_path
+      end
     end
   end
+
+  -- command cleanup
   vim.cmd("echo \"\"")
+
   require('telescope.builtin').live_grep({
     search_dirs = { path },
     additional_args = opts.fargs
@@ -167,12 +176,14 @@ vim.cmd([[
 
 require('lualine').setup({
   sections = {
-    lualine_c = {
+    lualine_b = {
       {
         'filename',
         path = 1,
       }
-    }
+    },
+    lualine_c = { 'diff', 'diagnostics' },
+    lualine_x = {}
   },
   extensions = { 'nvim-dap-ui', 'symbols-outline', 'nvim-tree' }
 })

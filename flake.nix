@@ -181,9 +181,9 @@
 
                   # LSP
                   nvim-lspconfig
-                  lsp_signature-nvim # show signature when writing arguments
+                  # TODO: A bit buggy for completion and not that useful, need a better alternative.
+                  # lsp_signature-nvim # show signature when writing arguments
                   nvim-code-action-menu # preview code actions
-                  nvim-lightbulb # shows lightbulb for LSP actions/errors
                   trouble-nvim # friendlier bottom window for search results
                   fidget-nvim # LSP status fidget
                   (plugin "inc-rename-nvim") # in-place rename preview
