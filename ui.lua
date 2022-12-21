@@ -161,15 +161,16 @@ require('bufferline').setup({
 vim.cmd([[
   nnoremap <silent><leader>s <cmd>BufferLinePick<cr>
   nnoremap <silent><leader>p <cmd>BufferLineTogglePin<cr>
-  nnoremap <silent><leader>1 <cmd>BufferLineGoToBuffer 1<cr>
-  nnoremap <silent><leader>2 <cmd>BufferLineGoToBuffer 2<cr>
-  nnoremap <silent><leader>3 <cmd>BufferLineGoToBuffer 3<cr>
-  nnoremap <silent><leader>4 <cmd>BufferLineGoToBuffer 4<cr>
-  nnoremap <silent><leader>5 <cmd>BufferLineGoToBuffer 5<cr>
-  nnoremap <silent><leader>6 <cmd>BufferLineGoToBuffer 6<cr>
-  nnoremap <silent><leader>7 <cmd>BufferLineGoToBuffer 7<cr>
-  nnoremap <silent><leader>8 <cmd>BufferLineGoToBuffer 8<cr>
-  nnoremap <silent><leader>9 <cmd>BufferLineGoToBuffer 9<cr>
+  nnoremap <silent><leader>1 <cmd>lua require("bufferline").go_to_buffer(1, true)<cr>
+  nnoremap <silent><leader>2 <cmd>lua require("bufferline").go_to_buffer(2, true)<cr>
+  nnoremap <silent><leader>3 <cmd>lua require("bufferline").go_to_buffer(3, true)<cr>
+  nnoremap <silent><leader>4 <cmd>lua require("bufferline").go_to_buffer(4, true)<cr>
+  nnoremap <silent><leader>5 <cmd>lua require("bufferline").go_to_buffer(5, true)<cr>
+  nnoremap <silent><leader>6 <cmd>lua require("bufferline").go_to_buffer(6, true)<cr>
+  nnoremap <silent><leader>7 <cmd>lua require("bufferline").go_to_buffer(7, true)<cr>
+  nnoremap <silent><leader>8 <cmd>lua require("bufferline").go_to_buffer(8, true)<cr>
+  nnoremap <silent><leader>9 <cmd>lua require("bufferline").go_to_buffer(9, true)<cr>
+  nnoremap <silent><leader>$ <cmd>lua require("bufferline").go_to_buffer(-1, true)<cr>
   nnoremap <silent><A-left> <cmd>BufferLineCyclePrev<cr>
   nnoremap <silent><A-right> <cmd>BufferLineCycleNext<cr>
 ]])

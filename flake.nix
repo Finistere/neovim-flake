@@ -114,6 +114,8 @@
             exePath = "/bin/nvim";
           };
 
+          # TODO: Need to add custom queries/markdown/injections
+          # bat cache update
           packages.default = wrapNeovim neovim-unwrapped {
             viAlias = true;
             vimAlias = true;
