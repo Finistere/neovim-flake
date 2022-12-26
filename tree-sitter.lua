@@ -2,17 +2,13 @@
 -- Treesitter
 --
 
--- If not specified, it uses a nix store path instead which is read-only.
-local parser_install_dir = '~/.local/share/nvim/site/parser'
 require('nvim-treesitter.configs').setup {
+  -- All grammars are installed through Nix
   ensure_installed = {},
-  -- install a language if missing. Both this and previous option should be deactivated if
-  -- languages are installed through Nix which currently doesn't work properly.
-  auto_install = true,
+  auto_install = false,
   highlight = {
     enable = true,
   },
-  parser_install_dir = parser_install_dir,
   indent = { enable = true },
   rainbow = {
     enable = true,
@@ -26,7 +22,6 @@ require('nvim-treesitter.configs').setup {
     lint_events = { "BufWrite", "CursorHold" }
   }
 }
-vim.opt.runtimepath:append(parser_install_dir)
 
 require('treesitter-context').setup {
   enable = true,

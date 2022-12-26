@@ -134,8 +134,6 @@
                 (lib.strings.fileContents ./base.vim)
                 ''
                   lua << EOF
-                  -- Tresitter may use the another compiler in the environment otherwise.
-                  require('nvim-treesitter.install').compilers = { "${gcc.out}/bin/gcc" }
                   ${lib.strings.fileContents ./tree-sitter.lua}
                   ${lib.strings.fileContents ./cmp.lua}
                   ${lib.strings.fileContents ./lsp.lua}
@@ -148,7 +146,7 @@
               packages.myVimPackage = {
                 start = with vimPlugins; [
                   # Syntax
-                  nvim-treesitter
+                  nvim-treesitter.withAllGrammars
                   nvim-ts-rainbow # matching brackets... pairs
                   nvim-treesitter-context # Show a top bar with current code context
                   playground # playground for tree-sitter queries
