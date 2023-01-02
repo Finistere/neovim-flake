@@ -41,11 +41,6 @@ set list
 set listchars=tab:→\ ,trail:~,extends:❯,precedes:❮
 set showbreak=↪
 
-" Tree-sitter based folding
-set foldmethod=expr
-set foldexpr=nvim_treesitter#foldexpr()
-set nofoldenable
-
 " True colors
 set termguicolors
 colorscheme tokyonight-moon

@@ -50,6 +50,11 @@ local function on_attach(client, bufnr)
 end
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
+-- for nvim-ufo folding.
+capabilities.textDocument.foldingRange = {
+  dynamicRegistration = false,
+  lineFoldingOnly = true
+}
 
 lspconfig.rnix.setup {
   capabilities = capabilities,
@@ -114,6 +119,12 @@ null_ls.setup({
     null_ls.builtins.code_actions.shellcheck,
     null_ls.builtins.diagnostics.shellcheck,
     null_ls.builtins.formatting.shfmt,
+    -- Spelling
+    null_ls.builtins.diagnostics.codespell.with({
+      -- Adding 'informal'. 'rare' is not perfect, but we don't auto-correct anyway
+      -- so it's not a big deal.
+      extra_args = { "--builtin=clear,rare,informal" }
+    }),
     --
     null_ls.builtins.formatting.prettier_d_slim, -- HTML/JS/Markdown/... formatting
     null_ls.builtins.formatting.taplo -- TOML

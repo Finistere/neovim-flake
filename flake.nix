@@ -39,6 +39,16 @@
       url = "github:jose-elias-alvarez/typescript.nvim";
       flake = false;
     };
+
+    nvim-ufo = {
+      url = "github:kevinhwang91/nvim-ufo";
+      flake = false;
+    };
+
+    promise-async = {
+      url = "github:kevinhwang91/promise-async";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -86,6 +96,7 @@
           deadnix # dead code
           nodePackages.prettier_d_slim # js/html/markdown/... formatting
           taplo # toml formatting
+          codespell # spelling issues
 
           # Utilities
           ripgrep
@@ -175,6 +186,8 @@
                   range-highlight-nvim # highlight ranges (:20,+4)
                   todo-comments-nvim # highlight todo comments and list them in Trouble/Telescope
                   (plugin "leap-nvim") # faster navigation within a file
+                  (plugin "nvim-ufo") # better folds
+                  (plugin "promise-async") # dependency of nvim-ufo
 
                   # Utilities
                   plenary-nvim # Utility library for lots of plugins
