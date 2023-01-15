@@ -49,6 +49,11 @@
       url = "github:kevinhwang91/promise-async";
       flake = false;
     };
+
+    # rust-tools-nvim = {
+    #   url = "github:simrat39/rust-tools.nvim";
+    #   flake = false;
+    # };
   };
 
   outputs = {
@@ -180,7 +185,7 @@
 
                   # Editor visuals
                   indent-blankline-nvim # indentation guides
-                  nvim-cursorline # underlines word & highlight curent line
+                  nvim-cursorline # underlines word & highlight current line
                   nvim-colorizer-lua # show color for #000000
                   comment-nvim # toggle comment
                   range-highlight-nvim # highlight ranges (:20,+4)
@@ -215,8 +220,8 @@
                   # Debug / Test
                   (plugin "neotest")
                   (plugin "neotest-rust")
-                  nvim-dap # debuger
-                  nvim-dap-ui # friendly debuger UI
+                  nvim-dap # debugger
+                  nvim-dap-ui # friendly debugger UI
                   nvim-dap-virtual-text # show variable values as virtual text
 
                   # Completion

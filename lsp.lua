@@ -30,23 +30,23 @@ local function format_on_save(client, bufnr)
   end
 end
 
-local function keymap(...) vim.keymap.set('n', ...) end
+local function attach_keymaps(client, bufnr)
+  local bopts = { noremap = true, silent = true, buffer = bufnr }
+
+  vim.keymap.set('n', '<leader>cr', ':IncRename ', bopts)
+  vim.keymap.set('n', '<leader>cf', function() vim.lsp.buf.format({ bufnr = bufnr }) end, bopts)
+  vim.keymap.set('n', 'gd', '<cmd>Telescope lsp_definitions<cr>', bopts)
+  vim.keymap.set('n', 'gt', '<cmd>Telescope lsp_type_definitions<cr>', bopts)
+  vim.keymap.set('n', 'gi', '<cmd>Telescope lsp_implementations<cr>', bopts)
+  vim.keymap.set('n', 'gr', '<cmd>Telescope lsp_references<cr>', bopts)
+  vim.keymap.set('n', 'gc', '<cmd>Telescope lsp_incoming_calls<cr>', bopts)
+  vim.keymap.set('n', 'go', '<cmd>Telescope lsp_outgoing_calls<cr>', bopts)
+  vim.keymap.set('', 'K', vim.lsp.buf.hover, bopts)
+end
 
 local function on_attach(client, bufnr)
   format_on_save(client, bufnr)
-
-  local bopts = { noremap = true, silent = true, buffer = bufnr }
-
-  keymap('<leader>cr', ':IncRename ', bopts)
-  keymap('<leader>cf', function() vim.lsp.buf.format({ bufnr = bufnr }) end, bopts)
-
-  keymap('gd', '<cmd>Telescope lsp_definitions<cr>', bopts)
-  keymap('gt', '<cmd>Telescope lsp_type_definitions<cr>', bopts)
-  keymap('gi', '<cmd>Telescope lsp_implementations<cr>', bopts)
-  keymap('gr', '<cmd>Telescope lsp_references<cr>', bopts)
-  keymap('gc', '<cmd>Telescope lsp_incoming_calls<cr>', bopts)
-  keymap('go', '<cmd>Telescope lsp_outgoing_calls<cr>', bopts)
-  vim.keymap.set('', 'K', vim.lsp.buf.hover, bopts)
+  attach_keymaps(client, bufnr)
 end
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
@@ -58,7 +58,11 @@ capabilities.textDocument.foldingRange = {
 
 lspconfig.rnix.setup {
   capabilities = capabilities,
-  on_attach = on_attach
+  on_attach = function(client, bufnr)
+    -- formatting done by alejandra from null-ls
+    client.server_capabilities.documentFormattingProvider = false
+    attach_keymaps(client, bufnr)
+  end
 }
 
 lspconfig.sumneko_lua.setup {
@@ -82,7 +86,7 @@ rt.setup({
     on_attach = function(client, bufnr)
       on_attach(client, bufnr)
       local bopts = { noremap = true, silent = true, buffer = bufnr }
-      keymap('<C-space>', rt.hover_actions.hover_actions, bopts)
+      vim.keymap.set('n', '<C-space>', rt.hover_actions.hover_actions, bopts)
       -- keymap('K', rt.hover_range.hover_range, bopts)
     end
   },
@@ -121,9 +125,7 @@ null_ls.setup({
     null_ls.builtins.formatting.shfmt,
     -- Spelling
     null_ls.builtins.diagnostics.codespell.with({
-      -- Adding 'informal'. 'rare' is not perfect, but we don't auto-correct anyway
-      -- so it's not a big deal.
-      extra_args = { "--builtin=clear,rare,informal" }
+      extra_args = { "--builtin=clear,informal" }
     }),
     --
     null_ls.builtins.formatting.prettier_d_slim, -- HTML/JS/Markdown/... formatting

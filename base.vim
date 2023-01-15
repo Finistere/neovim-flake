@@ -45,7 +45,6 @@ set showbreak=↪
 set termguicolors
 colorscheme tokyonight-moon
 
-
 " Search
 set ignorecase            " Search is case insensitive 
 set smartcase             " ... unless the query has capital letters
