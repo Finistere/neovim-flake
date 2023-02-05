@@ -15,6 +15,8 @@ set shiftwidth=4          " Indentation for < and > commands
 
 " Inputs
 set mouse=a               " Enable mouse in all modes
+nnoremap <C-e> 3<C-e>
+nnoremap <C-y> 3<C-y>
 set mousemoveevent
 set clipboard=unnamedplus  " Yank and paste from system clipboard
 let mapleader=" "
@@ -66,8 +68,7 @@ autocmd BufRead,BufNewFile .env lua vim.diagnostic.disable()
 " Sudo tee hack, write as root
 cmap w!! w !sudo tee > /dev/null %
 
-map <S-up> <C-w><up>
-map <S-down> <C-w><down>
-map <S-left> <C-w><left>
-map <S-right> <C-w><right>
+noremap ; :
+noremap : ;
+
 

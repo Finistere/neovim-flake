@@ -105,6 +105,7 @@ rt.setup({
     end)()
   }
 })
+require('crates').setup { null_ls = { enabled = true } }
 
 require('typescript').setup({
   server = {
@@ -129,9 +130,8 @@ null_ls.setup({
     }),
     --
     null_ls.builtins.formatting.prettier_d_slim, -- HTML/JS/Markdown/... formatting
-    null_ls.builtins.formatting.taplo -- TOML
+    null_ls.builtins.formatting.taplo, -- TOML
+    null_ls.builtins.diagnostics.clang_check,
   },
   on_attach = on_attach
 })
-
-require('crates').setup { null_ls = { enabled = true } }

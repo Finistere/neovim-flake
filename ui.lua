@@ -91,6 +91,7 @@ vim.cmd([[
   nnoremap <silent><leader>fh <cmd>Telescope help_tags<cr>
   nnoremap <silent><leader>fs <cmd>Telescope git_status<cr>
   nnoremap <silent><leader>fc <cmd>Telescope grep_string<cr>
+  nnoremap <silent><leader>fl <cmd>Telescope lsp_dynamic_workspace_symbols<cr>
 ]])
 
 vim.api.nvim_create_user_command('Rg', function(opts)
@@ -204,13 +205,13 @@ vim.cmd([[
 ]])
 
 vim.cmd([[
-  let g:floaterm_width  = 0.7
-  let g:floaterm_height = 0.7
+  let g:floaterm_width  = 0.8
+  let g:floaterm_height = 0.8
   let g:floaterm_opener = 'edit'
   " let g:floaterm_keymap_new    = '<C-s>'
   " let g:floaterm_keymap_prev   = '<C-p>'
   " let g:floaterm_keymap_next   = '<C-n>'
-  let g:floaterm_keymap_toggle = '<F1>'
+  let g:floaterm_keymap_toggle = '<F4>'
   " let g:floaterm_keymap_kill   = '<C-k>'
   " rnvimr is slight faster as it keeps ranger process in the background
   " nnoremap <silent><leader>r <cmd>FloatermNew ranger<cr>
