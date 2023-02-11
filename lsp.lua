@@ -34,7 +34,14 @@ local function attach_keymaps(client, bufnr)
   local bopts = { noremap = true, silent = true, buffer = bufnr }
 
   vim.keymap.set('n', '<leader>cr', ':IncRename ', bopts)
-  vim.keymap.set('n', '<leader>cf', function() vim.lsp.buf.format({ bufnr = bufnr }) end, bopts)
+  -- Format file
+  -- vim.keymap.set('n', '<leader>cf', function() vim.lsp.buf.format({ bufnr = bufnr }) end, bopts)
+  vim.keymap.set(
+    'n',
+    '<leader>cf',
+    function() vim.lsp.buf.code_action({ apply = true, context = { only = { "quickfix" } } }) end,
+    bopts
+  )
   vim.keymap.set('n', 'gd', '<cmd>Telescope lsp_definitions<cr>', bopts)
   vim.keymap.set('n', 'gt', '<cmd>Telescope lsp_type_definitions<cr>', bopts)
   vim.keymap.set('n', 'gi', '<cmd>Telescope lsp_implementations<cr>', bopts)

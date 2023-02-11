@@ -50,6 +50,11 @@
       flake = false;
     };
 
+    mini-move = {
+      url = "github:echasnovski/mini.move";
+      flake = false;
+    };
+
     # rust-tools-nvim = {
     #   url = "github:simrat39/rust-tools.nvim";
     #   flake = false;
@@ -111,7 +116,7 @@
           (ranger.overridePythonAttrs (old: {
             version = "1.9.4-master";
             src = inputs.ranger;
-            checkInputs = with python3Packages; old.checkInputs ++ [astroid pylint];
+            nativeCheckInputs = with python3Packages; old.nativeCheckInputs ++ [astroid pylint];
           }))
         ];
 
@@ -178,6 +183,7 @@
                   lualine-nvim # bottom status line
                   vim-floaterm # floating terminal window
                   rnvimr # ranger integration, it's a bit faster to show up than vim-floaterm integration
+                  (plugin "mini-move") # Moving selection with Atl+hjkl
 
                   # Nvim behavior
                   which-key-nvim
