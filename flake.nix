@@ -80,15 +80,15 @@
           # enable all packages
           config = {allowUnfree = true;};
         };
-        inherit (pkgs.vscode-extensions.vadimcn) vscode-lldb;
+        # inherit (pkgs.vscode-extensions.vadimcn) vscode-lldb;
 
         extraPackages = with pkgs; [
           tree-sitter
           gcc
 
           # Debug
-          lldb
-          vscode-lldb
+          # lldb
+          # vscode-lldb
 
           # language servers
           rnix-lsp
@@ -145,7 +145,6 @@
             withRuby = false;
             extraMakeWrapperArgs = builtins.concatStringsSep " " [
               ''--prefix PATH : "${lib.makeBinPath extraPackages}"''
-              ''--set VSCODE_EXTENSION_LLDB "${vscode-lldb}/${vscode-lldb.installPrefix}"''
             ];
             configure = {
               # import your individual vim config files here
@@ -160,7 +159,6 @@
                   ${lib.strings.fileContents ./lsp.lua}
                   ${lib.strings.fileContents ./ui.lua}
                   ${lib.strings.fileContents ./editor.lua}
-                  ${lib.strings.fileContents ./debug.lua}
                   EOF
                 ''
               ];
@@ -226,9 +224,6 @@
                   # Debug / Test
                   (plugin "neotest")
                   (plugin "neotest-rust")
-                  nvim-dap # debugger
-                  nvim-dap-ui # friendly debugger UI
-                  nvim-dap-virtual-text # show variable values as virtual text
 
                   # Completion
                   nvim-cmp

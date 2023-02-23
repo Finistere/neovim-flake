@@ -61,7 +61,7 @@ set undodir=~/.vim/undo
 "
 
 " 2 space width
-autocmd filetype nix,lua,typescript,graphql,javascript,json setlocal tabstop=2 shiftwidth=2 softtabstop=2
+autocmd filetype nix,lua,typescript,graphql,javascript,json,fish setlocal tabstop=2 shiftwidth=2 softtabstop=2
 " Disable LSP diagnostic for .env files
 autocmd BufRead,BufNewFile .env lua vim.diagnostic.disable()
 
