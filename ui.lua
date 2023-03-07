@@ -7,35 +7,50 @@ require('nvim-web-devicons').setup()
 require('mini.move').setup()
 
 require('nvim-tree').setup({
-    diagnostics = {
-        enable = true,
-        show_on_dirs = true,
-    },
-    on_attach = function(bufnr)
-      local inject_node = require("nvim-tree.utils").inject_node
-      local telescope = require('telescope.builtin')
-      vim.keymap.set("n", "<leader>fg", inject_node(function(node)
+  diagnostics = {
+    enable = true,
+    show_on_dirs = true,
+  },
+  on_attach = function(bufnr)
+    local api = require('nvim-tree.api')
+    local telescope = require('telescope.builtin')
+
+    local function opts(desc)
+      return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+    end
+
+    api.config.mappings.default_on_attach(bufnr)
+
+    vim.keymap.set(
+      "n",
+      "<leader>fg",
+      function()
+        local node = api.tree.get_node_under_cursor()
         if node and node.type == "directory" then
           telescope.live_grep({
-              search_dirs = { node.absolute_path }
+            search_dirs = { node.absolute_path }
           })
+        else
+          telescope.live_grep()
         end
-      end), { buffer = bufnr, noremap = true })
-    end,
-    view = {
-        hide_root_folder = true,
+      end,
+      opts('Telescope live grep')
+    )
+  end,
+  view = {
+    hide_root_folder = true,
+  },
+  renderer = {
+    highlight_git = true,
+    icons = {
+      show = {
+        git = false,
+      },
     },
-    renderer = {
-        highlight_git = true,
-        icons = {
-            show = {
-                git = false,
-            },
-        },
-    },
-    filters = {
-        custom = { "^\\.git$" }
-    }
+  },
+  filters = {
+    custom = { "^\\.git$" }
+  }
 })
 vim.cmd([[
   noremap <silent><C-n> <cmd>NvimTreeToggle<cr>
@@ -43,12 +58,12 @@ vim.cmd([[
 ]])
 
 require('trouble').setup({
-    padding = false,
-    auto_jump = { 'lsp_definitions', 'lsp_type_definitions' },
-    action_keys = {
-        jump_close = { '<cr>' },
-        jump = { "o", "<tab>" }
-    }
+  padding = false,
+  auto_jump = { 'lsp_definitions', 'lsp_type_definitions' },
+  action_keys = {
+    jump_close = { '<cr>' },
+    jump = { "o", "<tab>" }
+  }
 })
 vim.cmd([[
   nnoremap <silent><leader>xx <cmd>TroubleToggle<cr>
@@ -62,24 +77,24 @@ vim.cmd([[
 local telescope = require('telescope')
 local trouble = require('trouble.providers.telescope')
 telescope.setup({
-    defaults = {
-        -- path_display = { 'smart' },
-        mappings = {
-            i = {
-                ["<C-t>"] = trouble.open_with_trouble,
-                ["<esc>"] = require('telescope.actions').close
-            },
-            n = { ["<C-t>"] = trouble.open_with_trouble },
-        },
-        dynamic_preview_title = true,
+  defaults = {
+    -- path_display = { 'smart' },
+    mappings = {
+      i = {
+            ["<C-t>"] = trouble.open_with_trouble,
+            ["<esc>"] = require('telescope.actions').close
+      },
+      n = { ["<C-t>"] = trouble.open_with_trouble },
     },
-    pickers = {
-        buffers = {
-            theme = "dropdown",
-            sort_mru = true,
-            ignore_current_buffer = true
-        },
-    }
+    dynamic_preview_title = true,
+  },
+  pickers = {
+    buffers = {
+      theme = "dropdown",
+      sort_mru = true,
+      ignore_current_buffer = true
+    },
+  }
 })
 telescope.load_extension('fzf')
 vim.cmd([[
@@ -104,9 +119,9 @@ vim.api.nvim_create_user_command('Rg', function(opts)
       local abs_path = node.absolute_path
       local local_path = string.sub(abs_path, string.len(path) + 1, string.len(abs_path))
       local choice = vim.fn.input({
-              prompt = "Use " .. local_path .. " ? (y/N) ",
-              default = ""
-          })
+        prompt = "Use " .. local_path .. " ? (y/N) ",
+        default = ""
+      })
       if choice == "y" then
         path = node.absolute_path
       end
@@ -117,8 +132,8 @@ vim.api.nvim_create_user_command('Rg', function(opts)
   vim.cmd("echo \"\"")
 
   require('telescope.builtin').live_grep({
-      search_dirs = { path },
-      additional_args = opts.fargs
+    search_dirs = { path },
+    additional_args = opts.fargs
   })
 end, { nargs = '*' })
 
@@ -131,31 +146,31 @@ vim.cmd([[
 ]])
 require('scope').setup()
 require('bufferline').setup({
-    options = {
-        show_close_icon = false,
-        show_buffer_close_icons = false,
-        separator_style = 'thin',
-        -- diagnostics = 'nvim_lsp',
-        -- diagnostics_indicator = function(count, level, diagnostics_dict, context)
-        --   if context.buffer:current() then
-        --     return ''
-        --   end
-        --   local icon = level:match("error") and " " or ""
-        --   return " " .. icon .. count
-        -- end,
-        name_formatter = function(buf)
-          capture = string.match(buf.path, 'cargo/registry/.*/(.*)-%d+%.%d+%.%d+/src')
-          if capture then
-            return buf.name .. ' @ ' .. capture
-          end
-          return buf.name
-        end,
-        sort_by = function(buffer_a, buffer_b)
-          local a = tonumber(vim.fn.getbufvar(buffer_a.id, 'changedtime')) or 0
-          local b = tonumber(vim.fn.getbufvar(buffer_b.id, 'changedtime')) or 0
-          return a > b
-        end
-    }
+  options = {
+    show_close_icon = false,
+    show_buffer_close_icons = false,
+    separator_style = 'thin',
+    -- diagnostics = 'nvim_lsp',
+    -- diagnostics_indicator = function(count, level, diagnostics_dict, context)
+    --   if context.buffer:current() then
+    --     return ''
+    --   end
+    --   local icon = level:match("error") and " " or ""
+    --   return " " .. icon .. count
+    -- end,
+    name_formatter = function(buf)
+      capture = string.match(buf.path, 'cargo/registry/.*/(.*)-%d+%.%d+%.%d+/src')
+      if capture then
+        return buf.name .. ' @ ' .. capture
+      end
+      return buf.name
+    end,
+    sort_by = function(buffer_a, buffer_b)
+      local a = tonumber(vim.fn.getbufvar(buffer_a.id, 'changedtime')) or 0
+      local b = tonumber(vim.fn.getbufvar(buffer_b.id, 'changedtime')) or 0
+      return a > b
+    end
+  }
 })
 vim.cmd([[
   nnoremap <silent><leader>s <cmd>BufferLinePick<cr>
@@ -175,32 +190,34 @@ vim.cmd([[
 ]])
 
 require('lualine').setup({
-    sections = {
-        lualine_b = {
-            {
-                'filename',
-                path = 1,
-            }
-        },
-        lualine_c = { 'diff', 'diagnostics' },
-        lualine_x = {}
+  sections = {
+    lualine_b = {
+      {
+        'filename',
+        path = 1,
+      }
     },
-    extensions = { 'nvim-dap-ui', 'symbols-outline', 'nvim-tree' }
+    lualine_c = { 'diff', 'diagnostics' },
+    lualine_x = {}
+  },
+  extensions = { 'nvim-dap-ui', 'symbols-outline', 'nvim-tree' }
 })
+
+require('marks').setup {}
 
 require("auto-session").setup {}
 
--- ranger
-vim.cmd([[
-  " Hide ranger after picking a file
-  let g:rnvimr_enable_picker = 1
-  " Hide the files included in gitignore
-  let g:rnvimr_hide_gitignore = 1
-  " wipe buffers associated with deleted files
-  let g:rnvimr_enable_bw = 1
-  nnoremap <silent><C-.> <cmd>RnvimrToggle<cr>
-  tnoremap <silent><C-.> <cmd>RnvimrToggle<CR>
-]])
+-- -- ranger
+-- vim.cmd([[
+--   " Hide ranger after picking a file
+--   let g:rnvimr_enable_picker = 1
+--   " Hide the files included in gitignore
+--   let g:rnvimr_hide_gitignore = 1
+--   " wipe buffers associated with deleted files
+--   let g:rnvimr_enable_bw = 1
+--   nnoremap <silent><C-.> <cmd>RnvimrToggle<cr>
+--   tnoremap <silent><C-.> <cmd>RnvimrToggle<CR>
+-- ]])
 
 vim.cmd([[
   let g:floaterm_width  = 0.8
@@ -212,11 +229,12 @@ vim.cmd([[
   let g:floaterm_keymap_toggle = '<F4>'
   " let g:floaterm_keymap_kill   = '<C-k>'
   " rnvimr is slight faster as it keeps ranger process in the background
-  " nnoremap <silent><leader>r <cmd>FloatermNew ranger<cr>
+  nnoremap <silent><C-.> <cmd>FloatermNew ranger<cr>
+  tnoremap <silent><C-.> <cmd>FloatermNew ranger<CR>
 ]])
 
 require('neotest').setup({
-    adapters = {
-        require("neotest-rust")
-    }
+  adapters = {
+    require("neotest-rust")
+  }
 })

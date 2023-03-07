@@ -55,6 +55,11 @@
       flake = false;
     };
 
+    nvim-ts-rainbow = {
+      url = "github:HiPhish/nvim-ts-rainbow2";
+      flake = false;
+    };
+
     # rust-tools-nvim = {
     #   url = "github:simrat39/rust-tools.nvim";
     #   flake = false;
@@ -166,7 +171,8 @@
                 start = with vimPlugins; [
                   # Syntax
                   nvim-treesitter.withAllGrammars
-                  nvim-ts-rainbow # matching brackets... pairs
+                  # Using the maintained fork
+                  (plugin "nvim-ts-rainbow") # matching brackets... pairs
                   nvim-treesitter-context # Show a top bar with current code context
                   playground # playground for tree-sitter queries
 
@@ -182,6 +188,7 @@
                   vim-floaterm # floating terminal window
                   rnvimr # ranger integration, it's a bit faster to show up than vim-floaterm integration
                   (plugin "mini-move") # Moving selection with Atl+hjkl
+                  marks-nvim
 
                   # Nvim behavior
                   which-key-nvim

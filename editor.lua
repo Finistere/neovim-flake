@@ -26,10 +26,28 @@ require('todo-comments').setup()
 
 -- nvim-ufo. Capabilities were also added to the LSP server.
 vim.o.foldcolumn = '0' -- Whether to show folder column
-vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
 vim.o.foldlevelstart = 99
 vim.o.foldenable = true
 vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
 vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
 
 require('ufo').setup()
+
+
+-- disable highlight after search
+-- https://this-week-in-neovim.org/2023/Jan/9#tips
+local ns = vim.api.nvim_create_namespace('toggle_hlsearch')
+
+local function toggle_hlsearch(char)
+  if vim.fn.mode() == 'n' then
+    local keys = { '<CR>', 'n', 'N', '*', '#', '?', '/' }
+    local new_hlsearch = vim.tbl_contains(keys, vim.fn.keytrans(char))
+
+    if vim.opt.hlsearch:get() ~= new_hlsearch then
+      vim.opt.hlsearch = new_hlsearch
+    end
+  end
+end
+
+vim.on_key(toggle_hlsearch, ns)

@@ -3,11 +3,11 @@
     "cmp-git": {
       "flake": false,
       "locked": {
-        "lastModified": 1676383000,
-        "narHash": "sha256-r8WLeWO3CB1xB7KVI/Z4O0JTjBsmWUwqYk7iCfgWw1I=",
+        "lastModified": 1677538148,
+        "narHash": "sha256-pO6suqMdjKOoJtr3wiUYszheSUa5OFdYFlHY8ClSxR4=",
         "owner": "petertriho",
         "repo": "cmp-git",
-        "rev": "191ec4788656c3d1ad59c9edc3d96e132f93e039",
+        "rev": "a798a25b21e7204597f56029af2e8a17d65e2518",
         "type": "github"
       },
       "original": {
@@ -50,11 +50,11 @@
     "leap-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1676565101,
-        "narHash": "sha256-REKznVWUbAYgoVehh2EmouLsgDjiSu3XEuWwoLzzKlc=",
+        "lastModified": 1677860145,
+        "narHash": "sha256-ASHSTDQI+UrsuLOaNtIdeDb1OuDk0djtR9lfOJX8ePo=",
         "owner": "ggandor",
         "repo": "leap.nvim",
-        "rev": "9a69febb2e5a4f5f5a55dd2d7173098fde917bc5",
+        "rev": "d34680b16af977928228e57c68e5a162f1649e3c",
         "type": "github"
       },
       "original": {
@@ -66,11 +66,11 @@
     "mini-move": {
       "flake": false,
       "locked": {
-        "lastModified": 1676369454,
-        "narHash": "sha256-bmJ7uM78Yk+46vV7FOeRtZUZ2nYvrITJb5nR5Svl9lk=",
+        "lastModified": 1677327680,
+        "narHash": "sha256-CtAubMOeaWus+0fr7ipWILz5UURlcGEqpT+ygE4a78s=",
         "owner": "echasnovski",
         "repo": "mini.move",
-        "rev": "a0c5930e33e55467b0a9f3bca93d8f6fdbfac2e4",
+        "rev": "a38aa45c35d499ea303aeaba0ce3a1c492cfed3e",
         "type": "github"
       },
       "original": {
@@ -82,11 +82,11 @@
     "neotest": {
       "flake": false,
       "locked": {
-        "lastModified": 1676972888,
-        "narHash": "sha256-RA6py92AVGzuWGLjp2Zn6U6xxx1tdqOYO2yn67PH3sQ=",
+        "lastModified": 1677144054,
+        "narHash": "sha256-NV264R4IfLxgkStuIwmp7w7cRnICPpcmaLIEJPzzNdY=",
         "owner": "nvim-neotest",
         "repo": "neotest",
-        "rev": "b06b0ccbddc61acfe781689da969d2e0117b3dfe",
+        "rev": "95f95e346090ad96c657f021ad4d47f93c915598",
         "type": "github"
       },
       "original": {
@@ -113,11 +113,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1676928847,
-        "narHash": "sha256-FIqk+DHRICsWozlOdRxOXO/g9hCqjPYpmr8wQGrpUCA=",
+        "lastModified": 1678116888,
+        "narHash": "sha256-/Y4RTkPq+RVJjkoM/mYyCREFLZhvtISc/rLcgM1vLvo=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "5ab8b5ae26e6a4b781bdebdfd131c054f0b96e70",
+        "rev": "49596eb4e50b18337aad3b73317371bcd4e3b047",
         "type": "github"
       },
       "original": {
@@ -127,14 +127,30 @@
         "type": "github"
       }
     },
+    "nvim-ts-rainbow": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1678215258,
+        "narHash": "sha256-xLe7Ey3OA503YR4l0EYAcsgo6o7bWxWF/mVrJECqHuo=",
+        "owner": "HiPhish",
+        "repo": "nvim-ts-rainbow2",
+        "rev": "6bcb1472c321a15eef5a7a015b4fefa8758e6513",
+        "type": "github"
+      },
+      "original": {
+        "owner": "HiPhish",
+        "repo": "nvim-ts-rainbow2",
+        "type": "github"
+      }
+    },
     "nvim-ufo": {
       "flake": false,
       "locked": {
-        "lastModified": 1675403669,
-        "narHash": "sha256-24vA7J6uStq74wAEUKIw6HlEzAs67w15KXUIRqvgo7s=",
+        "lastModified": 1677830431,
+        "narHash": "sha256-3tEC6JWqs32VrINH6YYrQzD6yDtiyTiMVPxWLSfOirs=",
         "owner": "kevinhwang91",
         "repo": "nvim-ufo",
-        "rev": "b70c9ef0f8e2673a11387a39185ff249e00df19f",
+        "rev": "9e829d5cfa3de6a2ff561d86399772b0339ae49d",
         "type": "github"
       },
       "original": {
@@ -162,11 +178,11 @@
     "ranger": {
       "flake": false,
       "locked": {
-        "lastModified": 1669290491,
-        "narHash": "sha256-Mxy5QT/5WqpCuhyCYqIdd1iqp9ItDaHaiCAhFAM1FSI=",
+        "lastModified": 1678112362,
+        "narHash": "sha256-NMAqrqQ0P9Xp0wfx2jSf4+BGIZCSKBR/kpKUmiJ+Isc=",
         "owner": "ranger",
         "repo": "ranger",
-        "rev": "f8b304f74be20c56f8596e6ea312c7c041d0def4",
+        "rev": "66ea4050f5b8e4c6a5a42f4a4a17dec7fb8950c2",
         "type": "github"
       },
       "original": {
@@ -185,6 +201,7 @@
         "neotest": "neotest",
         "neotest-rust": "neotest-rust",
         "nixpkgs": "nixpkgs",
+        "nvim-ts-rainbow": "nvim-ts-rainbow",
         "nvim-ufo": "nvim-ufo",
         "promise-async": "promise-async",
         "ranger": "ranger",
