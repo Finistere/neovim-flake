@@ -172,7 +172,7 @@
                   # Syntax
                   nvim-treesitter.withAllGrammars
                   # Using the maintained fork
-                  (plugin "nvim-ts-rainbow") # matching brackets... pairs
+                  nvim-ts-rainbow # matching brackets... pairs
                   nvim-treesitter-context # Show a top bar with current code context
                   playground # playground for tree-sitter queries
 
