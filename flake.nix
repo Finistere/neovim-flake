@@ -97,7 +97,7 @@
 
           # language servers
           rnix-lsp
-          rust-analyzer
+          rust-analyzer-unwrapped
           terraform-ls
           nodePackages.pyright
           nodePackages."typescript-language-server"
