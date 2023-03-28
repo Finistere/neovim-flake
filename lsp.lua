@@ -72,14 +72,28 @@ lspconfig.rnix.setup {
   end
 }
 
+-- https://github.com/LuaLS/lua-language-server/issues/783
+local runtime_path = vim.split(package.path, ';')
+table.insert(runtime_path, 'lua/?.lua')
+table.insert(runtime_path, 'lua/?/init.lua')
 lspconfig.lua_ls.setup {
   capabilities = capabilities,
   settings = {
     Lua = {
-      diagnostics = { globals = { 'vim' }, },
-      runtime = { version = "LuaJIT", },
+      runtime = {
+        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+        version = 'LuaJIT',
+        -- Setup your lua path
+        path = runtime_path,
+      },
+      diagnostics = {
+        -- Get the language server to recognize the `vim` global
+        globals = { 'vim' },
+      },
       workspace = {
+        -- Make the server aware of Neovim runtime files
         library = vim.api.nvim_get_runtime_file('', true),
+        checkThirdParty = false,
       },
     }
   },
@@ -129,7 +143,7 @@ null_ls.setup({
     }),
     --
     null_ls.builtins.formatting.prettier_d_slim, -- HTML/JS/Markdown/... formatting
-    null_ls.builtins.formatting.taplo, -- TOML
+    null_ls.builtins.formatting.taplo,           -- TOML
     null_ls.builtins.diagnostics.clang_check,
   },
   on_attach = on_attach
