@@ -50,6 +50,15 @@ require('nvim-tree').setup({
   },
   filters = {
     custom = { "^\\.git$" }
+  },
+  filesystem_watchers = {
+    enable = true,
+    debounce_delay = 50,
+    -- FIXME: shouldn't be necessary
+    -- maybe? https://github.com/nvim-tree/nvim-tree.lua/issues/1931
+    ignore_dirs = {
+      ".*/target/debug/.*"
+    },
   }
 })
 vim.cmd([[

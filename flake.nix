@@ -102,6 +102,7 @@
           nodePackages.pyright
           nodePackages."typescript-language-server"
           sumneko-lua-language-server
+          nodePackages.vscode-json-languageserver
 
           # null-ls
           alejandra # nix formatting
@@ -188,7 +189,8 @@
                   vim-floaterm # floating terminal window
                   rnvimr # ranger integration, it's a bit faster to show up than vim-floaterm integration
                   (plugin "mini-move") # Moving selection with Atl+hjkl
-                  marks-nvim
+                  marks-nvim # show marks with gutter icons
+                  nvim-notify # notification, optional deps of nlsp-settings-nvim, trying it out
 
                   # Nvim behavior
                   which-key-nvim
@@ -210,6 +212,7 @@
 
                   # LSP
                   nvim-lspconfig
+                  nlsp-settings-nvim # project-specific configuration of LSP servers
                   # TODO: A bit buggy for completion and not that useful, need a better alternative.
                   # lsp_signature-nvim # show signature when writing arguments
                   nvim-code-action-menu # preview code actions

@@ -30,6 +30,15 @@ local function format_on_save(client, bufnr)
   end
 end
 
+local nlspsettings = require("nlspsettings")
+nlspsettings.setup({
+  config_home = vim.fn.stdpath('config') .. '/nlsp-settings',
+  local_settings_dir = ".nlsp-settings",
+  local_settings_root_markers_fallback = { '.git' },
+  append_default_schemas = true,
+  loader = 'json'
+})
+
 local function attach_keymaps(client, bufnr)
   local bopts = { noremap = true, silent = true, buffer = bufnr }
 
@@ -54,6 +63,7 @@ end
 local function on_attach(client, bufnr)
   format_on_save(client, bufnr)
   attach_keymaps(client, bufnr)
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 end
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
@@ -61,6 +71,16 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 capabilities.textDocument.foldingRange = {
   dynamicRegistration = false,
   lineFoldingOnly = true
+}
+-- not sure if necesasry at global level. for jsonls/nlsp-settings
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+lspconfig.jsonls.setup {
+  capabilities = capabilities,
+  on_attach = function(client, bufnr)
+    -- formatting done by alejandra from null-ls
+    client.server_capabilities.textDocument.completion.completionItem.snippetSupport = true;
+    on_attach(client, bufnr)
+  end
 }
 
 lspconfig.rnix.setup {
@@ -109,7 +129,12 @@ rt.setup({
       local bopts = { noremap = true, silent = true, buffer = bufnr }
       vim.keymap.set('n', '<C-space>', rt.hover_actions.hover_actions, bopts)
       -- keymap('K', rt.hover_range.hover_range, bopts)
-    end
+    end,
+    settings = {
+      cargo = {
+        target = "wasm32-unknown-unknown"
+      }
+    }
   },
   tools = {
     hover_actions = {
