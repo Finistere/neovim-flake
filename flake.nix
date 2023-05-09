@@ -175,7 +175,6 @@
                   # Using the maintained fork
                   nvim-ts-rainbow # matching brackets... pairs
                   nvim-treesitter-context # Show a top bar with current code context
-                  playground # playground for tree-sitter queries
 
                   # UI
                   telescope-nvim # find/search popup

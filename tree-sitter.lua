@@ -15,7 +15,6 @@ require('nvim-treesitter.configs').setup {
     extended_mode = true,
     max_file_lines = 2000,
   },
-  playground = { enable = true },
   query_linter = {
     enable = true,
     use_virtual_text = true,
