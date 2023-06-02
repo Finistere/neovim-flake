@@ -161,7 +161,9 @@ null_ls.setup({
     -- Shell
     null_ls.builtins.code_actions.shellcheck,
     null_ls.builtins.diagnostics.shellcheck,
-    null_ls.builtins.formatting.shfmt,
+    null_ls.builtins.formatting.shfmt.with({
+      extra_args = { "--indent=4" }
+    }),
     -- Spelling
     null_ls.builtins.diagnostics.codespell.with({
       extra_args = { "--builtin=clear,informal" }

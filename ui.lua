@@ -37,10 +37,8 @@ require('nvim-tree').setup({
       opts('Telescope live grep')
     )
   end,
-  view = {
-    hide_root_folder = true,
-  },
   renderer = {
+    root_folder_label = false,
     highlight_git = true,
     icons = {
       show = {
