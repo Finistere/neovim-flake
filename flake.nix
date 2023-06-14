@@ -102,7 +102,6 @@
           nodePackages.pyright
           nodePackages."typescript-language-server"
           sumneko-lua-language-server
-          nodePackages.vscode-json-languageserver
 
           # null-ls
           alejandra # nix formatting
@@ -211,7 +210,6 @@
 
                   # LSP
                   nvim-lspconfig
-                  nlsp-settings-nvim # project-specific configuration of LSP servers
                   # TODO: A bit buggy for completion and not that useful, need a better alternative.
                   # lsp_signature-nvim # show signature when writing arguments
                   nvim-code-action-menu # preview code actions
