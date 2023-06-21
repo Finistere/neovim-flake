@@ -63,16 +63,6 @@ capabilities.textDocument.foldingRange = {
   dynamicRegistration = false,
   lineFoldingOnly = true
 }
--- not sure if necesasry at global level. for jsonls/nlsp-settings
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-lspconfig.jsonls.setup {
-  capabilities = capabilities,
-  on_attach = function(client, bufnr)
-    -- formatting done by alejandra from null-ls
-    client.server_capabilities.textDocument.completion.completionItem.snippetSupport = true;
-    on_attach(client, bufnr)
-  end
-}
 
 lspconfig.rnix.setup {
   capabilities = capabilities,
