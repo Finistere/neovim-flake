@@ -64,6 +64,8 @@ set undodir=~/.vim/undo
 autocmd filetype nix,lua,typescript,graphql,javascript,json,fish setlocal tabstop=2 shiftwidth=2 softtabstop=2
 " Disable LSP diagnostic for .env files
 autocmd BufRead,BufNewFile .env lua vim.diagnostic.disable()
+" Define Tinybird data files as SQL
+au BufRead,BufNewFile *.pipe,*.datasource setfiletype sql
 
 " Sudo tee hack, write as root
 cmap w!! w !sudo tee > /dev/null %

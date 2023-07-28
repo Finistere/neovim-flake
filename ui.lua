@@ -123,7 +123,7 @@ vim.cmd([[
   nnoremap <silent><leader>fb <cmd>Telescope buffers<cr>
   nnoremap <silent><leader>fh <cmd>Telescope help_tags<cr>
   nnoremap <silent><leader>fs <cmd>Telescope git_status<cr>
-  nnoremap <silent><leader>fc <cmd>Telescope grep_string<cr>
+  nnoremap <silent><leader>fw <cmd>Telescope grep_string<cr>
   nnoremap <silent><leader>fl <cmd>Telescope lsp_dynamic_workspace_symbols<cr>
 ]])
 
@@ -193,7 +193,7 @@ require('bufferline').setup({
   }
 })
 vim.cmd([[
-  nnoremap <silent><leader>s <cmd>BufferLinePick<cr>
+  nnoremap <silent><leader>b <cmd>BufferLinePick<cr>
   nnoremap <silent><leader>p <cmd>BufferLineTogglePin<cr>
   nnoremap <silent><leader>1 <cmd>lua require("bufferline").go_to_buffer(1, true)<cr>
   nnoremap <silent><leader>2 <cmd>lua require("bufferline").go_to_buffer(2, true)<cr>
@@ -253,8 +253,22 @@ vim.cmd([[
   tnoremap <silent><C-.> <cmd>FloatermNew ranger<CR>
 ]])
 
-require('neotest').setup({
-  adapters = {
-    require("neotest-rust")
+require('spectre').setup({
+  highlight = {
+    ui = "Keyword",
+    search = "diffChanged",
+    replace = "diffAdded"
   }
+})
+vim.keymap.set('n', '<leader>S', '<cmd>lua require("spectre").toggle()<CR>', {
+  desc = "Toggle Spectre"
+})
+vim.keymap.set('n', '<leader>sw', '<cmd>lua require("spectre").open_visual({select_word=true})<CR>', {
+  desc = "Search current word"
+})
+vim.keymap.set('v', '<leader>sw', '<esc><cmd>lua require("spectre").open_visual()<CR>', {
+  desc = "Search current word"
+})
+vim.keymap.set('n', '<leader>sp', '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>', {
+  desc = "Search on current file"
 })

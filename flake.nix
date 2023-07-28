@@ -4,66 +4,14 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-
-    cmp-git = {
-      url = "github:petertriho/cmp-git";
-      flake = false;
-    };
-
-    leap-nvim = {
-      url = "github:ggandor/leap.nvim";
-      flake = false;
-    };
-
-    inc-rename-nvim = {
-      url = "github:smjonas/inc-rename.nvim";
-      flake = false;
-    };
-
-    neotest = {
-      url = "github:nvim-neotest/neotest";
-      flake = false;
-    };
-
-    neotest-rust = {
-      url = "github:rouge8/neotest-rust";
-      flake = false;
-    };
-
     ranger = {
       url = "github:ranger/ranger";
       flake = false;
     };
-
-    typescript-nvim = {
-      url = "github:jose-elias-alvarez/typescript.nvim";
-      flake = false;
-    };
-
-    nvim-ufo = {
-      url = "github:kevinhwang91/nvim-ufo";
-      flake = false;
-    };
-
-    promise-async = {
-      url = "github:kevinhwang91/promise-async";
-      flake = false;
-    };
-
     mini-move = {
       url = "github:echasnovski/mini.move";
       flake = false;
     };
-
-    nvim-ts-rainbow = {
-      url = "github:HiPhish/nvim-ts-rainbow2";
-      flake = false;
-    };
-
-    # rust-tools-nvim = {
-    #   url = "github:simrat39/rust-tools.nvim";
-    #   flake = false;
-    # };
   };
 
   outputs = {
@@ -188,7 +136,7 @@
                   rnvimr # ranger integration, it's a bit faster to show up than vim-floaterm integration
                   (plugin "mini-move") # Moving selection with Atl+hjkl
                   marks-nvim # show marks with gutter icons
-                  nvim-notify # notification, optional deps of nlsp-settings-nvim, trying it out
+                  nvim-spectre # search and replace
 
                   # Nvim behavior
                   which-key-nvim
@@ -201,9 +149,8 @@
                   comment-nvim # toggle comment
                   range-highlight-nvim # highlight ranges (:20,+4)
                   todo-comments-nvim # highlight todo comments and list them in Trouble/Telescope
-                  (plugin "leap-nvim") # faster navigation within a file
-                  (plugin "nvim-ufo") # better folds
-                  (plugin "promise-async") # dependency of nvim-ufo
+                  leap-nvim # faster navigation within a file
+                  nvim-ufo # better folds
 
                   # Utilities
                   plenary-nvim # Utility library for lots of plugins
@@ -215,7 +162,7 @@
                   nvim-code-action-menu # preview code actions
                   trouble-nvim # friendlier bottom window for search results
                   fidget-nvim # LSP status fidget
-                  (plugin "inc-rename-nvim") # in-place rename preview
+                  inc-rename-nvim # in-place rename preview
                   symbols-outline-nvim # lists function,class,... in separate window
 
                   # Null-ls
@@ -226,11 +173,7 @@
                   rust-tools-nvim # advanced rust-analyzer integration
 
                   # Typescript
-                  (plugin "typescript-nvim") # advanced typescript integration
-
-                  # Debug / Test
-                  (plugin "neotest")
-                  (plugin "neotest-rust")
+                  typescript-nvim # advanced typescript integration
 
                   # Completion
                   nvim-cmp
@@ -239,7 +182,7 @@
                   cmp-path
                   cmp-cmdline
                   cmp-treesitter
-                  (plugin "cmp-git")
+                  cmp-git
                   luasnip
                   cmp_luasnip
                   nvim-autopairs
