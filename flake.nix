@@ -122,6 +122,7 @@
                   # Using the maintained fork
                   nvim-ts-rainbow # matching brackets... pairs
                   nvim-treesitter-context # Show a top bar with current code context
+                  nvim-osc52 # copy paste directly into system clipboard through ssh
 
                   # UI
                   telescope-nvim # find/search popup
