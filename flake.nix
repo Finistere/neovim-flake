@@ -192,6 +192,7 @@
 
                   # Colorscheme
                   tokyonight-nvim
+                  catppuccin-nvim
                 ];
               };
             };
