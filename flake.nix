@@ -12,6 +12,10 @@
       url = "github:echasnovski/mini.move";
       flake = false;
     };
+    nvim-rainbow-delimiter = {
+      url = "git+https://gitlab.com/HiPhish/rainbow-delimiters.nvim.git";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -44,12 +48,12 @@
           # vscode-lldb
 
           # language servers
-          rnix-lsp
+          nil
           rust-analyzer-unwrapped
           terraform-ls
           nodePackages.pyright
           nodePackages."typescript-language-server"
-          sumneko-lua-language-server
+          lua-language-server
 
           # null-ls
           alejandra # nix formatting
@@ -76,7 +80,7 @@
         # installs a vim plugin from git
         plugin = with pkgs;
           repo:
-            vimUtils.buildVimPluginFrom2Nix {
+            vimUtils.buildVimPlugin {
               pname = "${lib.strings.sanitizeDerivationName repo}";
               version = "main";
               src = builtins.getAttr repo inputs;
@@ -120,7 +124,7 @@
                   # Syntax
                   nvim-treesitter.withAllGrammars
                   # Using the maintained fork
-                  nvim-ts-rainbow # matching brackets... pairs
+                  (plugin "nvim-rainbow-delimiter") # matching brackets... pairs
                   nvim-treesitter-context # Show a top bar with current code context
                   nvim-osc52 # copy paste directly into system clipboard through ssh
 
@@ -167,7 +171,7 @@
                   symbols-outline-nvim # lists function,class,... in separate window
 
                   # Null-ls
-                  null-ls-nvim # LSP adapter for other plugins (formatter, linter, etc.)
+                  # null-ls-nvim # LSP adapter for other plugins (formatter, linter, etc.)
 
                   # Rust
                   crates-nvim # Show current version of rust dependencies within Cargo.toml

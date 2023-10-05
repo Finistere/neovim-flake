@@ -14,10 +14,25 @@ require('gitsigns').setup({
     vim.keymap.set('n', '<leader>tb', gs.toggle_current_line_blame, bopts)
   end
 })
-require('indent_blankline').setup({
-  show_current_context = true,
-  show_current_context_start = false
+
+-- rainbow & indent guidelines
+require("rainbow-delimiters")
+require("ibl").setup({
+  scope = {
+    highlight = {
+      "RainbowDelimiterRed",
+      "RainbowDelimiterYellow",
+      "RainbowDelimiterBlue",
+      "RainbowDelimiterOrange",
+      "RainbowDelimiterGreen",
+      "RainbowDelimiterViolet",
+      "RainbowDelimiterCyan",
+    }
+  }
 })
+local hooks = require "ibl.hooks"
+hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
+
 require('nvim-cursorline').setup()
 
 require('Comment').setup()

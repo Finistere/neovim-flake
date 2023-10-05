@@ -21,11 +21,11 @@
     "mini-move": {
       "flake": false,
       "locked": {
-        "lastModified": 1683192076,
-        "narHash": "sha256-0xIfVg/DmmjTGubIxwzatgHBBmIHlsiM7QoAm84+80I=",
+        "lastModified": 1696839271,
+        "narHash": "sha256-lgRM8D3TbQi0WYXYjcXq8uTen6qwVo/nKv6cEPoDPoA=",
         "owner": "echasnovski",
         "repo": "mini.move",
-        "rev": "3afd39873eb9171684e554a214c055482444a47d",
+        "rev": "b3bca8e493f8d1da343ff1be06c21a47e2fde1c0",
         "type": "github"
       },
       "original": {
@@ -36,11 +36,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1695806987,
-        "narHash": "sha256-fX5kGs66NZIxCMcpAGIpxuftajHL8Hil1vjHmjjl118=",
+        "lastModified": 1696757521,
+        "narHash": "sha256-cfgtLNCBLFx2qOzRLI6DHfqTdfWI+UbvsKYa3b3fvaA=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "f3dab3509afca932f3f4fd0908957709bb1c1f57",
+        "rev": "2646b294a146df2781b1ca49092450e8a32814e1",
         "type": "github"
       },
       "original": {
@@ -48,6 +48,22 @@
         "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
         "type": "github"
+      }
+    },
+    "nvim-rainbow-delimiter": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1696334717,
+        "narHash": "sha256-2WeOiyVxdUzMF5WUJttbElZ/Q2A9jbKy3buZI+3BgX8=",
+        "ref": "refs/heads/master",
+        "rev": "652345bd1aa333f60c9cbb1259f77155786e5514",
+        "revCount": 630,
+        "type": "git",
+        "url": "https://gitlab.com/HiPhish/rainbow-delimiters.nvim.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://gitlab.com/HiPhish/rainbow-delimiters.nvim.git"
       }
     },
     "ranger": {
@@ -71,6 +87,7 @@
         "flake-utils": "flake-utils",
         "mini-move": "mini-move",
         "nixpkgs": "nixpkgs",
+        "nvim-rainbow-delimiter": "nvim-rainbow-delimiter",
         "ranger": "ranger"
       }
     },
