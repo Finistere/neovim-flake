@@ -113,8 +113,10 @@ rt.setup({
       -- keymap('K', rt.hover_range.hover_range, bopts)
     end,
     settings = {
-      cargo = {
-        target = "wasm32-unknown-unknown"
+      ['rust-analyzer'] = {
+        cargo = {
+          target = "wasm32-unknown-unknown"
+        }
       }
     }
   },
@@ -159,3 +161,8 @@ require('typescript').setup({
 --   },
 --   on_attach = on_attach
 -- })
+
+require("copilot").setup({
+  suggestion = { enabled = false },
+  panel = { enabled = false },
+})

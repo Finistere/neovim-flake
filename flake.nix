@@ -43,6 +43,9 @@
           tree-sitter
           gcc
 
+          # for copilot
+          nodejs
+
           # Debug
           # lldb
           # vscode-lldb
@@ -193,6 +196,8 @@
                   nvim-autopairs
                   nvim-ts-autotag
                   lspkind-nvim # VS-code pictograms for auto-completion
+                  copilot-cmp # cmp integration
+                  copilot-lua # copilot
 
                   # Colorscheme
                   tokyonight-nvim
