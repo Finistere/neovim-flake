@@ -34,6 +34,7 @@ local function attach_keymaps(client, bufnr)
   local bopts = { noremap = true, silent = true, buffer = bufnr }
 
   vim.keymap.set('n', '<leader>cr', ':IncRename ', bopts)
+  vim.keymap.set('n', '<leader>ce', function() vim.lsp.buf.rename() end, bopts)
   -- Format file
   -- vim.keymap.set('n', '<leader>cf', function() vim.lsp.buf.format({ bufnr = bufnr }) end, bopts)
   vim.keymap.set(
@@ -113,11 +114,11 @@ rt.setup({
       -- keymap('K', rt.hover_range.hover_range, bopts)
     end,
     settings = {
-      ['rust-analyzer'] = {
-        cargo = {
-          target = "wasm32-unknown-unknown"
-        }
-      }
+      -- ['rust-analyzer'] = {
+      --   cargo = {
+      --     target = "wasm32-unknown-unknown"
+      --   }
+      -- }
     }
   },
   tools = {
