@@ -53,11 +53,11 @@
     "nvim-rainbow-delimiter": {
       "flake": false,
       "locked": {
-        "lastModified": 1702419735,
-        "narHash": "sha256-BFfx2nn2AifFbI4fLQC8u5JK3ohBm0fFwp9JLyPpjpw=",
+        "lastModified": 1702483641,
+        "narHash": "sha256-LV/kFqq0e4/208cN6B2R+ECvpGG4MUsfPIZsk/up53c=",
         "ref": "refs/heads/master",
-        "rev": "cc1783ca5f1f9bfed18bfc051bb88e0e4faaf17a",
-        "revCount": 715,
+        "rev": "0b4c1ab6724062f3582746c6a5a8c0636bf7ed81",
+        "revCount": 716,
         "type": "git",
         "url": "https://gitlab.com/HiPhish/rainbow-delimiters.nvim.git"
       },
