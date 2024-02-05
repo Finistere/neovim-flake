@@ -114,11 +114,12 @@ rt.setup({
       -- keymap('K', rt.hover_range.hover_range, bopts)
     end,
     settings = {
-      -- ['rust-analyzer'] = {
-      --   cargo = {
-      --     target = "wasm32-unknown-unknown"
-      --   }
-      -- }
+      ['rust-analyzer'] = {
+        cargo = {
+          allFeatures = true
+          -- target = "wasm32-unknown-unknown"
+        }
+      }
     }
   },
   tools = {
