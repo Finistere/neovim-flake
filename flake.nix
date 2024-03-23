@@ -55,7 +55,8 @@
           rust-analyzer-unwrapped
           terraform-ls
           nodePackages.pyright
-          nodePackages."typescript-language-server"
+          nodePackages.typescript-language-server
+          nodePackages.bash-language-server
           lua-language-server
 
           # null-ls
@@ -64,7 +65,7 @@
           shellcheck # shell check
           statix # code actions on nix
           deadnix # dead code
-          nodePackages.prettier_d_slim # js/html/markdown/... formatting
+          nodePackages.prettierd # js/html/markdown/... formatting
           taplo # toml formatting
           codespell # spelling issues
 
@@ -174,7 +175,7 @@
                   symbols-outline-nvim # lists function,class,... in separate window
 
                   # Null-ls
-                  # null-ls-nvim # LSP adapter for other plugins (formatter, linter, etc.)
+                  none-ls-nvim # LSP adapter for other plugins (formatter, linter, etc.)
 
                   # Rust
                   crates-nvim # Show current version of rust dependencies within Cargo.toml

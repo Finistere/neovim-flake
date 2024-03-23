@@ -14,7 +14,6 @@ require('inc_rename').setup()
 vim.cmd([[
   nnoremap <silent><leader>ca <cmd>CodeActionMenu<cr>
 ]])
-local lspconfig = require('lspconfig')
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 local function format_on_save(client, bufnr)
@@ -65,15 +64,10 @@ capabilities.textDocument.foldingRange = {
   lineFoldingOnly = true
 }
 
+local lspconfig = require('lspconfig')
+
+lspconfig.bashls.setup {}
 lspconfig.nil_ls.setup {}
--- lspconfig.rnix.setup {
---   capabilities = capabilities,
---   on_attach = function(client, bufnr)
---     -- formatting done by alejandra from null-ls
---     client.server_capabilities.documentFormattingProvider = false
---     attach_keymaps(client, bufnr)
---   end
--- }
 
 -- https://github.com/LuaLS/lua-language-server/issues/783
 local runtime_path = vim.split(package.path, ';')
@@ -139,30 +133,26 @@ require('typescript').setup({
   }
 })
 
--- local null_ls = require('null-ls')
--- null_ls.setup({
---   sources = {
---     -- Nix
---     null_ls.builtins.formatting.alejandra,
---     null_ls.builtins.diagnostics.deadnix,
---     null_ls.builtins.diagnostics.statix,
---     -- Shell
---     null_ls.builtins.code_actions.shellcheck,
---     null_ls.builtins.diagnostics.shellcheck,
---     null_ls.builtins.formatting.shfmt.with({
---       extra_args = { "--indent=4" }
---     }),
---     -- Spelling
---     null_ls.builtins.diagnostics.codespell.with({
---       extra_args = { "--builtin=clear,informal" }
---     }),
---     --
---     null_ls.builtins.formatting.prettier_d_slim, -- HTML/JS/Markdown/... formatting
---     null_ls.builtins.formatting.taplo,           -- TOML
---     null_ls.builtins.diagnostics.clang_check,
---   },
---   on_attach = on_attach
--- })
+local null_ls = require('null-ls')
+null_ls.setup({
+  sources = {
+    -- Nix
+    null_ls.builtins.formatting.alejandra,
+    null_ls.builtins.diagnostics.deadnix,
+    null_ls.builtins.diagnostics.statix,
+    -- Shell
+    null_ls.builtins.formatting.shfmt.with({
+      extra_args = { "--indent=4" }
+    }),
+    -- Spelling
+    null_ls.builtins.diagnostics.codespell.with({
+      extra_args = { "--builtin=clear,informal" }
+    }),
+    --
+    null_ls.builtins.formatting.prettierd, -- HTML/JS/Markdown/... formatting
+  },
+  on_attach = on_attach
+})
 
 require("copilot").setup({
   suggestion = { enabled = false },
