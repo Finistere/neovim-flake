@@ -56,6 +56,9 @@ set sessionoptions+=globals
 set undofile
 set undodir=~/.vim/undo
 
+" Spelling
+set spell spelllang=en_us
+
 "
 " File type specific
 "

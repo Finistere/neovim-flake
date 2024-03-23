@@ -145,9 +145,9 @@ null_ls.setup({
       extra_args = { "--indent=4" }
     }),
     -- Spelling
-    null_ls.builtins.diagnostics.codespell.with({
-      extra_args = { "--builtin=clear,informal" }
-    }),
+    -- null_ls.builtins.diagnostics.codespell.with({
+    --   extra_args = { "--builtin=clear,informal" }
+    -- }),
     --
     null_ls.builtins.formatting.prettierd, -- HTML/JS/Markdown/... formatting
   },

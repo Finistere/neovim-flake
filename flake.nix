@@ -65,9 +65,8 @@
           shellcheck # shell check
           statix # code actions on nix
           deadnix # dead code
-          nodePackages.prettierd # js/html/markdown/... formatting
+          prettierd # js/html/markdown/... formatting
           taplo # toml formatting
-          codespell # spelling issues
 
           # Utilities
           ripgrep
