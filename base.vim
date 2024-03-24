@@ -57,7 +57,7 @@ set undofile
 set undodir=~/.vim/undo
 
 " Spelling
-set spell spelllang=en_us
+set spell spelllang=en_us spelloptions=camel spellfile=~/flakes/neovim/spell/en.utf-8.add
 
 "
 " File type specific
