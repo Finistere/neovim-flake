@@ -145,6 +145,7 @@
                   (plugin "mini-move") # Moving selection with Atl+hjkl
                   marks-nvim # show marks with gutter icons
                   nvim-spectre # search and replace
+                  diffview-nvim # git diffs
 
                   # Nvim behavior
                   which-key-nvim

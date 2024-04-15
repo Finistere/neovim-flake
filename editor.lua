@@ -15,6 +15,8 @@ require('gitsigns').setup({
   end
 })
 
+require('diffview').setup()
+
 -- rainbow & indent guidelines
 require("rainbow-delimiters")
 require("ibl").setup({
