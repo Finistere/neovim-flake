@@ -35,3 +35,7 @@ struct
 opentelemetry
 analytics
 metadata
+CLICKHOUSE
+axum
+Grafbase
+websocket
