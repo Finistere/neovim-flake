@@ -6,8 +6,27 @@ vim.cmd([[
   nnoremap <silent> <leader>B <cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>
 ]])
 
--- Rust configuration done by rust-tools in lsp.lua
 local dap = require('dap')
+dap.adapters.codelldb = {
+  type = 'server',
+  port = 13000,
+  executable = {
+    command = vim.g.codelldb_path,
+    args = { "--port", "13000" },
+  }
+}
+dap.configurations.rust = {
+  {
+    name = "Launch file",
+    type = "codelldb",
+    request = "launch",
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+    cwd = '${workspaceFolder}',
+    stopOnEntry = false,
+  },
+}
 vim.cmd([[
     nnoremap <silent> <Leader>dl <Cmd>lua require'dap'.run_last()<CR>
 ]])
@@ -30,7 +49,6 @@ dap.listeners.after.event_initialized["dapui_config"] = function()
     nnoremap <silent> <Leader>dr <Cmd>lua require'dap'.repl.open()<CR>
   ]])
   dapui.open()
-
 end
 dap.listeners.before.event_terminated["dapui_config"] = function()
   dapui.close()

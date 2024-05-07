@@ -2,18 +2,10 @@
 -- LSP
 --
 
-require('fidget').setup()
+require('fidget').setup({})
 require("symbols-outline").setup({
   autofold_depth = 2
 })
-vim.cmd([[
-  nnoremap <silent><leader>l <cmd>SymbolsOutline<cr>
-]])
-require('inc_rename').setup()
-
-vim.cmd([[
-  nnoremap <silent><leader>ca <cmd>CodeActionMenu<cr>
-]])
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 local function format_on_save(client, bufnr)
@@ -32,6 +24,8 @@ end
 local function attach_keymaps(client, bufnr)
   local bopts = { noremap = true, silent = true, buffer = bufnr }
 
+  vim.keymap.set('n', '<leader>l', ':SymbolsOutline ', bopts)
+  vim.keymap.set('n', '<leader>ca', ':CodeActionMenu ', bopts)
   vim.keymap.set('n', '<leader>cr', ':IncRename ', bopts)
   vim.keymap.set('n', '<leader>ce', function() vim.lsp.buf.rename() end, bopts)
   -- Format file
@@ -51,11 +45,19 @@ local function attach_keymaps(client, bufnr)
   vim.keymap.set('', 'K', vim.lsp.buf.hover, bopts)
 end
 
-local function on_attach(client, bufnr)
-  format_on_save(client, bufnr)
-  attach_keymaps(client, bufnr)
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-end
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    local bufnr = args.buf
+    if client.server_capabilities.inlayHintProvider then
+      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(), { bufnr = bufnr })
+    end
+    format_on_save(client, bufnr)
+    attach_keymaps(client, bufnr)
+    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+  end
+})
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 -- for nvim-ufo folding.
@@ -65,9 +67,9 @@ capabilities.textDocument.foldingRange = {
 }
 
 local lspconfig = require('lspconfig')
-
 lspconfig.bashls.setup {}
 lspconfig.nil_ls.setup {}
+lspconfig.tsserver.setup {}
 
 -- https://github.com/LuaLS/lua-language-server/issues/783
 local runtime_path = vim.split(package.path, ';')
@@ -94,44 +96,62 @@ lspconfig.lua_ls.setup {
       },
     }
   },
-  on_attach = on_attach
 }
 
--- Rust pre-configured by rust-tools
-local rt = require('rust-tools')
-rt.setup({
+vim.g.rustaceanvim = {
+  -- Plugin configuration
+  tools = {
+  },
+  -- LSP configuration
   server = {
     on_attach = function(client, bufnr)
-      on_attach(client, bufnr)
       local bopts = { noremap = true, silent = true, buffer = bufnr }
-      vim.keymap.set('n', '<C-space>', rt.hover_actions.hover_actions, bopts)
-      -- keymap('K', rt.hover_range.hover_range, bopts)
+      vim.keymap.set('n', '<C-space>', 'RustLsp hover actions', bopts)
     end,
-    settings = {
+    default_settings = {
+      -- rust-analyzer language server configuration
       ['rust-analyzer'] = {
         cargo = {
           allFeatures = true
-          -- target = "wasm32-unknown-unknown"
         }
-      }
-    }
-  },
-  tools = {
-    hover_actions = {
-      auto_focus = true,
+      },
     },
   },
-  -- https://github.com/simrat39/rust-tools.nvim/wiki/Debugging#codelldb-a-better-debugging-experience
-})
+  dap = {
+    adapter = require('rustaceanvim.config')
+        .get_codelldb_adapter(vim.g.codelldb_path, vim.g.liblldb_path),
+  },
+}
+
+-- Rust pre-configured by rust-tools
+-- local rt = require('rust-tools')
+-- rt.setup({
+--   server = {
+--     on_attach = function(client, bufnr)
+--       on_attach(client, bufnr)
+--       local bopts = { noremap = true, silent = true, buffer = bufnr }
+--       vim.keymap.set('n', '<C-space>', rt.hover_actions.hover_actions, bopts)
+--       -- keymap('K', rt.hover_range.hover_range, bopts)
+--     end,
+--     settings = {
+--       ['rust-analyzer'] = {
+--         cargo = {
+--           allFeatures = true
+--           -- target = "wasm32-unknown-unknown"
+--         }
+--       }
+--     }
+--   },
+--   tools = {
+--     hover_actions = {
+--       auto_focus = true,
+--     },
+--   },
+--   -- https://github.com/simrat39/rust-tools.nvim/wiki/Debugging#codelldb-a-better-debugging-experience
+-- })
 require('crates').setup {
   -- null_ls = { enabled = true }
 }
-
-require('typescript').setup({
-  server = {
-    on_attach = on_attach
-  }
-})
 
 local null_ls = require('null-ls')
 null_ls.setup({
@@ -151,7 +171,6 @@ null_ls.setup({
     --
     null_ls.builtins.formatting.prettierd, -- HTML/JS/Markdown/... formatting
   },
-  on_attach = on_attach
 })
 
 require("copilot").setup({

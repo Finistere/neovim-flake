@@ -45,7 +45,6 @@ set showbreak=↪
 
 " True colors
 set termguicolors
-colorscheme tokyonight-moon
 
 " Search
 set ignorecase            " Search is case insensitive 

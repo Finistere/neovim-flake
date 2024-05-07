@@ -16,6 +16,10 @@
       url = "git+https://gitlab.com/HiPhish/rainbow-delimiters.nvim.git";
       flake = false;
     };
+    rustaceanvim = {
+      url = "github:mrcjkb/rustaceanvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -36,8 +40,21 @@
           inherit system;
           # enable all packages
           config = {allowUnfree = true;};
+          overlays = [
+            (final: prev: {
+              neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs (old: {
+                version = "nightly";
+                src = prev.fetchFromGitHub {
+                  owner = "neovim";
+                  repo = "neovim";
+                  rev = "nightly";
+                  hash = "sha256-c5qD0VWsX6/tINoFGUBwZHBxWgoVPTTpEBEUid4E5OA=";
+                };
+              });
+            })
+          ];
         };
-        # inherit (pkgs.vscode-extensions.vadimcn) vscode-lldb;
+        inherit (pkgs.vscode-extensions.vadimcn) vscode-lldb;
 
         extraPackages = with pkgs; [
           tree-sitter
@@ -47,8 +64,7 @@
           nodejs
 
           # Debug
-          # lldb
-          # vscode-lldb
+          vscode-lldb
 
           # language servers
           nil
@@ -95,8 +111,6 @@
             exePath = "/bin/nvim";
           };
 
-          # TODO: Need to add custom queries/markdown/injections
-          # bat cache update
           packages.default = wrapNeovim neovim-unwrapped {
             viAlias = true;
             vimAlias = true;
@@ -114,11 +128,14 @@
                 (lib.strings.fileContents ./base.vim)
                 ''
                   lua << EOF
+                  vim.g.codelldb_path = "${vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/adapter/codelldb";
+                  vim.g.liblldb_path = "${vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/lldb/lib/lilldb.so";
                   ${lib.strings.fileContents ./tree-sitter.lua}
                   ${lib.strings.fileContents ./cmp.lua}
                   ${lib.strings.fileContents ./lsp.lua}
                   ${lib.strings.fileContents ./ui.lua}
                   ${lib.strings.fileContents ./editor.lua}
+                  ${lib.strings.fileContents ./debug.lua}
                   EOF
                 ''
               ];
@@ -141,7 +158,6 @@
                   scope-nvim # associate buffers to tabs
                   lualine-nvim # bottom status line
                   vim-floaterm # floating terminal window
-                  rnvimr # ranger integration, it's a bit faster to show up than vim-floaterm integration
                   (plugin "mini-move") # Moving selection with Atl+hjkl
                   marks-nvim # show marks with gutter icons
                   nvim-spectre # search and replace
@@ -179,10 +195,7 @@
 
                   # Rust
                   crates-nvim # Show current version of rust dependencies within Cargo.toml
-                  rust-tools-nvim # advanced rust-analyzer integration
-
-                  # Typescript
-                  typescript-nvim # advanced typescript integration
+                  (plugin "rustaceanvim") # Rust integration
 
                   # Completion
                   nvim-cmp
@@ -202,7 +215,11 @@
 
                   # Colorscheme
                   tokyonight-nvim
-                  catppuccin-nvim
+
+                  # Debug
+                  nvim-dap
+                  nvim-dap-ui
+                  nvim-dap-virtual-text
                 ];
               };
             };

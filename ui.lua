@@ -2,6 +2,20 @@
 -- UI
 --
 
+require("tokyonight").setup({
+  on_highlights = function(hl, c)
+    local util = require("tokyonight.util")
+    hl.LspInlayHint = {
+      bg = util.darken(c.blue7, 0.1),
+      fg = c.dark3,
+      style = {
+        italic = true
+      }
+    }
+  end
+})
+vim.cmd([[colorscheme tokyonight-moon]])
+
 require('colorizer').setup {}
 require('nvim-web-devicons').setup()
 require('mini.move').setup()
@@ -222,18 +236,6 @@ require('auto-session').setup {
     "NvimTreeOpen"
   }
 }
-
--- -- ranger
--- vim.cmd([[
---   " Hide ranger after picking a file
---   let g:rnvimr_enable_picker = 1
---   " Hide the files included in gitignore
---   let g:rnvimr_hide_gitignore = 1
---   " wipe buffers associated with deleted files
---   let g:rnvimr_enable_bw = 1
---   nnoremap <silent><C-.> <cmd>RnvimrToggle<cr>
---   tnoremap <silent><C-.> <cmd>RnvimrToggle<CR>
--- ]])
 
 vim.cmd([[
   let g:floaterm_width  = 0.8

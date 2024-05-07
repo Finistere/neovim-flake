@@ -31,5 +31,7 @@ blake3
 JWT
 WASM
 BTree
-BTree
-BTree
+struct
+opentelemetry
+analytics
+metadata
