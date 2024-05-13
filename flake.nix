@@ -89,6 +89,7 @@
           fd
           git
           gh # for cmp-git
+          delta
           (ranger.overridePythonAttrs (old: {
             version = "1.9.4-master";
             src = inputs.ranger;
@@ -184,7 +185,7 @@
                   nvim-lspconfig
                   # TODO: A bit buggy for completion and not that useful, need a better alternative.
                   # lsp_signature-nvim # show signature when writing arguments
-                  nvim-code-action-menu # preview code actions
+                  actions-preview-nvim # preview code actions
                   trouble-nvim # friendlier bottom window for search results
                   fidget-nvim # LSP status fidget
                   inc-rename-nvim # in-place rename preview

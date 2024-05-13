@@ -7,6 +7,26 @@ require("symbols-outline").setup({
   autofold_depth = 2
 })
 
+local hl = require("actions-preview.highlight")
+require("actions-preview").setup {
+  telescope = {
+    sorting_strategy = "ascending",
+    layout_strategy = "vertical",
+    layout_config = {
+      width = 0.6,
+      height = 0.5,
+      prompt_position = "top",
+      preview_cutoff = 20,
+      preview_height = function(_, _, max_lines)
+        return max_lines - 15
+      end,
+    },
+  },
+  highlight_command = {
+    hl.delta(),
+  },
+}
+
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 local function format_on_save(client, bufnr)
   if client.supports_method("textDocument/formatting") then
@@ -25,7 +45,7 @@ local function attach_keymaps(client, bufnr)
   local bopts = { noremap = true, silent = true, buffer = bufnr }
 
   vim.keymap.set('n', '<leader>l', ':SymbolsOutline ', bopts)
-  vim.keymap.set('n', '<leader>ca', ':CodeActionMenu ', bopts)
+  vim.keymap.set('n', '<leader>ca', require("actions-preview").code_actions, bopts)
   vim.keymap.set('n', '<leader>cr', ':IncRename ', bopts)
   vim.keymap.set('n', '<leader>ce', function() vim.lsp.buf.rename() end, bopts)
   -- Format file
