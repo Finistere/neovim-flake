@@ -3,6 +3,7 @@
 --
 
 require('fidget').setup({})
+require("inc_rename").setup()
 require("symbols-outline").setup({
   autofold_depth = 2
 })
