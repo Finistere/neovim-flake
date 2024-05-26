@@ -46,15 +46,15 @@
           config = {allowUnfree = true;};
           overlays = [
             (final: prev: {
-              neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs (old: {
-                version = "nightly";
-                src = prev.fetchFromGitHub {
-                  owner = "neovim";
-                  repo = "neovim";
-                  rev = "nightly";
-                  hash = "sha256-c5qD0VWsX6/tINoFGUBwZHBxWgoVPTTpEBEUid4E5OA=";
-                };
-              });
+              # neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs (old: {
+              #   version = "nightly";
+              #   src = prev.fetchFromGitHub {
+              #     owner = "neovim";
+              #     repo = "neovim";
+              #     rev = "nightly";
+              #     hash = "sha256-Hw/alNyPST9zK8j/1//Z2waDn65SBkNWtr0waN5HmU8=";
+              #   };
+              # });
             })
           ];
         };
