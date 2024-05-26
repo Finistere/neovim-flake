@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "fidget-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1716093309,
+        "narHash": "sha256-Gpk/G0ByOAIE8uX4Xr94CvAjJBSJMEOwBuvrhmYYGsg=",
+        "owner": "j-hui",
+        "repo": "fidget.nvim",
+        "rev": "ef99df04a1c53a453602421bc0f756997edc8289",
+        "type": "github"
+      },
+      "original": {
+        "owner": "j-hui",
+        "repo": "fidget.nvim",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -515,6 +531,7 @@
     },
     "root": {
       "inputs": {
+        "fidget-nvim": "fidget-nvim",
         "flake-utils": "flake-utils",
         "mini-move": "mini-move",
         "nixpkgs": "nixpkgs",

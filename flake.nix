@@ -20,6 +20,10 @@
       url = "github:mrcjkb/rustaceanvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    fidget-nvim = {
+      url = "github:j-hui/fidget.nvim";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -109,7 +113,7 @@
               src = builtins.getAttr repo inputs;
             };
 
-          extraMakeWrapperArgs = ''--suffix PATH : "${lib.makeBinPath extraPackages}"'';
+          extraMakeWrapperArgs = ''--prefix PATH : "${lib.makeBinPath extraPackages}"'';
           extraMakeWrapperLuaCArgs = ''
             --suffix LUA_CPATH ";" "${
               lib.concatMapStringsSep ";" luaPackages.getLuaCPath
@@ -203,7 +207,7 @@
                   # lsp_signature-nvim # show signature when writing arguments
                   actions-preview-nvim # preview code actions
                   trouble-nvim # friendlier bottom window for search results
-                  fidget-nvim # LSP status fidget
+                  (plugin "fidget-nvim") # LSP status fidget
                   inc-rename-nvim # in-place rename preview
                   symbols-outline-nvim # lists function,class,... in separate window
 
