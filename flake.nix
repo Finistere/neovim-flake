@@ -97,16 +97,30 @@
           }))
         ];
 
-        # installs a vim plugin from git
-        plugin = with pkgs;
-          repo:
+        luaPackages = pkgs.lua.pkgs;
+        resolvedExtraLuaPackages = with luaPackages; [];
+      in
+        with pkgs; let
+          # installs a vim plugin from git
+          plugin = repo:
             vimUtils.buildVimPlugin {
               pname = "${lib.strings.sanitizeDerivationName repo}";
               version = "main";
               src = builtins.getAttr repo inputs;
             };
-      in
-        with pkgs; rec {
+
+          extraMakeWrapperArgs = ''--suffix PATH : "${lib.makeBinPath extraPackages}"'';
+          extraMakeWrapperLuaCArgs = ''
+            --suffix LUA_CPATH ";" "${
+              lib.concatMapStringsSep ";" luaPackages.getLuaCPath
+              resolvedExtraLuaPackages
+            }"'';
+          extraMakeWrapperLuaArgs = ''
+            --suffix LUA_PATH ";" "${
+              lib.concatMapStringsSep ";" luaPackages.getLuaPath
+              resolvedExtraLuaPackages
+            }"'';
+        in rec {
           apps.default = flake-utils.lib.mkApp {
             drv = packages.default;
             exePath = "/bin/nvim";
@@ -119,7 +133,9 @@
             withNodeJs = false;
             withRuby = false;
             extraMakeWrapperArgs = builtins.concatStringsSep " " [
-              ''--prefix PATH : "${lib.makeBinPath extraPackages}"''
+              extraMakeWrapperArgs
+              extraMakeWrapperLuaCArgs
+              extraMakeWrapperLuaArgs
             ];
             configure = {
               # import your individual vim config files here
