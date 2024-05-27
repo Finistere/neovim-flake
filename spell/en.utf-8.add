@@ -39,3 +39,4 @@ CLICKHOUSE
 axum
 Grafbase
 websocket
+latencies
