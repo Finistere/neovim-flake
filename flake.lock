@@ -319,11 +319,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1717007113,
-        "narHash": "sha256-3j5wysP1Roj+FPuLE9+VZk9a0jMqGbWanMUEszir6mQ=",
+        "lastModified": 1717459389,
+        "narHash": "sha256-I8/plBsua4/NZ5bKgj+z7/ThiWuud1YFwLsn1QQ5PgE=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "f7a63cf975cc66559d5f488ffe6367c987a79826",
+        "rev": "3b01abcc24846ae49957b30f4345bab4b3f1d14b",
         "type": "github"
       },
       "original": {
@@ -452,11 +452,11 @@
     "nvim-rainbow-delimiter": {
       "flake": false,
       "locked": {
-        "lastModified": 1717024511,
-        "narHash": "sha256-e0x5BbzsuunuX5odxlNr06acg47ecarCGcaTAOZgD2I=",
+        "lastModified": 1717182477,
+        "narHash": "sha256-tq31lEa6pUPEC97etfV3J6iwy5j7TD9A4+0hzpKptSU=",
         "ref": "refs/heads/master",
-        "rev": "051c3c074ac48a95da5af91d399ba13485324969",
-        "revCount": 834,
+        "rev": "0f314613125fdd7c85faaee3c87051611d883253",
+        "revCount": 835,
         "type": "git",
         "url": "https://gitlab.com/HiPhish/rainbow-delimiters.nvim.git"
       },
@@ -551,11 +551,11 @@
         "pre-commit-hooks": "pre-commit-hooks_2"
       },
       "locked": {
-        "lastModified": 1717088659,
-        "narHash": "sha256-TzK152dUCxDoaJTeSIPTn+RbEPLhA8XRoeQl5JxR7T8=",
+        "lastModified": 1717590551,
+        "narHash": "sha256-mivoet/OhRle/U4vPrYpEQkj0HR9tf2GUulE0rLFUQw=",
         "owner": "mrcjkb",
         "repo": "rustaceanvim",
-        "rev": "2fa45427c01ded4d3ecca72e357f8a60fd8e46d4",
+        "rev": "d69653afc99e9c0cb6be0d1f26499a787f00a78d",
         "type": "github"
       },
       "original": {
