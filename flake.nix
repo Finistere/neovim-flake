@@ -74,9 +74,9 @@
           nil
           rust-analyzer-unwrapped
           terraform-ls
-          nodePackages.pyright
+          pyright
           nodePackages.typescript-language-server
-          nodePackages.bash-language-server
+          bash-language-server
           lua-language-server
 
           # null-ls

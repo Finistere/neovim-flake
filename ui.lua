@@ -96,16 +96,16 @@ vim.cmd([[
 
 
 local telescope = require('telescope')
-local trouble = require('trouble.providers.telescope')
+local trouble = require('trouble.sources.telescope')
 telescope.setup({
   defaults = {
     -- path_display = { 'smart' },
     mappings = {
       i = {
-        ["<C-t>"] = trouble.open_with_trouble,
+        ["<C-t>"] = trouble.open,
         ["<esc>"] = require('telescope.actions').close
       },
-      n = { ["<C-t>"] = trouble.open_with_trouble },
+      n = { ["<C-t>"] = trouble.open },
     },
     dynamic_preview_title = true,
   },
