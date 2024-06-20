@@ -4,9 +4,6 @@
 
 require('fidget').setup({})
 require("inc_rename").setup()
-require("symbols-outline").setup({
-  autofold_depth = 2
-})
 
 local hl = require("actions-preview.highlight")
 require("actions-preview").setup {
@@ -45,7 +42,6 @@ end
 local function attach_keymaps(client, bufnr)
   local bopts = { noremap = true, silent = true, buffer = bufnr }
 
-  vim.keymap.set('n', '<leader>l', ':SymbolsOutline ', bopts)
   vim.keymap.set('n', '<leader>ca', require("actions-preview").code_actions, bopts)
   vim.keymap.set('n', '<leader>cr', ':IncRename ', bopts)
   vim.keymap.set('n', '<leader>ce', function() vim.lsp.buf.rename() end, bopts)

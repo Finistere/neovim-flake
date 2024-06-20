@@ -87,11 +87,11 @@ require('trouble').setup({
   }
 })
 vim.cmd([[
-  nnoremap <silent><leader>xx <cmd>TroubleToggle<cr>
-  nnoremap <silent><leader>xw <cmd>TroubleToggle workspace_diagnostics<cr>
-  nnoremap <silent><leader>xd <cmd>TroubleToggle document_diagnostics<cr>
-  nnoremap <silent><leader>xq <cmd>TroubleToggle quickfix<cr>
-  nnoremap <silent><leader>xl <cmd>TroubleToggle loclist<cr>
+  nnoremap <silent><leader>xx <cmd>Trouble diagnostics toggle<cr>
+  nnoremap <silent><leader>xX <cmd>Trouble diagnostics toggle filter.buf=0<cr>
+  nnoremap <silent><leader>cs <cmd>Trouble symbols toggle focus=false<cr>
+  nnoremap <silent><leader>cr <cmd>Trouble lsp toggle focus=false win.position=right<cr>
+
 ]])
 
 
@@ -221,7 +221,7 @@ require('lualine').setup({
     lualine_c = { 'diff', 'diagnostics' },
     lualine_x = {}
   },
-  extensions = { 'nvim-dap-ui', 'symbols-outline', 'nvim-tree' }
+  extensions = { 'nvim-dap-ui', 'nvim-tree', 'trouble' }
 })
 
 require('marks').setup {}

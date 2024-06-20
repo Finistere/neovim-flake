@@ -209,7 +209,6 @@
                   trouble-nvim # friendlier bottom window for search results
                   (plugin "fidget-nvim") # LSP status fidget
                   inc-rename-nvim # in-place rename preview
-                  symbols-outline-nvim # lists function,class,... in separate window
 
                   # Null-ls
                   none-ls-nvim # LSP adapter for other plugins (formatter, linter, etc.)
