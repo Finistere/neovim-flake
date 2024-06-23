@@ -87,8 +87,8 @@ require('trouble').setup({
   }
 })
 vim.cmd([[
-  nnoremap <silent><leader>xx <cmd>Trouble diagnostics toggle<cr>
-  nnoremap <silent><leader>xX <cmd>Trouble diagnostics toggle filter.buf=0<cr>
+  nnoremap <silent><leader>xx <cmd>Trouble diagnostics toggle focus=true<cr>
+  nnoremap <silent><leader>xd <cmd>Trouble diagnostics toggle filter.buf=0 focus=true<cr>
   nnoremap <silent><leader>cs <cmd>Trouble symbols toggle focus=false<cr>
   nnoremap <silent><leader>cr <cmd>Trouble lsp toggle focus=false win.position=right<cr>
 
