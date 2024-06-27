@@ -79,7 +79,7 @@
           bash-language-server
           lua-language-server
 
-          # null-ls
+          # none-ls
           alejandra # nix formatting
           shfmt # shell formatting
           shellcheck # shell check
@@ -87,6 +87,7 @@
           deadnix # dead code
           prettierd # js/html/markdown/... formatting
           taplo # toml formatting
+          vale
 
           # Utilities
           ripgrep
