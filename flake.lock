@@ -319,11 +319,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1719082008,
-        "narHash": "sha256-jHJSUH619zBQ6WdC21fFAlDxHErKVDJ5fpN0Hgx4sjs=",
+        "lastModified": 1719468428,
+        "narHash": "sha256-vN5xJAZ4UGREEglh3lfbbkIj+MPEYMuqewMn4atZFaQ=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "9693852a2070b398ee123a329e68f0dab5526681",
+        "rev": "1e3deb3d8a86a870d925760db1a5adecc64d329d",
         "type": "github"
       },
       "original": {
@@ -516,11 +516,11 @@
     "ranger": {
       "flake": false,
       "locked": {
-        "lastModified": 1708536096,
-        "narHash": "sha256-NpsrABk95xHNvhlRjKFh326IW83mYj1cmK3aE9JQSRo=",
+        "lastModified": 1714173892,
+        "narHash": "sha256-KiEz2emHD8uRna5cYuRy+VOqTTTwhXkHIzAjvjS8Zvo=",
         "owner": "ranger",
         "repo": "ranger",
-        "rev": "38bb8901004b75a407ffee4b9e176bc0a436cb15",
+        "rev": "80baec602c32208fc3c8a979ce48db53ccdd6725",
         "type": "github"
       },
       "original": {
@@ -551,11 +551,11 @@
         "pre-commit-hooks": "pre-commit-hooks_2"
       },
       "locked": {
-        "lastModified": 1718994853,
-        "narHash": "sha256-dDtdRV9NPb/hf/yhH6X+2KItYAzzJFA0KzvIfnKXIrs=",
+        "lastModified": 1719658629,
+        "narHash": "sha256-W8cSTcF+xapvpBUZYccwkPmkNkdK3wlbzC5rpbv6HZI=",
         "owner": "mrcjkb",
         "repo": "rustaceanvim",
-        "rev": "54908384f1b7932576a92caa645681026d8b84e1",
+        "rev": "af4de6a35d128ce71c75a9a7846bf089aea76f50",
         "type": "github"
       },
       "original": {

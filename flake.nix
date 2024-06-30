@@ -87,7 +87,6 @@
           deadnix # dead code
           prettierd # js/html/markdown/... formatting
           taplo # toml formatting
-          vale
 
           # Utilities
           ripgrep
