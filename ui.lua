@@ -2,18 +2,6 @@
 -- UI
 --
 
-require("tokyonight").setup({
-  on_highlights = function(hl, c)
-    local util = require("tokyonight.util")
-    hl.LspInlayHint = {
-      bg = util.darken(c.blue7, 0.1),
-      fg = c.dark3,
-      style = {
-        italic = true
-      }
-    }
-  end
-})
 vim.cmd([[colorscheme tokyonight-moon]])
 
 require('colorizer').setup {}

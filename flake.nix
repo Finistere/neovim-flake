@@ -24,6 +24,10 @@
       url = "github:j-hui/fidget.nvim";
       flake = false;
     };
+    tokyonight-nvim = {
+      url = "github:folke/tokyonight.nvim";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -234,7 +238,7 @@
                   copilot-lua # copilot
 
                   # Colorscheme
-                  tokyonight-nvim
+                  (plugin "tokyonight-nvim")
 
                   # Debug
                   nvim-dap
