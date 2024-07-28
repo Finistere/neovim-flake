@@ -3,11 +3,11 @@
     "fidget-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1720316799,
-        "narHash": "sha256-cOqXQ5GXzsWskMem0lNpLFVmIRLSqPGIUqgaR1/jwRc=",
+        "lastModified": 1720885602,
+        "narHash": "sha256-fjxdRN08BMU7jTWdhdzh8kW18ZURS9SJCwnTxuz6aFE=",
         "owner": "j-hui",
         "repo": "fidget.nvim",
-        "rev": "c12f8a58ee472ce5983c3a3f3aad0ff6c49a6a83",
+        "rev": "d855eed8a06531a7e8fd0684889b2943f373c469",
         "type": "github"
       },
       "original": {
@@ -319,11 +319,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1720571246,
-        "narHash": "sha256-nkUXwunTck+hNMt2wZuYRN+jf2ySRjKTzI0fo5TDH78=",
+        "lastModified": 1721116560,
+        "narHash": "sha256-++TYlGMAJM1Q+0nMVaWBSEvEUjRs7ZGiNQOpqbQApCU=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "16e401f01842c5bb2499e78c1fe227f939c0c474",
+        "rev": "9355fa86e6f27422963132c2c9aeedb0fb963d93",
         "type": "github"
       },
       "original": {
@@ -643,11 +643,11 @@
     "tokyonight-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1720552657,
-        "narHash": "sha256-zk14vnQWHnEBZzIb3TD37pcNyCBqsFln2L25MvWFFsk=",
+        "lastModified": 1721286553,
+        "narHash": "sha256-s3NYMpm2b/4YE/xPKtn8JgXwa5bBKr3knuWCHgjMMnQ=",
         "owner": "folke",
         "repo": "tokyonight.nvim",
-        "rev": "66a272ba6cf93bf303c4b7a91b100ca0dd3ec7bd",
+        "rev": "1264d633900ca499607995b664e18c6be40b0b95",
         "type": "github"
       },
       "original": {
