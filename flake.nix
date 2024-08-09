@@ -2,7 +2,8 @@
   description = "custom neovim";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    # use latest rust-analyzer
+    nixpkgs.url = "github:finistere/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     ranger = {
       url = "github:ranger/ranger";
@@ -50,6 +51,20 @@
           config = {allowUnfree = true;};
           overlays = [
             (final: prev: {
+              # does nothing...
+              # rust-analyzer-unwrapped = prev.rust-analyzer-unwrapped.overrideAttrs (old: rec {
+              #   version = "2024-08-01";
+              #   src = prev.fetchFromGitHub {
+              #     owner = "rust-lang";
+              #     repo = "rust-analyzer";
+              #     rev = version;
+              #     hash = "sha256-mUVnhgiQNnvn/lyMfh1d2XqiUE/3rwF993uUrcq3pS0=";
+              #   };
+              #   cargoDeps = old.cargoDeps.overrideAttrs {
+              #     inherit src;
+              #     outputHash = "sha256-0PKoZhypSZk6vAaho8naMDRYc58AiQbJ1DW48owsMUQ=";
+              #   };
+              # });
               # neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs (old: {
               #   version = "nightly";
               #   src = prev.fetchFromGitHub {
@@ -76,7 +91,9 @@
 
           # language servers
           nil
-          rust-analyzer-unwrapped
+          (rust-analyzer-unwrapped.override {
+            useMimalloc = true;
+          })
           terraform-ls
           pyright
           nodePackages.typescript-language-server
