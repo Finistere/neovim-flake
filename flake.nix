@@ -29,6 +29,14 @@
       url = "github:folke/tokyonight.nvim";
       flake = false;
     };
+    gen-nvim = {
+      url = "github:David-Kunz/gen.nvim";
+      flake = false;
+    };
+    avante-nvim = {
+      url = "github:yetone/avante.nvim";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -99,6 +107,7 @@
           nodePackages.typescript-language-server
           bash-language-server
           lua-language-server
+          llm-ls
 
           # none-ls
           alejandra # nix formatting
@@ -172,9 +181,11 @@
                   lua << EOF
                   vim.g.codelldb_path = "${vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/adapter/codelldb";
                   vim.g.liblldb_path = "${vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/lldb/lib/lilldb.so";
+                  vim.g.llm_path = "${llm-ls}/bin/llm-ls";
                   ${lib.strings.fileContents ./tree-sitter.lua}
                   ${lib.strings.fileContents ./cmp.lua}
                   ${lib.strings.fileContents ./lsp.lua}
+                  ${lib.strings.fileContents ./llm.lua}
                   ${lib.strings.fileContents ./ui.lua}
                   ${lib.strings.fileContents ./editor.lua}
                   ${lib.strings.fileContents ./debug.lua}
@@ -221,6 +232,9 @@
 
                   # Utilities
                   plenary-nvim # Utility library for lots of plugins
+                  dressing-nvim # for avante-nvim
+                  nui-nvim # for avante-nvim
+                  render-markdown
 
                   # LSP
                   nvim-lspconfig
@@ -230,6 +244,14 @@
                   trouble-nvim # friendlier bottom window for search results
                   (plugin "fidget-nvim") # LSP status fidget
                   inc-rename-nvim # in-place rename preview
+
+                  # LLM
+                  llm-nvim
+                  copilot-cmp # cmp integration
+                  copilot-lua # copilot
+                  cmp-ai
+                  (plugin "gen-nvim")
+                  (plugin "avante-nvim")
 
                   # Null-ls
                   none-ls-nvim # LSP adapter for other plugins (formatter, linter, etc.)
@@ -251,8 +273,6 @@
                   nvim-autopairs
                   nvim-ts-autotag
                   lspkind-nvim # VS-code pictograms for auto-completion
-                  copilot-cmp # cmp integration
-                  copilot-lua # copilot
 
                   # Colorscheme
                   (plugin "tokyonight-nvim")

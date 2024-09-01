@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "avante-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1725182787,
+        "narHash": "sha256-aiz/vGrNKPJnZZqd7yEQ1S0bjz66a+QqsoIjAJXO358=",
+        "owner": "yetone",
+        "repo": "avante.nvim",
+        "rev": "3ccb71d7ef21d4a0db62ec08f05bbac5763545ff",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yetone",
+        "repo": "avante.nvim",
+        "type": "github"
+      }
+    },
     "fidget-nvim": {
       "flake": false,
       "locked": {
@@ -266,6 +282,22 @@
       "original": {
         "owner": "mrcjkb",
         "repo": "nix-gen-luarc-json",
+        "type": "github"
+      }
+    },
+    "gen-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1723301200,
+        "narHash": "sha256-Yp7HrDMOyR929AfM7IjEz4dP3RhIx9kXZ1Z3zRr5yJg=",
+        "owner": "David-Kunz",
+        "repo": "gen.nvim",
+        "rev": "c9a73d8c0d462333da6d2191806ff98f2884d706",
+        "type": "github"
+      },
+      "original": {
+        "owner": "David-Kunz",
+        "repo": "gen.nvim",
         "type": "github"
       }
     },
@@ -772,11 +804,11 @@
     "nvim-rainbow-delimiter": {
       "flake": false,
       "locked": {
-        "lastModified": 1724056137,
-        "narHash": "sha256-yEqmRiVTVK6PDMx0HA0GSeNjJDou/gZuzMuV1VsT8ok=",
+        "lastModified": 1725198401,
+        "narHash": "sha256-zJA0bZW5WCR4NDFdWRzM1YlBIt2UPE/AnZzRulT9KfU=",
         "ref": "refs/heads/master",
-        "rev": "9f3d10e66a79e8975926f8cb930856e4930d9da4",
-        "revCount": 879,
+        "rev": "b9ba41d1b960317229199e7654d906dac4e51b7e",
+        "revCount": 883,
         "type": "git",
         "url": "https://gitlab.com/HiPhish/rainbow-delimiters.nvim.git"
       },
@@ -824,8 +856,10 @@
     },
     "root": {
       "inputs": {
+        "avante-nvim": "avante-nvim",
         "fidget-nvim": "fidget-nvim",
         "flake-utils": "flake-utils",
+        "gen-nvim": "gen-nvim",
         "mini-move": "mini-move",
         "nixpkgs": "nixpkgs",
         "nvim-rainbow-delimiter": "nvim-rainbow-delimiter",
@@ -877,11 +911,11 @@
     "tokyonight-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1721799929,
-        "narHash": "sha256-Fxakkz4+BTbvDLjRggZUVVhVEbg1b/MuuIC1rGrCwVA=",
+        "lastModified": 1725089858,
+        "narHash": "sha256-kxsNappeZSlUkPbxlgGZKKJGGZj2Ny0i2a+6G+8nH7s=",
         "owner": "folke",
         "repo": "tokyonight.nvim",
-        "rev": "b0e7c7382a7e8f6456f2a95655983993ffda745e",
+        "rev": "4b386e66a9599057587c30538d5e6192e3d1c181",
         "type": "github"
       },
       "original": {

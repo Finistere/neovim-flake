@@ -42,7 +42,7 @@ end
 local function attach_keymaps(client, bufnr)
   local bopts = { noremap = true, silent = true, buffer = bufnr }
 
-  vim.keymap.set({'v', 'n'}, '<leader>ca', require("actions-preview").code_actions, bopts)
+  vim.keymap.set({ 'v', 'n' }, '<leader>ca', require("actions-preview").code_actions, bopts)
   vim.keymap.set('n', '<leader>cr', ':IncRename ', bopts)
   vim.keymap.set('n', '<leader>ce', function() vim.lsp.buf.rename() end, bopts)
   -- Format file
@@ -186,9 +186,4 @@ null_ls.setup({
     --
     null_ls.builtins.formatting.prettierd, -- HTML/JS/Markdown/... formatting
   },
-})
-
-require("copilot").setup({
-  suggestion = { enabled = false },
-  panel = { enabled = false },
 })

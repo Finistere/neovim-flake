@@ -62,9 +62,20 @@ cmp.setup({
         fallback()
       end
     end, { "i", "s" }),
+    -- ['<C-x>'] = cmp.mapping(
+    --   cmp.mapping.complete({
+    --     config = {
+    --       sources = cmp.config.sources({
+    --         { name = 'cmp_ai' },
+    --       }),
+    --     },
+    --   }),
+    --   { 'i' }
+    -- ),
   }),
   sources = cmp.config.sources({
     { name = 'copilot' },
+    -- { name = 'cmp_ai' },
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
     { name = 'treesitter' }
