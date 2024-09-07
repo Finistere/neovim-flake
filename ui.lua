@@ -4,7 +4,6 @@
 
 vim.cmd([[colorscheme tokyonight-moon]])
 
-require('colorizer').setup {}
 require('nvim-web-devicons').setup()
 require('mini.move').setup()
 

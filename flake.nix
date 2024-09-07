@@ -227,12 +227,12 @@
                   # Editor visuals
                   indent-blankline-nvim # indentation guides
                   nvim-cursorline # underlines word & highlight current line
-                  nvim-colorizer-lua # show color for #000000
                   comment-nvim # toggle comment
                   range-highlight-nvim # highlight ranges (:20,+4)
                   todo-comments-nvim # highlight todo comments and list them in Trouble/Telescope
                   leap-nvim # faster navigation within a file
                   nvim-ufo # better folds
+                  nvim-surround # surround text objects
 
                   # Utilities
                   plenary-nvim # Utility library for lots of plugins
@@ -253,10 +253,9 @@
                   llm-nvim
                   copilot-cmp # cmp integration
                   copilot-lua # copilot
-                  cmp-ai
-                  (plugin "gen-nvim")
+                  # cmp-ai
+                  # (plugin "gen-nvim")
                   (plugin "avante-nvim")
-                  (plugin "oatmeal-nvim")
 
                   # Null-ls
                   none-ls-nvim # LSP adapter for other plugins (formatter, linter, etc.)

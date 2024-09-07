@@ -20,6 +20,8 @@ require('gitsigns').setup({
 
 require('diffview').setup()
 
+require("nvim-surround").setup()
+
 -- rainbow & indent guidelines
 require("rainbow-delimiters")
 require("ibl").setup({
