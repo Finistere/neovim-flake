@@ -37,6 +37,10 @@
       url = "github:yetone/avante.nvim";
       flake = false;
     };
+    oatmeal-nvim = {
+      url = "github:dustinblackman/oatmeal.nvim";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -252,6 +256,7 @@
                   cmp-ai
                   (plugin "gen-nvim")
                   (plugin "avante-nvim")
+                  (plugin "oatmeal-nvim")
 
                   # Null-ls
                   none-ls-nvim # LSP adapter for other plugins (formatter, linter, etc.)

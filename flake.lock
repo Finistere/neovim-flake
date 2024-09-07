@@ -817,6 +817,22 @@
         "url": "https://gitlab.com/HiPhish/rainbow-delimiters.nvim.git"
       }
     },
+    "oatmeal-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1711805699,
+        "narHash": "sha256-YqGOAZ8+KRYJbOIVHD9yreL7ZvBwbWeKwsM/oV6r3Ic=",
+        "owner": "dustinblackman",
+        "repo": "oatmeal.nvim",
+        "rev": "c8cdd0a182cf77f88ea5fa4703229ddb3f47c1f7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dustinblackman",
+        "repo": "oatmeal.nvim",
+        "type": "github"
+      }
+    },
     "pre-commit-hooks": {
       "inputs": {
         "flake-compat": "flake-compat_6",
@@ -863,6 +879,7 @@
         "mini-move": "mini-move",
         "nixpkgs": "nixpkgs",
         "nvim-rainbow-delimiter": "nvim-rainbow-delimiter",
+        "oatmeal-nvim": "oatmeal-nvim",
         "ranger": "ranger",
         "rustaceanvim": "rustaceanvim",
         "tokyonight-nvim": "tokyonight-nvim"
