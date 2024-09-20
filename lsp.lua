@@ -121,6 +121,7 @@ vim.g.rustaceanvim = {
   },
   -- LSP configuration
   server = {
+    capabilities = capabilities,
     on_attach = function(client, bufnr)
       local bopts = { noremap = true, silent = true, buffer = bufnr }
       vim.keymap.set('n', '<C-space>', 'RustLsp hover actions', bopts)

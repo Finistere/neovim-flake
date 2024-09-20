@@ -4,7 +4,7 @@
 require('leap').add_default_mappings()
 
 vim.wo.foldlevel = 99
-vim.wo.conceallevel = 2
+--vim.wo.conceallevel = 2
 
 require('gitsigns').setup({
   current_line_blame_opts = {
