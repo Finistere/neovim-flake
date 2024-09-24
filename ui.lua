@@ -37,6 +37,21 @@ require('nvim-tree').setup({
       end,
       opts('Telescope live grep')
     )
+    vim.keymap.set(
+      "n",
+      "<leader>ff",
+      function()
+        local node = api.tree.get_node_under_cursor()
+        if node and node.type == "directory" then
+          telescope.live_grep({
+            cwd = node.absolute_path
+          })
+        else
+          telescope.live_grep()
+        end
+      end,
+      opts('Telescope live grep')
+    )
   end,
   renderer = {
     root_folder_label = false,
