@@ -111,7 +111,7 @@
           nodePackages.typescript-language-server
           bash-language-server
           lua-language-server
-          llm-ls
+          # llm-ls
 
           # none-ls
           alejandra # nix formatting
@@ -185,11 +185,10 @@
                   lua << EOF
                   vim.g.codelldb_path = "${vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/adapter/codelldb";
                   vim.g.liblldb_path = "${vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/lldb/lib/lilldb.so";
-                  vim.g.llm_path = "${llm-ls}/bin/llm-ls";
+                  -- vim.g.llm_path = "${llm-ls}/bin/llm-ls";
                   ${lib.strings.fileContents ./tree-sitter.lua}
                   ${lib.strings.fileContents ./cmp.lua}
                   ${lib.strings.fileContents ./lsp.lua}
-                  ${lib.strings.fileContents ./llm.lua}
                   ${lib.strings.fileContents ./ui.lua}
                   ${lib.strings.fileContents ./editor.lua}
                   ${lib.strings.fileContents ./debug.lua}
@@ -250,12 +249,12 @@
                   inc-rename-nvim # in-place rename preview
 
                   # LLM
-                  llm-nvim
                   copilot-cmp # cmp integration
                   copilot-lua # copilot
+                  # llm-nvim
                   # cmp-ai
                   # (plugin "gen-nvim")
-                  (plugin "avante-nvim")
+                  # (plugin "avante-nvim")
 
                   # Null-ls
                   none-ls-nvim # LSP adapter for other plugins (formatter, linter, etc.)

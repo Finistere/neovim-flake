@@ -43,11 +43,11 @@ require('nvim-tree').setup({
       function()
         local node = api.tree.get_node_under_cursor()
         if node and node.type == "directory" then
-          telescope.live_grep({
+          telescope.find_files({
             cwd = node.absolute_path
           })
         else
-          telescope.live_grep()
+          telescope.find_files()
         end
       end,
       opts('Telescope live grep')
@@ -76,8 +76,8 @@ require('nvim-tree').setup({
   }
 })
 vim.cmd([[
-  noremap <silent><C-n> <cmd>NvimTreeToggle<cr>
-  noremap <silent><leader>tf <cmd>NvimTreeFocus<cr>
+  noremap <silent><C-,> <cmd>NvimTreeToggle<cr>
+  noremap <silent><C-/> <cmd>NvimTreeFindFile<cr>
 ]])
 
 require('trouble').setup({
@@ -127,7 +127,8 @@ vim.cmd([[
   nnoremap <silent><leader>fh <cmd>Telescope help_tags<cr>
   nnoremap <silent><leader>fs <cmd>Telescope git_status<cr>
   nnoremap <silent><leader>fw <cmd>Telescope grep_string<cr>
-  nnoremap <silent><leader>fl <cmd>Telescope lsp_dynamic_workspace_symbols<cr>
+  nnoremap <silent><leader>fal <cmd>Telescope lsp_workspace_symbols<cr>
+  nnoremap <silent><leader>fl <cmd>Telescope lsp_document_symbols<cr>
 ]])
 
 vim.api.nvim_create_user_command('Rg', function(opts)
