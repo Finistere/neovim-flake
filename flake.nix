@@ -185,7 +185,6 @@
                   lua << EOF
                   vim.g.codelldb_path = "${vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/adapter/codelldb";
                   vim.g.liblldb_path = "${vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/lldb/lib/lilldb.so";
-                  -- vim.g.llm_path = "${llm-ls}/bin/llm-ls";
                   ${lib.strings.fileContents ./tree-sitter.lua}
                   ${lib.strings.fileContents ./cmp.lua}
                   ${lib.strings.fileContents ./lsp.lua}
