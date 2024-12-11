@@ -188,6 +188,7 @@
                   ${lib.strings.fileContents ./tree-sitter.lua}
                   ${lib.strings.fileContents ./cmp.lua}
                   ${lib.strings.fileContents ./lsp.lua}
+                  ${lib.strings.fileContents ./llm.lua}
                   ${lib.strings.fileContents ./ui.lua}
                   ${lib.strings.fileContents ./editor.lua}
                   ${lib.strings.fileContents ./debug.lua}
@@ -235,7 +236,7 @@
                   # Utilities
                   plenary-nvim # Utility library for lots of plugins
                   dressing-nvim # for avante-nvim
-                  nui-nvim # for avante-nvim
+                  # nui-nvim # for avante-nvim
                   render-markdown
 
                   # LSP

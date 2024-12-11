@@ -45,3 +45,5 @@ supergraph
 graphql
 GDN
 codegen
+supergraph
+Deserialize
