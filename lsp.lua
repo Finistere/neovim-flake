@@ -171,6 +171,8 @@ require('crates').setup {
   -- null_ls = { enabled = true }
 }
 
+require'lspconfig'.graphql.setup{}
+
 local null_ls = require('null-ls')
 null_ls.setup({
   sources = {
