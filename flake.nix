@@ -112,6 +112,7 @@
           bash-language-server
           lua-language-server
           nodePackages.graphql-language-service-cli
+          nodePackages.graphql
           # llm-ls
 
           # none-ls
