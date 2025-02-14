@@ -188,5 +188,6 @@ null_ls.setup({
     null_ls.builtins.diagnostics.vale,
     --
     null_ls.builtins.formatting.prettierd, -- HTML/JS/Markdown/... formatting
+    null_ls.builtins.formatting.taplo,
   },
 })
