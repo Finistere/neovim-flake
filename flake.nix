@@ -29,16 +29,8 @@
       url = "github:folke/tokyonight.nvim";
       flake = false;
     };
-    gen-nvim = {
-      url = "github:David-Kunz/gen.nvim";
-      flake = false;
-    };
-    avante-nvim = {
-      url = "github:yetone/avante.nvim";
-      flake = false;
-    };
-    oatmeal-nvim = {
-      url = "github:dustinblackman/oatmeal.nvim";
+    crates-nvim = {
+      url = "github:saecki/crates.nvim";
       flake = false;
     };
   };
@@ -237,8 +229,6 @@
 
                   # Utilities
                   plenary-nvim # Utility library for lots of plugins
-                  dressing-nvim # for avante-nvim
-                  # nui-nvim # for avante-nvim
                   render-markdown
 
                   # LSP
@@ -253,16 +243,12 @@
                   # LLM
                   copilot-cmp # cmp integration
                   copilot-lua # copilot
-                  # llm-nvim
-                  # cmp-ai
-                  # (plugin "gen-nvim")
-                  # (plugin "avante-nvim")
 
                   # Null-ls
                   none-ls-nvim # LSP adapter for other plugins (formatter, linter, etc.)
 
                   # Rust
-                  crates-nvim # Show current version of rust dependencies within Cargo.toml
+                  (plugin "crates-nvim") # Show current version of rust dependencies within Cargo.toml
                   (plugin "rustaceanvim") # Rust integration
 
                   # Completion
