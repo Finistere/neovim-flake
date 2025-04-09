@@ -3,7 +3,7 @@
 
   inputs = {
     # use latest rust-analyzer
-    nixpkgs.url = "github:finistere/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     ranger = {
       url = "github:ranger/ranger";
@@ -104,7 +104,6 @@
           bash-language-server
           lua-language-server
           nodePackages.graphql-language-service-cli
-          nodePackages.graphql
           # llm-ls
 
           # none-ls
@@ -194,7 +193,12 @@
                   # Syntax
                   nvim-treesitter.withAllGrammars
                   # Using the maintained fork
-                  (plugin "nvim-rainbow-delimiter") # matching brackets... pairs
+                  ((plugin "nvim-rainbow-delimiter").overrideAttrs {
+                    nvimSkipModules = [
+                      "rainbow-delimiters._test.highlight"
+                      "rainbow-delimiters.types"
+                    ];
+                  }) # matching brackets... pairs
                   nvim-treesitter-context # Show a top bar with current code context
                   nvim-osc52 # copy paste directly into system clipboard through ssh
 
@@ -229,7 +233,7 @@
 
                   # Utilities
                   plenary-nvim # Utility library for lots of plugins
-                  render-markdown
+                  render-markdown-nvim
 
                   # LSP
                   nvim-lspconfig
@@ -248,7 +252,9 @@
                   none-ls-nvim # LSP adapter for other plugins (formatter, linter, etc.)
 
                   # Rust
-                  (plugin "crates-nvim") # Show current version of rust dependencies within Cargo.toml
+                  ((plugin "crates-nvim").overrideAttrs {
+                    nvimSkipModules = ["crates.null-ls"];
+                  }) # Show current version of rust dependencies within Cargo.toml
                   (plugin "rustaceanvim") # Rust integration
 
                   # Completion
