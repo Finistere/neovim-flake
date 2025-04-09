@@ -86,7 +86,7 @@ capabilities.textDocument.foldingRange = {
 local lspconfig = require('lspconfig')
 lspconfig.bashls.setup {}
 lspconfig.nil_ls.setup {}
-lspconfig.tsserver.setup {}
+lspconfig.ts_ls.setup {}
 
 -- https://github.com/LuaLS/lua-language-server/issues/783
 -- local runtime_path = vim.split(package.path, ';')
