@@ -255,7 +255,9 @@
                   ((plugin "crates-nvim").overrideAttrs {
                     nvimSkipModules = ["crates.null-ls"];
                   }) # Show current version of rust dependencies within Cargo.toml
-                  (plugin "rustaceanvim") # Rust integration
+                  ((plugin "rustaceanvim").overrideAttrs {
+                    nvimSkipModules = ["rustaceanvim.neotest.init"];
+                  }) # Rust integration
 
                   # Completion
                   nvim-cmp
@@ -272,7 +274,9 @@
                   lspkind-nvim # VS-code pictograms for auto-completion
 
                   # Colorscheme
-                  (plugin "tokyonight-nvim")
+                  ((plugin "tokyonight-nvim").overrideAttrs {
+                    nvimSkipModules = ["tokyonight.extra.fzf" "tokyonight.docs"];
+                  })
 
                   # Debug
                   nvim-dap
