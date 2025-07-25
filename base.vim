@@ -64,7 +64,7 @@ set spell spelllang=en_us spelloptions=camel spellfile=~/flakes/neovim/spell/en.
 
 " 2 space width
 autocmd filetype nix,lua,typescript,graphql,javascript,json,fish setlocal tabstop=2 shiftwidth=2 softtabstop=2
-autocmd filetype markdown,mdx,json setlocal conceallevel=0
+autocmd filetype markdown,md,mdx,json setlocal conceallevel=0
 " Disable LSP diagnostic for .env files
 autocmd BufRead,BufNewFile .env lua vim.diagnostic.disable()
 " Define Tinybird data files as SQL
