@@ -240,6 +240,7 @@ require('auto-session').setup {
   }
 }
 
+
 vim.cmd([[
   let g:floaterm_width  = 0.8
   let g:floaterm_height = 0.8
@@ -247,7 +248,7 @@ vim.cmd([[
   " let g:floaterm_keymap_new    = '<C-s>'
   " let g:floaterm_keymap_prev   = '<C-p>'
   " let g:floaterm_keymap_next   = '<C-n>'
-  let g:floaterm_keymap_toggle = '<F4>'
+  let g:floaterm_keymap_toggle = '<F13>'
   " let g:floaterm_keymap_kill   = '<C-k>'
   " rnvimr is slight faster as it keeps ranger process in the background
   nnoremap <silent><C-.> <cmd>FloatermNew ranger<cr>
