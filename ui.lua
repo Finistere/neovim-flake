@@ -65,6 +65,9 @@ require('nvim-tree').setup({
   filters = {
     custom = { "^\\.git$" }
   },
+  sort = {
+    folders_first = false
+  },
   filesystem_watchers = {
     enable = true,
     debounce_delay = 50,
