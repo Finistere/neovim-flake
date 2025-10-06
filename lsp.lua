@@ -83,10 +83,11 @@ capabilities.textDocument.foldingRange = {
   lineFoldingOnly = true
 }
 
-local lspconfig = require('lspconfig')
-lspconfig.bashls.setup {}
-lspconfig.nil_ls.setup {}
-lspconfig.ts_ls.setup {}
+vim.lsp.enable('taplo')
+vim.lsp.enable('graphql')
+vim.lsp.enable('bashls')
+vim.lsp.enable('nil_ls')
+vim.lsp.enable('ts_ls')
 
 -- https://github.com/LuaLS/lua-language-server/issues/783
 -- local runtime_path = vim.split(package.path, ';')
@@ -171,9 +172,6 @@ require('crates').setup {
   -- null_ls = { enabled = true }
 }
 
-require'lspconfig'.taplo.setup{}
-
-require'lspconfig'.graphql.setup{}
 
 local null_ls = require('null-ls')
 null_ls.setup({
