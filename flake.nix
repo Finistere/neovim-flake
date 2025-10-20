@@ -52,7 +52,9 @@
         pkgs = import nixpkgs {
           inherit system;
           # enable all packages
-          config = {allowUnfree = true;};
+          config = {
+            allowUnfree = true;
+          };
           overlays = [
             (final: prev: {
               # does nothing...
@@ -81,7 +83,6 @@
             })
           ];
         };
-        inherit (pkgs.vscode-extensions.vadimcn) vscode-lldb;
 
         extraPackages = with pkgs; [
           tree-sitter
@@ -89,9 +90,6 @@
 
           # for copilot
           nodejs
-
-          # Debug
-          vscode-lldb
 
           # language servers
           nil
@@ -124,7 +122,12 @@
           (ranger.overridePythonAttrs (old: {
             version = "1.9.4-master";
             src = inputs.ranger;
-            nativeCheckInputs = with python3Packages; old.nativeCheckInputs ++ [astroid pylint];
+            nativeCheckInputs = with python3Packages;
+              old.nativeCheckInputs
+              ++ [
+                astroid
+                pylint
+              ];
           }))
         ];
 
@@ -141,15 +144,11 @@
             };
 
           extraMakeWrapperArgs = ''--prefix PATH : "${lib.makeBinPath extraPackages}"'';
-          extraMakeWrapperLuaCArgs = ''
-            --suffix LUA_CPATH ";" "${
-              lib.concatMapStringsSep ";" luaPackages.getLuaCPath
-              resolvedExtraLuaPackages
+          extraMakeWrapperLuaCArgs = ''--suffix LUA_CPATH ";" "${
+              lib.concatMapStringsSep ";" luaPackages.getLuaCPath resolvedExtraLuaPackages
             }"'';
-          extraMakeWrapperLuaArgs = ''
-            --suffix LUA_PATH ";" "${
-              lib.concatMapStringsSep ";" luaPackages.getLuaPath
-              resolvedExtraLuaPackages
+          extraMakeWrapperLuaArgs = ''--suffix LUA_PATH ";" "${
+              lib.concatMapStringsSep ";" luaPackages.getLuaPath resolvedExtraLuaPackages
             }"'';
         in rec {
           apps.default = flake-utils.lib.mkApp {
@@ -176,15 +175,12 @@
                 (lib.strings.fileContents ./base.vim)
                 ''
                   lua << EOF
-                  vim.g.codelldb_path = "${vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/adapter/codelldb";
-                  vim.g.liblldb_path = "${vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/lldb/lib/lilldb.so";
                   ${lib.strings.fileContents ./tree-sitter.lua}
                   ${lib.strings.fileContents ./cmp.lua}
                   ${lib.strings.fileContents ./lsp.lua}
                   ${lib.strings.fileContents ./llm.lua}
                   ${lib.strings.fileContents ./ui.lua}
                   ${lib.strings.fileContents ./editor.lua}
-                  ${lib.strings.fileContents ./debug.lua}
                   EOF
                 ''
               ];
@@ -274,7 +270,10 @@
 
                   # Colorscheme
                   ((plugin "tokyonight-nvim").overrideAttrs {
-                    nvimSkipModules = ["tokyonight.extra.fzf" "tokyonight.docs"];
+                    nvimSkipModules = [
+                      "tokyonight.extra.fzf"
+                      "tokyonight.docs"
+                    ];
                   })
 
                   # Debug

@@ -136,10 +136,10 @@ vim.g.rustaceanvim = {
       },
     },
   },
-  dap = {
-    adapter = require('rustaceanvim.config')
-        .get_codelldb_adapter(vim.g.codelldb_path, vim.g.liblldb_path),
-  },
+  -- dap = {
+  --   adapter = require('rustaceanvim.config')
+  --       .get_codelldb_adapter(vim.g.codelldb_path, vim.g.liblldb_path),
+  -- },
 }
 
 -- Rust pre-configured by rust-tools
