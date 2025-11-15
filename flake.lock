@@ -338,7 +338,8 @@
         "nvim-rainbow-delimiter": "nvim-rainbow-delimiter",
         "ranger": "ranger",
         "rustaceanvim": "rustaceanvim",
-        "tokyonight-nvim": "tokyonight-nvim"
+        "tokyonight-nvim": "tokyonight-nvim",
+        "tree-sitter-language-injection-nvim": "tree-sitter-language-injection-nvim"
       }
     },
     "rustaceanvim": {
@@ -394,6 +395,22 @@
       "original": {
         "owner": "folke",
         "repo": "tokyonight.nvim",
+        "type": "github"
+      }
+    },
+    "tree-sitter-language-injection-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1754158226,
+        "narHash": "sha256-/oqleaE2CGXAx7YTz4fEDv4CtuyAWt2CfSwTZ+wvqNw=",
+        "owner": "DariusCorvus",
+        "repo": "tree-sitter-language-injection.nvim",
+        "rev": "5f5b962232d189017d040a55eee623daf486b393",
+        "type": "github"
+      },
+      "original": {
+        "owner": "DariusCorvus",
+        "repo": "tree-sitter-language-injection.nvim",
         "type": "github"
       }
     },

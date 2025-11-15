@@ -33,6 +33,10 @@
       url = "github:saecki/crates.nvim";
       flake = false;
     };
+    tree-sitter-language-injection-nvim = {
+      url = "github:DariusCorvus/tree-sitter-language-injection.nvim";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -197,6 +201,7 @@
                   }) # matching brackets... pairs
                   nvim-treesitter-context # Show a top bar with current code context
                   nvim-osc52 # copy paste directly into system clipboard through ssh
+                  (plugin "tree-sitter-language-injection-nvim")
 
                   # UI
                   telescope-nvim # find/search popup
