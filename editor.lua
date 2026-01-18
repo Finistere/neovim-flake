@@ -1,7 +1,6 @@
 --
 -- EDITOR
 --
-require('leap').add_default_mappings()
 
 vim.wo.foldlevel = 99
 --vim.wo.conceallevel = 2

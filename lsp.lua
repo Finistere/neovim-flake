@@ -2,7 +2,13 @@
 -- LSP
 --
 
-require('fidget').setup({})
+require('fidget').setup({
+  notification = {
+    window = {
+      avoid = {"NvimTree"}
+    }
+  }
+})
 require("inc_rename").setup()
 
 local hl = require("actions-preview.highlight")
@@ -129,11 +135,11 @@ vim.g.rustaceanvim = {
     end,
     default_settings = {
       -- rust-analyzer language server configuration
-      ['rust-analyzer'] = {
-        cargo = {
-          allFeatures = true
-        }
-      },
+      -- ['rust-analyzer'] = {
+      --   cargo = {
+      --     allFeatures = true
+      --   }
+      -- },
     },
   },
   -- dap = {

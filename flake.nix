@@ -21,14 +21,6 @@
       url = "github:mrcjkb/rustaceanvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    fidget-nvim = {
-      url = "github:j-hui/fidget.nvim";
-      flake = false;
-    };
-    tokyonight-nvim = {
-      url = "github:folke/tokyonight.nvim";
-      flake = false;
-    };
     crates-nvim = {
       url = "github:saecki/crates.nvim";
       flake = false;
@@ -241,7 +233,7 @@
                   # lsp_signature-nvim # show signature when writing arguments
                   actions-preview-nvim # preview code actions
                   trouble-nvim # friendlier bottom window for search results
-                  (plugin "fidget-nvim") # LSP status fidget
+                  fidget-nvim # LSP status fidget
                   inc-rename-nvim # in-place rename preview
 
                   # LLM
@@ -274,12 +266,7 @@
                   lspkind-nvim # VS-code pictograms for auto-completion
 
                   # Colorscheme
-                  ((plugin "tokyonight-nvim").overrideAttrs {
-                    nvimSkipModules = [
-                      "tokyonight.extra.fzf"
-                      "tokyonight.docs"
-                    ];
-                  })
+                  tokyonight-nvim
 
                   # Debug
                   nvim-dap
