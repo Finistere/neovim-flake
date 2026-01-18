@@ -2,25 +2,20 @@
 -- Treesitter
 --
 
--- require('nvim-treesitter.config').setup {
---   -- All grammars are installed through Nix
---   ensure_installed = {},
---   auto_install = false,
---   highlight = {
---     enable = true,
---   },
---   indent = { enable = true },
---   rainbow = {
---     enable = true,
---     extended_mode = true,
---     max_file_lines = 2000,
---   },
---   query_linter = {
---     enable = true,
---     use_virtual_text = true,
---     lint_events = { "BufWrite", "CursorHold" }
---   }
--- }
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = vim.g.treesitter_grammars, -- from Nix
+  group = vim.api.nvim_create_augroup("user_plugin_nvim_treesitter", {}),
+  callback = function(args)
+    -- syntax highlighting, provided by Neovim
+    vim.treesitter.start()
+    -- folds, provided by Neovim
+    vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+    vim.wo.foldmethod = 'expr'
+    -- indentation, provided by nvim-treesitter
+    vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    -- end
+  end,
+})
 
 require('treesitter-context').setup {
   enable = true,

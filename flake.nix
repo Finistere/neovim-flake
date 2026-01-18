@@ -147,6 +147,8 @@
           extraMakeWrapperLuaArgs = ''--suffix LUA_PATH ";" "${
               lib.concatMapStringsSep ";" luaPackages.getLuaPath resolvedExtraLuaPackages
             }"'';
+          tsGrammarNames = lib.attrNames pkgs.vimPlugins.nvim-treesitter.grammarPlugins;
+          tsGrammarNamesLua = lib.generators.toLua {} tsGrammarNames;
         in rec {
           apps.default = flake-utils.lib.mkApp {
             drv = packages.default;
@@ -172,6 +174,7 @@
                 (lib.strings.fileContents ./base.vim)
                 ''
                   lua << EOF
+                  vim.g.treesitter_grammars = ${tsGrammarNamesLua}
                   ${lib.strings.fileContents ./tree-sitter.lua}
                   ${lib.strings.fileContents ./cmp.lua}
                   ${lib.strings.fileContents ./lsp.lua}
