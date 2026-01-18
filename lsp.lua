@@ -95,6 +95,33 @@ vim.lsp.enable('bashls')
 vim.lsp.enable('nil_ls')
 vim.lsp.enable('ts_ls')
 
+-- https://zigtools.org/zls/editors/vim/nvim/
+vim.lsp.config['zls'] = {
+  -- Set to 'zls' if `zls` is in your PATH
+  cmd = { 'zls' },
+  filetypes = { 'zig' },
+  root_markers = { 'build.zig' },
+  -- There are two ways to set config options:
+  --   - edit your `zls.json` that applies to any editor that uses ZLS
+  --   - set in-editor config options with the `settings` field below.
+  --
+  -- Further information on how to configure ZLS:
+  -- https://zigtools.org/zls/configure/
+  settings = {
+    zls = {
+      -- Whether to enable build-on-save diagnostics
+      --
+      -- Further information about build-on save:
+      -- https://zigtools.org/zls/guides/build-on-save/
+      -- enable_build_on_save = true,
+
+      -- omit the following line if `zig` is in your PATH
+      -- zig_exe_path = '/path/to/zig_executable'
+    }
+  },
+}
+vim.lsp.enable('zls')
+
 -- https://github.com/LuaLS/lua-language-server/issues/783
 -- local runtime_path = vim.split(package.path, ';')
 -- table.insert(runtime_path, 'lua/?.lua')
