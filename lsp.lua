@@ -32,8 +32,42 @@ require("actions-preview").setup {
 }
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+
+local function apply_code_action(kind, bufnr, timeout_ms)
+  local params = vim.lsp.util.make_range_params()
+  params.context = { only = { kind }, diagnostics = {} }
+
+  local results = vim.lsp.buf_request_sync(bufnr, "textDocument/codeAction", params, timeout_ms)
+  if not results then return end
+
+  for client_id, res in pairs(results) do
+    for _, action in ipairs(res.result or {}) do
+      if action.edit then
+        vim.lsp.util.apply_workspace_edit(action.edit, client_id)
+      end
+      if action.command then
+        vim.lsp.buf.execute_command(action.command)
+      end
+    end
+  end
+end
+
+local function zls_fixups_on_save(bufnr)
+  vim.api.nvim_create_autocmd("BufWritePre", {
+    group = augroup,
+    buffer = bufnr,
+    callback = function()
+      apply_code_action("source.organizeImports", bufnr, 1000)
+      apply_code_action("source.fixAll", bufnr, 1000)
+      vim.lsp.buf.format({ bufnr = bufnr, async = false })
+    end,
+  })
+end
+
 local function format_on_save(client, bufnr)
-  if client.supports_method("textDocument/formatting") then
+  if client.name == "zls" then
+    zls_fixups_on_save(bufnr)
+  elseif client.supports_method("textDocument/formatting") then
     vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
     vim.api.nvim_create_autocmd("BufWritePre", {
       group = augroup,
