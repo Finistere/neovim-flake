@@ -122,6 +122,12 @@ vim.lsp.config['zls'] = {
 }
 vim.lsp.enable('zls')
 
+-- Allow projects to override ZLS
+local zls_cmd = os.getenv("ZLS_CMD")
+vim.lsp.config('zls', {
+  cmd = zls_cmd and {zls_cmd} or nil,
+})
+
 -- https://github.com/LuaLS/lua-language-server/issues/783
 -- local runtime_path = vim.split(package.path, ';')
 -- table.insert(runtime_path, 'lua/?.lua')
