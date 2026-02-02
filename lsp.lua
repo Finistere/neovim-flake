@@ -245,6 +245,8 @@ require('crates').setup {
   -- null_ls = { enabled = true }
 }
 
+vim.lsp.enable('basedpyright')
+
 
 local null_ls = require('null-ls')
 null_ls.setup({
@@ -258,7 +260,7 @@ null_ls.setup({
       extra_args = { "--indent=4" }
     }),
     -- Spelling
-    null_ls.builtins.diagnostics.vale,
+    -- null_ls.builtins.diagnostics.vale,
     --
     null_ls.builtins.formatting.prettierd, -- HTML/JS/Markdown/... formatting
   },

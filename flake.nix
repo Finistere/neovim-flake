@@ -99,6 +99,7 @@
           lua-language-server
           nodePackages.graphql-language-service-cli
           zls
+          basedpyright
           # llm-ls
 
           # none-ls
