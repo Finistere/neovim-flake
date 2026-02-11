@@ -34,7 +34,20 @@ require("actions-preview").setup {
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
 local function apply_code_action(kind, bufnr, timeout_ms)
-  local params = vim.lsp.util.make_range_params()
+  local clients = vim.lsp.get_clients({ bufnr = bufnr })
+  local encoding = nil
+  for _, client in ipairs(clients) do
+    if client.name == "zls" then
+      encoding = client.offset_encoding
+      break
+    end
+  end
+  if not encoding and clients[1] and clients[1].offset_encoding then
+    encoding = clients[1].offset_encoding
+  end
+  encoding = encoding or "utf-16"
+
+  local params = vim.lsp.util.make_range_params(0, encoding)
   params.context = { only = { kind }, diagnostics = {} }
 
   local results = vim.lsp.buf_request_sync(bufnr, "textDocument/codeAction", params, timeout_ms)
@@ -43,7 +56,7 @@ local function apply_code_action(kind, bufnr, timeout_ms)
   for client_id, res in pairs(results) do
     for _, action in ipairs(res.result or {}) do
       if action.edit then
-        vim.lsp.util.apply_workspace_edit(action.edit, client_id)
+        vim.lsp.util.apply_workspace_edit(action.edit, encoding)
       end
       if action.command then
         vim.lsp.buf.execute_command(action.command)

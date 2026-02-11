@@ -48,3 +48,4 @@ codegen
 supergraph
 Deserialize
 Grafbase/!
+const/!

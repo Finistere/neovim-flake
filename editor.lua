@@ -93,3 +93,7 @@ if os.getenv("SSH_CONNECTION") ~= nil then
   vim.keymap.set('n', '<leader>c', '"+y')
   vim.keymap.set('n', '<leader>cc', '"+yy')
 end
+
+vim.keymap.set({'n', 'x', 'o'}, 's', '<Plug>(leap)')
+vim.keymap.set('n',             'S', '<Plug>(leap-from-window)')
+
