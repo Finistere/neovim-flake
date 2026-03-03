@@ -53,16 +53,70 @@ local function apply_code_action(kind, bufnr, timeout_ms)
   local results = vim.lsp.buf_request_sync(bufnr, "textDocument/codeAction", params, timeout_ms)
   if not results then return end
 
-  for client_id, res in pairs(results) do
+  -- Collect all text edits for this buffer from the code action results.
+  local all_edits = {}
+  for _, res in pairs(results) do
     for _, action in ipairs(res.result or {}) do
       if action.edit then
-        vim.lsp.util.apply_workspace_edit(action.edit, encoding)
+        local changes = action.edit.changes or {}
+        local doc_changes = action.edit.documentChanges or {}
+
+        for _, change in ipairs(doc_changes) do
+          if change.edits then
+            for _, edit in ipairs(change.edits) do
+              table.insert(all_edits, edit)
+            end
+          end
+        end
+
+        local uri = vim.uri_from_bufnr(bufnr)
+        if changes[uri] then
+          for _, edit in ipairs(changes[uri]) do
+            table.insert(all_edits, edit)
+          end
+        end
       end
       if action.command then
         vim.lsp.buf.execute_command(action.command)
       end
     end
   end
+
+  if #all_edits == 0 then return end
+
+  -- Apply edits on a scratch buffer to compute the final result without
+  -- polluting the real buffer's undo history.
+  local old_lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+  local scratch = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_buf_set_lines(scratch, 0, -1, false, old_lines)
+  vim.lsp.util.apply_text_edits(all_edits, scratch, encoding)
+  local new_lines = vim.api.nvim_buf_get_lines(scratch, 0, -1, false)
+  vim.api.nvim_buf_delete(scratch, { force = true })
+
+  -- Find the minimal range of changed lines so we don't replace the
+  -- entire buffer (which would reset the cursor position).
+  local first = 1
+  local old_len = #old_lines
+  local new_len = #new_lines
+  while first <= old_len and first <= new_len and old_lines[first] == new_lines[first] do
+    first = first + 1
+  end
+  if first > old_len and first > new_len then return end -- no change
+
+  local old_last = old_len
+  local new_last = new_len
+  while old_last >= first and new_last >= first and old_lines[old_last] == new_lines[new_last] do
+    old_last = old_last - 1
+    new_last = new_last - 1
+  end
+
+  local replacement = {}
+  for i = first, new_last do
+    table.insert(replacement, new_lines[i])
+  end
+
+  -- Apply the diff as a single undo entry (0-based indexing for the API)
+  vim.api.nvim_buf_set_lines(bufnr, first - 1, old_last, false, replacement)
 end
 
 local function zls_fixups_on_save(bufnr)
