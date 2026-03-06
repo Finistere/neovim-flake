@@ -29,10 +29,17 @@ require('nvim-tree').setup({
         local node = api.tree.get_node_under_cursor()
         if node and node.type == "directory" then
           telescope.live_grep({
-            search_dirs = { node.absolute_path }
+            search_dirs = { node.absolute_path },
+            additional_args = function()
+              return { '--hidden' }
+            end,
           })
         else
-          telescope.live_grep()
+          telescope.live_grep({
+            additional_args = function()
+              return { '--hidden' }
+            end,
+          })
         end
       end,
       opts('Telescope live grep')
@@ -44,6 +51,7 @@ require('nvim-tree').setup({
         local node = api.tree.get_node_under_cursor()
         if node and node.type == "directory" then
           telescope.find_files({
+            hidden = true,
             cwd = node.absolute_path
           })
         else
@@ -125,7 +133,6 @@ telescope.setup({
 telescope.load_extension('fzf')
 vim.cmd([[
   nnoremap <silent><leader>ff <cmd>Telescope find_files<cr>
-  nnoremap <silent><leader>fg <cmd>Telescope live_grep<cr>
   nnoremap <silent><leader>fb <cmd>Telescope buffers<cr>
   nnoremap <silent><leader>fh <cmd>Telescope help_tags<cr>
   nnoremap <silent><leader>fs <cmd>Telescope git_status<cr>
@@ -133,6 +140,13 @@ vim.cmd([[
   nnoremap <silent><leader>fal <cmd>Telescope lsp_workspace_symbols<cr>
   nnoremap <silent><leader>fl <cmd>Telescope lsp_document_symbols<cr>
 ]])
+vim.keymap.set('n', '<leader>fg', function()
+  require('telescope.builtin').live_grep({
+    additional_args = function()
+      return { '--hidden' }
+    end,
+  })
+end, { silent = true })
 
 vim.api.nvim_create_user_command('Rg', function(opts)
   local path = vim.fn.getcwd()
@@ -257,4 +271,3 @@ vim.cmd([[
   nnoremap <silent><C-.> <cmd>FloatermNew ranger<cr>
   tnoremap <silent><C-.> <cmd>FloatermNew ranger<CR>
 ]])
-
