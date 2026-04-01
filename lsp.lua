@@ -134,7 +134,7 @@ end
 local function format_on_save(client, bufnr)
   if client.name == "zls" then
     zls_fixups_on_save(bufnr)
-  elseif client.supports_method("textDocument/formatting") then
+  elseif client:supports_method("textDocument/formatting") then
     vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
     vim.api.nvim_create_autocmd("BufWritePre", {
       group = augroup,

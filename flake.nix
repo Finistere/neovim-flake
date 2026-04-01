@@ -93,10 +93,10 @@
             useMimalloc = true;
           })
           terraform-ls
-          nodePackages.typescript-language-server
+          typescript-language-server
           bash-language-server
           lua-language-server
-          nodePackages.graphql-language-service-cli
+          graphql-language-service-cli
           zls # Zig
           basedpyright # Python
           # llm-ls
