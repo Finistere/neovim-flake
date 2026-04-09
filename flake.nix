@@ -109,6 +109,7 @@
           deadnix # dead code
           prettierd # js/html/markdown/... formatting
           taplo # toml formatting
+          llvmPackages_20.clang-tools
 
           # Utilities
           ripgrep

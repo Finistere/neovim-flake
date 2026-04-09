@@ -314,6 +314,10 @@ require('crates').setup {
 
 vim.lsp.enable('basedpyright')
 
+vim.lsp.enable("clangd")
+vim.lsp.config("clangd", {
+  cmd = { "clangd", "--background-index", "--compile-commands-dir=." },
+})
 
 local null_ls = require('null-ls')
 null_ls.setup({
