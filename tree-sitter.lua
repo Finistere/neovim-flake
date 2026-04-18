@@ -1,6 +1,8 @@
 --
 -- Treesitter
 --
+local minimal_profile = vim.g.minimal_profile == true
+
 
 vim.api.nvim_create_autocmd('FileType', {
   pattern = vim.g.treesitter_grammars, -- from Nix
@@ -24,5 +26,7 @@ require('treesitter-context').setup {
 vim.filetype.add({ extension = { mdx = 'mdx' } })
 vim.treesitter.language.register('markdown', 'mdx')
 
--- Had to create `.config/mvim`
-require("tree-sitter-language-injection").setup {}
+if not minimal_profile then
+  -- Had to create `.config/mvim`
+  require("tree-sitter-language-injection").setup {}
+end

@@ -120,7 +120,6 @@
             }) # matching brackets... pairs
             nvim-treesitter-context # Show a top bar with current code context
             nvim-osc52 # copy paste directly into system clipboard through ssh
-            (plugin "tree-sitter-language-injection-nvim")
 
             # UI
             telescope-nvim # find/search popup
@@ -187,6 +186,9 @@
               actions-preview-nvim # preview code actions
               fidget-nvim # LSP status fidget
               inc-rename-nvim # in-place rename preview
+
+              # Today always require a `.config/nvim/after` to exist which is annoying.
+              (plugin "tree-sitter-language-injection-nvim")
 
               # Rust
               ((plugin "rustaceanvim").overrideAttrs {
