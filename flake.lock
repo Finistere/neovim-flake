@@ -181,22 +181,6 @@
         "type": "github"
       }
     },
-    "mini-move": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1775224835,
-        "narHash": "sha256-+OTW77wcX1I2Ua5W6O7tX/4J22RLTxZ2YviV1Atr7OI=",
-        "owner": "echasnovski",
-        "repo": "mini.move",
-        "rev": "74d140143b1bb905c3d0aebcfc2f216fd237080e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "echasnovski",
-        "repo": "mini.move",
-        "type": "github"
-      }
-    },
     "neovim-nightly-overlay": {
       "inputs": {
         "flake-parts": "flake-parts_2",
@@ -296,30 +280,12 @@
         "url": "https://gitlab.com/HiPhish/rainbow-delimiters.nvim.git"
       }
     },
-    "ranger": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1776186747,
-        "narHash": "sha256-lZqVi8NakD7a0xCXLNWrbU3Rt1sR6EsWULsBvFM5Klc=",
-        "owner": "ranger",
-        "repo": "ranger",
-        "rev": "9f671c6a577d19520ee3afd6e1a93bb35c10582c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ranger",
-        "repo": "ranger",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "crates-nvim": "crates-nvim",
         "flake-utils": "flake-utils",
-        "mini-move": "mini-move",
         "nixpkgs": "nixpkgs",
         "nvim-rainbow-delimiter": "nvim-rainbow-delimiter",
-        "ranger": "ranger",
         "rustaceanvim": "rustaceanvim",
         "tree-sitter-language-injection-nvim": "tree-sitter-language-injection-nvim"
       }

@@ -5,14 +5,6 @@
     # use latest rust-analyzer
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    ranger = {
-      url = "github:ranger/ranger";
-      flake = false;
-    };
-    mini-move = {
-      url = "github:echasnovski/mini.move";
-      flake = false;
-    };
     nvim-rainbow-delimiter = {
       url = "git+https://gitlab.com/HiPhish/rainbow-delimiters.nvim.git";
       flake = false;
@@ -47,37 +39,9 @@
       system: let
         pkgs = import nixpkgs {
           inherit system;
-          # enable all packages
           config = {
             allowUnfree = true;
           };
-          overlays = [
-            (final: prev: {
-              # does nothing...
-              # rust-analyzer-unwrapped = prev.rust-analyzer-unwrapped.overrideAttrs (old: rec {
-              #   version = "2024-08-01";
-              #   src = prev.fetchFromGitHub {
-              #     owner = "rust-lang";
-              #     repo = "rust-analyzer";
-              #     rev = version;
-              #     hash = "sha256-mUVnhgiQNnvn/lyMfh1d2XqiUE/3rwF993uUrcq3pS0=";
-              #   };
-              #   cargoDeps = old.cargoDeps.overrideAttrs {
-              #     inherit src;
-              #     outputHash = "sha256-0PKoZhypSZk6vAaho8naMDRYc58AiQbJ1DW48owsMUQ=";
-              #   };
-              # });
-              # neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs (old: {
-              #   version = "nightly";
-              #   src = prev.fetchFromGitHub {
-              #     owner = "neovim";
-              #     repo = "neovim";
-              #     rev = "nightly";
-              #     hash = "sha256-Hw/alNyPST9zK8j/1//Z2waDn65SBkNWtr0waN5HmU8=";
-              #   };
-              # });
-            })
-          ];
         };
 
         extraPackages = with pkgs; [
@@ -117,16 +81,7 @@
           git
           gh # for cmp-git
           delta
-          (ranger.overridePythonAttrs (old: {
-            version = "1.9.4-master";
-            src = inputs.ranger;
-            nativeCheckInputs = with python3Packages;
-              old.nativeCheckInputs
-              ++ [
-                astroid
-                pylint
-              ];
-          }))
+          ranger
         ];
 
         luaPackages = pkgs.lua.pkgs;
@@ -210,7 +165,6 @@
                   scope-nvim # associate buffers to tabs
                   lualine-nvim # bottom status line
                   vim-floaterm # floating terminal window
-                  (plugin "mini-move") # Moving selection with Atl+hjkl
                   marks-nvim # show marks with gutter icons
                   diffview-nvim # git diffs
 
