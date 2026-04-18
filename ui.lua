@@ -95,7 +95,7 @@ require('trouble').setup({
   auto_jump = { 'lsp_definitions', 'lsp_type_definitions' },
   action_keys = {
     jump_close = { '<cr>' },
-    jump = { "o", "<tab>" }
+    jump = { 'o', '<tab>' }
   }
 })
 vim.cmd([[
@@ -114,16 +114,16 @@ telescope.setup({
     -- path_display = { 'smart' },
     mappings = {
       i = {
-        ["<C-t>"] = trouble.open,
-        ["<esc>"] = require('telescope.actions').close
+        ['<C-t>'] = trouble.open,
+        ['<esc>'] = require('telescope.actions').close
       },
-      n = { ["<C-t>"] = trouble.open },
+      n = { ['<C-t>'] = trouble.open },
     },
     dynamic_preview_title = true,
   },
   pickers = {
     buffers = {
-      theme = "dropdown",
+      theme = 'dropdown',
       sort_mru = true,
       ignore_current_buffer = true
     },
@@ -151,25 +151,25 @@ vim.api.nvim_create_user_command('Rg', function(opts)
   local path = vim.fn.getcwd()
 
   -- try retrieving current node from nvim-tree-lua
-  local view = require("nvim-tree.view")
+  local view = require('nvim-tree.view')
   if view.is_visible() then
-    local api = require("nvim-tree.api")
+    local api = require('nvim-tree.api')
     local node = api.tree.get_node_under_cursor()
     if node and node.type == "directory" then
       local abs_path = node.absolute_path
       local local_path = string.sub(abs_path, string.len(path) + 1, string.len(abs_path))
       local choice = vim.fn.input({
         prompt = "Use " .. local_path .. " ? (y/N) ",
-        default = ""
+        default = '',
       })
-      if choice == "y" then
+      if choice == 'y' then
         path = node.absolute_path
       end
     end
   end
 
   -- command cleanup
-  vim.cmd("echo \"\"")
+  vim.cmd('echo ""')
 
   require('telescope.builtin').live_grep({
     search_dirs = { path },

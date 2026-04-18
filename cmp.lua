@@ -11,14 +11,28 @@ vim.o.pumheight = 15 -- max items suggested
 local cmp = require('cmp')
 local luasnip = require('luasnip')
 local lspkind = require('lspkind')
-require("copilot_cmp").setup()
-vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
+local minimal_profile = vim.g.minimal_profile == true
+
+if not minimal_profile then
+  require('copilot_cmp').setup()
+  vim.api.nvim_set_hl(0, 'CmpItemKindCopilot', { fg = '#6CC644' })
+end
+
+local insert_sources = {
+  { name = 'nvim_lsp' },
+  { name = 'luasnip' },
+  { name = 'treesitter' },
+}
+
+if not minimal_profile then
+  table.insert(insert_sources, 1, { name = 'copilot' })
+end
 
 -- used for super-tab
 local has_words_before = function()
-  if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
+  if vim.api.nvim_buf_get_option(0, 'buftype') == 'prompt' then return false end
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
+  return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match('^%s*$') == nil
 end
 
 cmp.setup({
@@ -38,8 +52,8 @@ cmp.setup({
       before = function(entry, vim_item)
         return vim_item
       end,
-      symbol_map = { Copilot = "" }
-    })
+      symbol_map = { Copilot = '' },
+    }),
   },
   mapping = cmp.mapping.preset.insert({
     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
@@ -48,20 +62,20 @@ cmp.setup({
     ['<C-e>'] = cmp.mapping.abort(),
     ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     -- Super tab
-    ["<Tab>"] = vim.schedule_wrap(function(fallback)
+    ['<Tab>'] = vim.schedule_wrap(function(fallback)
       if cmp.visible() and has_words_before() then
         cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
       else
         fallback()
       end
     end),
-    ["<S-Tab>"] = cmp.mapping(function(fallback)
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
       else
         fallback()
       end
-    end, { "i", "s" }),
+    end, { 'i', 's' }),
     -- ['<C-x>'] = cmp.mapping(
     --   cmp.mapping.complete({
     --     config = {
@@ -73,32 +87,34 @@ cmp.setup({
     --   { 'i' }
     -- ),
   }),
-  sources = cmp.config.sources({
-    { name = 'copilot' },
-    -- { name = 'cmp_ai' },
-    { name = 'nvim_lsp' },
-    { name = 'luasnip' },
-    { name = 'treesitter' }
-  }, {
+  sources = cmp.config.sources(insert_sources, {
     { name = 'buffer' },
   }),
   sorting = {
     priority_weight = 2,
-    comparators = {
-      require("copilot_cmp.comparators").prioritize,
+    comparators = (function()
+      local comparators = {}
 
-      -- Below is the default comparitor list and order for nvim-cmp
-      cmp.config.compare.offset,
-      -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
-      cmp.config.compare.exact,
-      cmp.config.compare.score,
-      cmp.config.compare.recently_used,
-      cmp.config.compare.locality,
-      cmp.config.compare.kind,
-      cmp.config.compare.sort_text,
-      cmp.config.compare.length,
-      cmp.config.compare.order,
-    },
+      if not minimal_profile then
+        table.insert(comparators, require('copilot_cmp.comparators').prioritize)
+      end
+
+      vim.list_extend(comparators, {
+        -- Below is the default comparitor list and order for nvim-cmp
+        cmp.config.compare.offset,
+        -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
+        cmp.config.compare.exact,
+        cmp.config.compare.score,
+        cmp.config.compare.recently_used,
+        cmp.config.compare.locality,
+        cmp.config.compare.kind,
+        cmp.config.compare.sort_text,
+        cmp.config.compare.length,
+        cmp.config.compare.order,
+      })
+
+      return comparators
+    end)(),
   },
 })
 
@@ -110,7 +126,7 @@ cmp.setup.filetype('gitcommit', {
     { name = 'buffer' },
   })
 })
-require("cmp_git").setup()
+require('cmp_git').setup()
 
 -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline({ '/', '?' }, {
@@ -136,9 +152,9 @@ cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
 
 -- Lazy loading for crates
 vim.api.nvim_create_autocmd("BufRead", {
-  group = vim.api.nvim_create_augroup("CmpSourceCargo", { clear = true }),
-  pattern = "Cargo.toml",
+  group = vim.api.nvim_create_augroup('CmpSourceCargo', { clear = true }),
+  pattern = 'Cargo.toml',
   callback = function()
-    cmp.setup.buffer({ sources = { { name = "crates" } } })
+    cmp.setup.buffer({ sources = { { name = 'crates' } } })
   end,
 })
