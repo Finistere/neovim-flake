@@ -74,7 +74,4 @@ au BufRead,BufNewFile *.mdx setfiletype mardown
 " Sudo tee hack, write as root
 cmap w!! w !sudo tee > /dev/null %
 
-noremap ; :
-noremap : ;
-
 
