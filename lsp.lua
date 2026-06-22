@@ -6,11 +6,11 @@ local minimal_profile = vim.g.minimal_profile == true
 
 if not minimal_profile then
   require('fidget').setup({
-    notification = {
-      window = {
-        avoid = {'NvimTree'}
-      }
-    }
+    -- notification = {
+    --   window = {
+    --     avoid = {'NvimTree'}
+    --   }
+    -- }
   })
   require('inc_rename').setup()
 
