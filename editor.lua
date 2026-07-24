@@ -17,7 +17,9 @@ require('gitsigns').setup({
   end
 })
 
-require('diffview').setup()
+require('diffview').setup({
+  preferred_adapter = "jj",
+})
 
 require("nvim-surround").setup()
 
