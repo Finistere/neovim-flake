@@ -21,6 +21,10 @@
       url = "github:DariusCorvus/tree-sitter-language-injection.nvim";
       flake = false;
     };
+    diffchar-nvim = {
+      url = "github:rickhowe/diffchar.vim";
+      flake = false;
+    };
   };
 
   outputs =
@@ -137,6 +141,7 @@
           vim-floaterm # floating terminal window
           marks-nvim # show marks with gutter icons
           diffview-plus-nvim # git diffs
+          (plugin "diffchar-nvim")
           trouble-nvim # friendlier bottom window for search results
 
           # Nvim behavior

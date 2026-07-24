@@ -16,6 +16,22 @@
         "type": "github"
       }
     },
+    "diffchar-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1759478262,
+        "narHash": "sha256-zbhl/teXdWft3YhJ/2+QUEZw3N33dfg3gm0XMEzYU1o=",
+        "owner": "rickhowe",
+        "repo": "diffchar.vim",
+        "rev": "14fc3fc79356d6b80462df8dbc8934f293145b9a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rickhowe",
+        "repo": "diffchar.vim",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -247,6 +263,7 @@
     "root": {
       "inputs": {
         "crates-nvim": "crates-nvim",
+        "diffchar-nvim": "diffchar-nvim",
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs",
         "nvim-rainbow-delimiter": "nvim-rainbow-delimiter",
