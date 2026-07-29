@@ -16,9 +16,73 @@ require('gitsigns').setup({
     vim.keymap.set('n', '<leader>tb', gs.toggle_current_line_blame, bopts)
   end
 })
+local whitespace_sensitive = {
+  cabal = true,
+  cobol = true,
+  coffee = true,
+  cython = true,
+  fortran = true,
+  fsharp = true,
+  haml = true,
+  haskell = true,
+  jade = true,
+  make = true,
+  markdown = true,
+  mdx = true,
+  nim = true,
+  pug = true,
+  pyrex = true,
+  python = true,
+  quarto = true,
+  rmd = true,
+  rst = true,
+  sass = true,
+  scala = true,
+  slim = true,
+  snakemake = true,
+  yaml = true,
+}
+
+local function configure_iwhite(bufnr)
+  local filetype = vim.bo[bufnr].filetype
+  local sensitive = whitespace_sensitive[filetype] or false
+
+  for component in filetype:gmatch('[^.]+') do
+    sensitive = sensitive or whitespace_sensitive[component] or false
+  end
+
+  local ignore_whitespace = not sensitive
+
+  local enabled =
+    vim.tbl_contains(vim.opt.diffopt:get(), 'iwhite')
+
+  if ignore_whitespace == enabled then
+    return
+  end
+
+  if ignore_whitespace then
+    vim.opt.diffopt:append('iwhite')
+  else
+    vim.opt.diffopt:remove('iwhite')
+  end
+
+  vim.cmd('diffupdate')
+end
 
 require('diffview').setup({
-  preferred_adapter = "jj",
+  preferred_adapter = 'jj',
+  enhanced_diff_hl = true,
+  diffopt = {
+    algorithm = 'histogram',
+    linematch = 60,
+    context = 3,
+    indent_heuristic = true,
+  },
+  hooks = {
+    diff_buf_win_enter = function(bufnr)
+      configure_iwhite(bufnr)
+    end,
+  },
 })
 
 require("nvim-surround").setup()
@@ -98,4 +162,3 @@ end
 
 vim.keymap.set({'n', 'x', 'o'}, 's', '<Plug>(leap)')
 vim.keymap.set('n',             'S', '<Plug>(leap-from-window)')
-
