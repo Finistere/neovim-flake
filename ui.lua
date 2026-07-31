@@ -185,6 +185,22 @@ vim.cmd([[
   aug END
 ]])
 require('scope').setup()
+vim.cmd([[
+  nnoremap <silent><leader>tn <cmd>tabnew<cr>
+  nnoremap <silent><leader>tc <cmd>tabclose<cr>
+  nnoremap <silent><leader>to <cmd>tabonly<cr>
+  nnoremap <silent><leader>th <cmd>tabprevious<cr>
+  nnoremap <silent><leader>tl <cmd>tabnext<cr>
+  nnoremap <silent><leader>t1 <cmd>tabnext 1<cr>
+  nnoremap <silent><leader>t2 <cmd>tabnext 2<cr>
+  nnoremap <silent><leader>t3 <cmd>tabnext 3<cr>
+  nnoremap <silent><leader>t4 <cmd>tabnext 4<cr>
+  nnoremap <silent><leader>t5 <cmd>tabnext 5<cr>
+  nnoremap <silent><leader>t6 <cmd>tabnext 6<cr>
+  nnoremap <silent><leader>t7 <cmd>tabnext 7<cr>
+  nnoremap <silent><leader>t8 <cmd>tabnext 8<cr>
+  nnoremap <silent><leader>t9 <cmd>tabnext 9<cr>
+]])
 require('bufferline').setup({
   options = {
     show_close_icon = false,
