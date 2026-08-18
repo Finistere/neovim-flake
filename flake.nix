@@ -25,6 +25,10 @@
       url = "github:rickhowe/diffchar.vim";
       flake = false;
     };
+    fidget-nvim = {
+      url = "github:j-hui/fidget.nvim";
+      flake = false;
+    };
   };
 
   outputs =
@@ -193,7 +197,7 @@
           ++ (with vimPlugins; [
             # LSP
             actions-preview-nvim # preview code actions
-            fidget-nvim # LSP status fidget
+            (plugin "fidget-nvim") # LSP status fidget
             inc-rename-nvim # in-place rename preview
 
             # Today always require a `.config/nvim/after` to exist which is annoying.
