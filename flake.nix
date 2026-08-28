@@ -65,7 +65,7 @@
           ripgrep
           fd
           git
-          gh # for cmp-git
+          gh # for blink-cmp-git
           delta
           ranger
         ];
@@ -73,9 +73,6 @@
         fullExtraPackages =
           minimalExtraPackages
           ++ (with pkgs; [
-            # for copilot
-            nodejs
-
             # language servers
             nil
             (rust-analyzer-unwrapped.override {
@@ -171,18 +168,10 @@
           }) # Show current version of rust dependencies within Cargo.toml
 
           # Completion
-          nvim-cmp
-          cmp-nvim-lsp
-          cmp-buffer
-          cmp-path
-          cmp-cmdline
-          cmp-treesitter
-          cmp-git
-          luasnip
-          cmp_luasnip
+          blink-cmp
+          blink-cmp-git
           nvim-autopairs
           nvim-ts-autotag
-          lspkind-nvim # VS-code pictograms for auto-completion
 
           # Colorscheme
           tokyonight-nvim
@@ -208,10 +197,6 @@
               nvimSkipModules = [ "rustaceanvim.neotest.init" ];
             }) # Rust integration
 
-            # LLM
-            copilot-cmp # cmp integration
-            copilot-lua # copilot
-
             # Debug
             nvim-dap
             nvim-dap-ui
@@ -228,7 +213,6 @@
               ${lib.strings.fileContents ./tree-sitter.lua}
               ${lib.strings.fileContents ./cmp.lua}
               ${lib.strings.fileContents ./lsp.lua}
-              ${if minimal then "" else lib.strings.fileContents ./llm.lua}
               ${lib.strings.fileContents ./ui.lua}
               ${lib.strings.fileContents ./editor.lua}
               EOF

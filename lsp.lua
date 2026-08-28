@@ -189,12 +189,15 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end
 })
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
--- for nvim-ufo folding.
-capabilities.textDocument.foldingRange = {
-  dynamicRegistration = false,
-  lineFoldingOnly = true
-}
+local capabilities = require('blink.cmp').get_lsp_capabilities({
+  -- for nvim-ufo folding.
+  textDocument = {
+    foldingRange = {
+      dynamicRegistration = false,
+      lineFoldingOnly = true,
+    },
+  },
+})
 
 
 local null_ls = require('null-ls')
@@ -314,9 +317,12 @@ if not minimal_profile then
   --   },
   --   -- https://github.com/simrat39/rust-tools.nvim/wiki/Debugging#codelldb-a-better-debugging-experience
   -- })
-  require('crates').setup {
-    -- null_ls = { enabled = true }
-  }
+  require('crates').setup({
+    lsp = {
+      enabled = true,
+      completion = true,
+    },
+  })
 
   vim.lsp.enable('basedpyright')
 

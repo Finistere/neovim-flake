@@ -13,9 +13,8 @@ flake.nix            # THE build file -- Nix flake defining inputs, packages, an
 flake.lock           # Pinned dependency hashes
 base.vim             # Core Vim options (tabs, mouse, visuals, filetype-specific settings)
 tree-sitter.lua      # Treesitter highlighting, folding, indentation, context
-cmp.lua              # Auto-completion (nvim-cmp, copilot, luasnip, autopairs)
+cmp.lua              # Auto-completion (blink.cmp, git, snippets, autopairs)
 lsp.lua              # LSP config (servers, null-ls/none-ls, keymaps, format-on-save)
-llm.lua              # Copilot setup
 ui.lua               # UI (tokyonight theme, telescope, nvim-tree, bufferline, lualine, floaterm)
 editor.lua           # Editor behavior (gitsigns, folds, leap, surround, indentation)
 debug.lua            # DAP (Debug Adapter Protocol) configuration
@@ -23,7 +22,7 @@ spell/               # Spelling dictionary (en.utf-8.add; .spl files are git-ign
 .vale.ini            # Prose linting config (currently unused in null-ls)
 ```
 
-All Lua files are concatenated into a single `customRC` block by Nix (see `flake.nix:174-185`).
+All Lua files are concatenated into a single `customRC` block by Nix (see `mkCustomRC` in `flake.nix`).
 There are no cross-file `require()` calls between the project's own files. Each `.lua` file
 is self-contained and loaded in this order:
 
@@ -31,9 +30,8 @@ is self-contained and loaded in this order:
 2. `tree-sitter.lua`
 3. `cmp.lua`
 4. `lsp.lua`
-5. `llm.lua`
-6. `ui.lua`
-7. `editor.lua`
+5. `ui.lua`
+6. `editor.lua`
 
 ## Build Commands
 
@@ -88,8 +86,8 @@ This repo uses both **Git** and **Jujutsu (jj)** (colocated `.jj/` directory).
 | Context | Convention | Examples |
 |---------|-----------|----------|
 | Lua functions | `snake_case` | `format_on_save`, `attach_keymaps`, `toggle_hlsearch` |
-| Lua variables | `snake_case` | `cmp_autopairs`, `null_ls`, `extra_args` |
-| Short locals | Abbreviated | `gs` (gitsigns), `cmp`, `dap`, `hl`, `bopts` |
+| Lua variables | `snake_case` | `default_sources`, `null_ls`, `extra_args` |
+| Short locals | Abbreviated | `gs` (gitsigns), `dap`, `hl`, `bopts` |
 | Nix variables | `camelCase` | `extraPackages`, `tsGrammarNames`, `extraMakeWrapperArgs` |
 | File names | lowercase, kebab-case for multi-word | `lsp.lua`, `tree-sitter.lua` |
 
@@ -100,7 +98,7 @@ This repo uses both **Git** and **Jujutsu (jj)** (colocated `.jj/` directory).
 require('plugin-name').setup({ ... })
 
 -- Local variable when module is used multiple times
-local cmp = require('cmp')
+local blink = require('blink.cmp')
 local null_ls = require('null-ls')
 
 -- Nested module access
