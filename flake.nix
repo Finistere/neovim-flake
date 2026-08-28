@@ -53,7 +53,10 @@
       '';
       lfWithPreview = pkgs.writeShellScriptBin "lf" ''
         exec ${pkgs.lib.getExe pkgs.lf} \
-          -command ${pkgs.lib.escapeShellArg "set previewer ${lfPreview}"} \
+          -command ${pkgs.lib.escapeShellArg ''
+            set previewer ${lfPreview}
+            map <enter> open
+          ''} \
           "$@"
       '';
 
