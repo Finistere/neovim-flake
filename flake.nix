@@ -4,17 +4,8 @@
   inputs = {
     # use latest rust-analyzer
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
     nvim-rainbow-delimiter = {
       url = "git+https://gitlab.com/HiPhish/rainbow-delimiters.nvim.git";
-      flake = false;
-    };
-    rustaceanvim = {
-      url = "github:mrcjkb/rustaceanvim";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    crates-nvim = {
-      url = "github:saecki/crates.nvim";
       flake = false;
     };
     tree-sitter-language-injection-nvim = {
@@ -31,95 +22,132 @@
     };
   };
 
-  outputs =
-    {
-      self,
-      nixpkgs,
-      flake-utils,
-      ...
-    }@inputs:
-    {
-      # make it easy to use this flake as an overlay
-      overlay = final: prev: {
-        neovim = self.packages.${prev.system}.default;
+  outputs = {
+    self,
+    nixpkgs,
+    ...
+  } @ inputs: let
+    supportedSystems = [
+      "aarch64-darwin"
+      "aarch64-linux"
+      "x86_64-linux"
+    ];
+    packagesFor = system: let
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfreePredicate = pkg:
+          builtins.elem (nixpkgs.lib.getName pkg) [
+            "cmd-parser.nvim"
+            "scope.nvim"
+          ];
       };
-    }
-    // flake-utils.lib.eachDefaultSystem (
-      system:
-      let
-        pkgs = import nixpkgs {
-          inherit system;
-          config = {
-            allowUnfree = true;
-          };
-        };
 
-        minimalExtraPackages = with pkgs; [
-          tree-sitter
-          gcc
+      lfPreview = pkgs.writeShellScript "lf-preview" ''
+        exec ${pkgs.lib.getExe pkgs.bat} \
+          --color=always \
+          --style=numbers \
+          --paging=never \
+          --terminal-width "$2" \
+          --line-range ":$3" \
+          -- "$1"
+      '';
+      lfWithPreview = pkgs.writeShellScriptBin "lf" ''
+        exec ${pkgs.lib.getExe pkgs.lf} \
+          -command ${pkgs.lib.escapeShellArg "set previewer ${lfPreview}"} \
+          "$@"
+      '';
+
+      minimalExtraPackages = with pkgs; [
+        # Utilities
+        ripgrep
+        fd
+        gitMinimal
+        gh # for blink-cmp-git
+        delta
+        lfWithPreview
+      ];
+
+      fullExtraPackages =
+        minimalExtraPackages
+        ++ (with pkgs; [
+          # language servers
+          nil
+          (rust-analyzer-unwrapped.override {
+            useMimalloc = true;
+          })
+          typescript-language-server
+          bash-language-server
+          graphql-language-service-cli
+          zls # Zig
+          basedpyright # Python
 
           # none-ls
           shfmt # shell formatting
-
-          # Utilities
-          ripgrep
-          fd
-          git
-          gh # for blink-cmp-git
-          delta
-          ranger
-        ];
-
-        fullExtraPackages =
-          minimalExtraPackages
-          ++ (with pkgs; [
-            # language servers
-            nil
-            (rust-analyzer-unwrapped.override {
-              useMimalloc = true;
-            })
-            terraform-ls
-            typescript-language-server
-            bash-language-server
-            lua-language-server
-            graphql-language-service-cli
-            zls # Zig
-            basedpyright # Python
-
-            # none-ls
-            alejandra # nix formatting
-            statix # code actions on nix
-            deadnix # dead code
-            prettierd # js/html/markdown/... formatting
-            taplo # toml formatting
-            llvmPackages_20.clang-tools
-          ]);
-
-        luaPackages = pkgs.lua.pkgs;
-        resolvedExtraLuaPackages = with luaPackages; [ ];
-      in
-      with pkgs;
-      let
+          alejandra # nix formatting
+          statix # code actions on nix
+          deadnix # dead code
+          prettierd # js/html/markdown/... formatting
+          taplo # toml formatting
+          clang-tools
+        ]);
+    in
+      with pkgs; let
         # installs a vim plugin from git
-        plugin =
-          repo:
+        plugin = repo:
           vimUtils.buildVimPlugin {
             pname = "${lib.strings.sanitizeDerivationName repo}";
             version = "main";
             src = builtins.getAttr repo inputs;
           };
 
-        extraMakeWrapperLuaCArgs = ''--suffix LUA_CPATH ";" "${
-          lib.concatMapStringsSep ";" luaPackages.getLuaCPath resolvedExtraLuaPackages
-        }"'';
-        extraMakeWrapperLuaArgs = ''--suffix LUA_PATH ";" "${
-          lib.concatMapStringsSep ";" luaPackages.getLuaPath resolvedExtraLuaPackages
-        }"'';
-        tsGrammarNames = lib.attrNames pkgs.vimPlugins.nvim-treesitter.grammarPlugins;
-        tsGrammarNamesLua = lib.generators.toLua { } tsGrammarNames;
-        minimalPlugins = with vimPlugins; [
-          # Syntax
-          nvim-treesitter.withAllGrammars
+        tsGrammarNames = [
+          "asm"
+          "bash"
+          "c"
+          "cmake"
+          "comment"
+          "cpp"
+          "css"
+          "cuda"
+          "diff"
+          "dockerfile"
+          "fish"
+          "git_config"
+          "git_rebase"
+          "gitattributes"
+          "gitcommit"
+          "gitignore"
+          "go"
+          "graphql"
+          "hcl"
+          "html"
+          "javascript"
+          "jjdescription"
+          "json"
+          "lua"
+          "make"
+          "markdown"
+          "markdown_inline"
+          "nix"
+          "python"
+          "query"
+          "regex"
+          "requirements"
+          "rust"
+          "sql"
+          "terraform"
+          "toml"
+          "tsx"
+          "typescript"
+          "vim"
+          "vimdoc"
+          "yaml"
+          "zig"
+        ];
+        treesitterWithGrammars = vimPlugins.nvim-treesitter.withPlugins (
+          grammars: map (name: grammars.${name}) tsGrammarNames
+        );
+        commonPlugins = with vimPlugins; [
           # Using the maintained fork
           ((plugin "nvim-rainbow-delimiter").overrideAttrs {
             nvimSkipModules = [
@@ -162,11 +190,6 @@
           plenary-nvim # Utility library for lots of plugins
           render-markdown-nvim
 
-          # Rust
-          ((plugin "crates-nvim").overrideAttrs {
-            nvimSkipModules = [ "crates.null-ls" ];
-          }) # Show current version of rust dependencies within Cargo.toml
-
           # Completion
           blink-cmp
           blink-cmp-git
@@ -175,15 +198,15 @@
 
           # Colorscheme
           tokyonight-nvim
-
-          # LSP
-          nvim-lspconfig
-          none-ls-nvim # LSP adapter for other plugins (formatter, linter, etc.)
         ];
+        minimalPlugins = [treesitterWithGrammars] ++ commonPlugins;
         fullPlugins =
-          minimalPlugins
+          [vimPlugins.nvim-treesitter.withAllGrammars]
+          ++ commonPlugins
           ++ (with vimPlugins; [
             # LSP
+            nvim-lspconfig
+            none-ls-nvim # LSP adapter for other plugins (formatter, linter, etc.)
             actions-preview-nvim # preview code actions
             nui-nvim # UI backend for actions-preview
             (plugin "fidget-nvim") # LSP status fidget
@@ -193,23 +216,19 @@
             (plugin "tree-sitter-language-injection-nvim")
 
             # Rust
-            ((plugin "rustaceanvim").overrideAttrs {
-              nvimSkipModules = [ "rustaceanvim.neotest.init" ];
-            }) # Rust integration
-
-            # Debug
-            nvim-dap
-            nvim-dap-ui
-            nvim-dap-virtual-text
+            crates-nvim # Show current version of rust dependencies within Cargo.toml
+            rustaceanvim # Rust integration
           ]);
-        mkCustomRC =
-          minimal:
+        mkCustomRC = minimal:
           builtins.concatStringsSep "\n" [
             (lib.strings.fileContents ./base.vim)
             ''
               lua << EOF
-              vim.g.minimal_profile = ${if minimal then "true" else "false"}
-              vim.g.treesitter_grammars = ${tsGrammarNamesLua}
+              vim.g.minimal_profile = ${
+                if minimal
+                then "true"
+                else "false"
+              }
               ${lib.strings.fileContents ./tree-sitter.lua}
               ${lib.strings.fileContents ./cmp.lua}
               ${lib.strings.fileContents ./lsp.lua}
@@ -218,47 +237,57 @@
               EOF
             ''
           ];
-        mkPackage =
-          {
-            minimal ? false,
-          }:
+        mkPackage = {minimal ? false}:
           wrapNeovim neovim-unwrapped {
             viAlias = true;
             vimAlias = true;
-            withPython3 = true;
+            withPython3 = false;
             withNodeJs = false;
             withRuby = false;
             extraMakeWrapperArgs = builtins.concatStringsSep " " [
               (
                 let
-                  extraPackages = if minimal then minimalExtraPackages else fullExtraPackages;
-                in
-                ''--prefix PATH : "${lib.makeBinPath extraPackages}"''
+                  extraPackages =
+                    if minimal
+                    then minimalExtraPackages
+                    else fullExtraPackages;
+                in ''--prefix PATH : "${lib.makeBinPath extraPackages}"''
               )
-              extraMakeWrapperLuaCArgs
-              extraMakeWrapperLuaArgs
             ];
             configure = {
               customRC = mkCustomRC minimal;
               packages.myVimPackage = {
-                start = if minimal then minimalPlugins else fullPlugins;
+                start =
+                  if minimal
+                  then minimalPlugins
+                  else fullPlugins;
               };
             };
           };
-      in
-      rec {
-        apps.default = flake-utils.lib.mkApp {
-          drv = packages.default;
-          exePath = "/bin/nvim";
-        };
+      in rec {
+        default = mkPackage {};
+        minimal = mkPackage {minimal = true;};
+      };
+    packages = nixpkgs.lib.genAttrs supportedSystems packagesFor;
+  in {
+    # make it easy to use this flake as an overlay
+    overlays.default = final: prev: {
+      neovim = self.packages.${prev.system}.default;
+    };
 
-        apps.minimal = flake-utils.lib.mkApp {
-          drv = packages.minimal;
-          exePath = "/bin/nvim";
-        };
+    inherit packages;
 
-        packages.default = mkPackage { };
-        packages.minimal = mkPackage { minimal = true; };
-      }
-    );
+    apps = nixpkgs.lib.genAttrs supportedSystems (system: {
+      default = {
+        type = "app";
+        program = "${packages.${system}.default}/bin/nvim";
+        meta.description = "Finistere's Neovim distribution";
+      };
+      minimal = {
+        type = "app";
+        program = "${packages.${system}.minimal}/bin/nvim";
+        meta.description = "Finistere's Neovim distribution without language servers";
+      };
+    });
+  };
 }

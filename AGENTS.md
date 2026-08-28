@@ -15,9 +15,8 @@ base.vim             # Core Vim options (tabs, mouse, visuals, filetype-specific
 tree-sitter.lua      # Treesitter highlighting, folding, indentation, context
 cmp.lua              # Auto-completion (blink.cmp, git, snippets, autopairs)
 lsp.lua              # LSP config (servers, null-ls/none-ls, keymaps, format-on-save)
-ui.lua               # UI (tokyonight theme, telescope, nvim-tree, bufferline, lualine, floaterm)
+ui.lua               # UI (tokyonight theme, fzf-lua, nvim-tree, bufferline, lualine, floaterm)
 editor.lua           # Editor behavior (gitsigns, folds, leap, surround, indentation)
-debug.lua            # DAP (Debug Adapter Protocol) configuration
 spell/               # Spelling dictionary (en.utf-8.add; .spl files are git-ignored)
 .vale.ini            # Prose linting config (currently unused in null-ls)
 ```
@@ -49,14 +48,14 @@ There are **no tests** in this project. It is a personal configuration, not a li
 
 ## Bundled External Tools
 
-Defined in `flake.nix:83-130`:
+Defined in `flake.nix`:
 
-- **Language servers:** nil (Nix), rust-analyzer, terraform-ls, pyright, basedpyright,
-  typescript-language-server, bash-language-server, lua-language-server,
-  graphql-language-service-cli, zls (Zig)
+- **Language servers:** nil (Nix), rust-analyzer, basedpyright (Python),
+  typescript-language-server, bash-language-server, graphql-language-service-cli,
+  zls (Zig), clangd (C/C++), taplo (TOML)
 - **Formatters/linters via none-ls:** alejandra (Nix), shfmt (Shell, 4-space indent),
-  shellcheck, statix (Nix), deadnix (Nix dead code), prettierd (JS/HTML/Markdown), taplo (TOML)
-- **Utilities:** ripgrep, fd, git, gh, delta, ranger
+  statix (Nix), deadnix (Nix dead code), prettierd (JS/HTML/Markdown)
+- **Utilities:** ripgrep, fd, gitMinimal, gh, delta, lf with bat-powered previews
 
 ## Version Control
 
@@ -87,7 +86,7 @@ This repo uses both **Git** and **Jujutsu (jj)** (colocated `.jj/` directory).
 |---------|-----------|----------|
 | Lua functions | `snake_case` | `format_on_save`, `attach_keymaps`, `toggle_hlsearch` |
 | Lua variables | `snake_case` | `default_sources`, `null_ls`, `extra_args` |
-| Short locals | Abbreviated | `gs` (gitsigns), `dap`, `hl`, `bopts` |
+| Short locals | Abbreviated | `gs` (gitsigns), `hl`, `bopts` |
 | Nix variables | `camelCase` | `extraPackages`, `tsGrammarNames`, `extraMakeWrapperArgs` |
 | File names | lowercase, kebab-case for multi-word | `lsp.lua`, `tree-sitter.lua` |
 

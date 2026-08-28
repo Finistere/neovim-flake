@@ -256,7 +256,7 @@ require('lualine').setup({
     lualine_c = { 'diff', 'diagnostics' },
     lualine_x = {}
   },
-  extensions = { 'nvim-dap-ui', 'nvim-tree', 'trouble' }
+  extensions = { 'nvim-tree', 'trouble' }
 })
 
 require('marks').setup {}
@@ -282,7 +282,6 @@ vim.cmd([[
   " let g:floaterm_keymap_next   = '<C-n>'
   let g:floaterm_keymap_toggle = '<F13>'
   " let g:floaterm_keymap_kill   = '<C-k>'
-  " rnvimr is slight faster as it keeps ranger process in the background
-  nnoremap <silent><C-.> <cmd>FloatermNew ranger<cr>
-  tnoremap <silent><C-.> <cmd>FloatermNew ranger<CR>
+  nnoremap <silent><C-.> <cmd>FloatermNew lf<cr>
+  tnoremap <silent><C-.> <cmd>FloatermNew lf<CR>
 ]])
