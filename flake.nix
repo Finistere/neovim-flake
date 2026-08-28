@@ -134,8 +134,7 @@
           nvim-osc52 # copy paste directly into system clipboard through ssh
 
           # UI
-          telescope-nvim # find/search popup
-          telescope-fzf-native-nvim # Native search, for faster search
+          fzf-lua # find/search popup
           nvim-web-devicons # icons pack
           nvim-tree-lua # file tree
           gitsigns-nvim # git signs in the editor
@@ -157,7 +156,7 @@
           nvim-cursorline # underlines word & highlight current line
           comment-nvim # toggle comment
           range-highlight-nvim # highlight ranges (:20,+4)
-          todo-comments-nvim # highlight todo comments and list them in Trouble/Telescope
+          todo-comments-nvim # highlight todo comments and list them in Trouble
           leap-nvim # faster navigation within a file
           nvim-ufo # better folds
           nvim-surround # surround text objects
@@ -197,6 +196,7 @@
           ++ (with vimPlugins; [
             # LSP
             actions-preview-nvim # preview code actions
+            nui-nvim # UI backend for actions-preview
             (plugin "fidget-nvim") # LSP status fidget
             inc-rename-nvim # in-place rename preview
 

@@ -16,17 +16,13 @@ if not minimal_profile then
 
   local hl = require('actions-preview.highlight')
   require('actions-preview').setup {
-    telescope = {
-      sorting_strategy = 'ascending',
-      layout_strategy = 'vertical',
-      layout_config = {
-        width = 0.6,
-        height = 0.5,
-        prompt_position = 'top',
-        preview_cutoff = 20,
-        preview_height = function(_, _, max_lines)
-          return max_lines - 15
-        end,
+    backend = { 'nui' },
+    nui = {
+      layout = {
+        size = {
+          width = '60%',
+          height = '50%',
+        },
       },
     },
     highlight_command = {
@@ -170,12 +166,12 @@ local function attach_keymaps(client, bufnr)
     function() vim.lsp.buf.code_action({ apply = true, context = { only = { 'quickfix' } } }) end,
     bopts
   )
-  vim.keymap.set('n', 'gd', '<cmd>Telescope lsp_definitions<cr>', bopts)
-  vim.keymap.set('n', 'gt', '<cmd>Telescope lsp_type_definitions<cr>', bopts)
-  vim.keymap.set('n', 'gi', '<cmd>Telescope lsp_implementations<cr>', bopts)
-  vim.keymap.set('n', 'gr', '<cmd>Telescope lsp_references<cr>', bopts)
-  vim.keymap.set('n', 'gc', '<cmd>Telescope lsp_incoming_calls<cr>', bopts)
-  vim.keymap.set('n', 'go', '<cmd>Telescope lsp_outgoing_calls<cr>', bopts)
+  vim.keymap.set('n', 'gd', '<cmd>FzfLua lsp_definitions<cr>', bopts)
+  vim.keymap.set('n', 'gt', '<cmd>FzfLua lsp_typedefs<cr>', bopts)
+  vim.keymap.set('n', 'gi', '<cmd>FzfLua lsp_implementations<cr>', bopts)
+  vim.keymap.set('n', 'gr', '<cmd>FzfLua lsp_references<cr>', bopts)
+  vim.keymap.set('n', 'gc', '<cmd>FzfLua lsp_incoming_calls<cr>', bopts)
+  vim.keymap.set('n', 'go', '<cmd>FzfLua lsp_outgoing_calls<cr>', bopts)
   vim.keymap.set('', 'K', vim.lsp.buf.hover, bopts)
 end
 
@@ -329,4 +325,3 @@ if not minimal_profile then
     cmd = { 'clangd', '--background-index', '--compile-commands-dir=.' },
   })
 end
-

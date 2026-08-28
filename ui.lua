@@ -6,6 +6,25 @@ vim.cmd([[colorscheme tokyonight-moon]])
 
 require('nvim-web-devicons').setup()
 
+local fzf = require('fzf-lua')
+
+local function hidden_rg_opts(extra_args)
+  local args = {
+    '--column',
+    '--line-number',
+    '--no-heading',
+    '--color=always',
+    '--smart-case',
+    '--max-columns=4096',
+    '--hidden',
+  }
+  for _, arg in ipairs(extra_args or {}) do
+    table.insert(args, vim.fn.shellescape(arg))
+  end
+  table.insert(args, '-e')
+  return table.concat(args, ' ')
+end
+
 require('nvim-tree').setup({
   diagnostics = {
     enable = true,
@@ -13,7 +32,6 @@ require('nvim-tree').setup({
   },
   on_attach = function(bufnr)
     local api = require('nvim-tree.api')
-    local telescope = require('telescope.builtin')
 
     local function opts(desc)
       return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
@@ -27,21 +45,17 @@ require('nvim-tree').setup({
       function()
         local node = api.tree.get_node_under_cursor()
         if node and node.type == "directory" then
-          telescope.live_grep({
-            search_dirs = { node.absolute_path },
-            additional_args = function()
-              return { '--hidden' }
-            end,
+          fzf.live_grep({
+            cwd = node.absolute_path,
+            rg_opts = hidden_rg_opts(),
           })
         else
-          telescope.live_grep({
-            additional_args = function()
-              return { '--hidden' }
-            end,
+          fzf.live_grep({
+            rg_opts = hidden_rg_opts(),
           })
         end
       end,
-      opts('Telescope live grep')
+      opts('fzf-lua live grep')
     )
     vim.keymap.set(
       "n",
@@ -49,15 +63,15 @@ require('nvim-tree').setup({
       function()
         local node = api.tree.get_node_under_cursor()
         if node and node.type == "directory" then
-          telescope.find_files({
+          fzf.files({
             hidden = true,
-            cwd = node.absolute_path
+            cwd = node.absolute_path,
           })
         else
-          telescope.find_files()
+          fzf.files()
         end
       end,
-      opts('Telescope live grep')
+      opts('fzf-lua files')
     )
   end,
   renderer = {
@@ -107,43 +121,29 @@ vim.cmd([[
 ]])
 
 
-local telescope = require('telescope')
-local trouble = require('trouble.sources.telescope')
-telescope.setup({
-  defaults = {
-    -- path_display = { 'smart' },
-    mappings = {
-      i = {
-        ['<C-t>'] = trouble.open,
-        ['<esc>'] = require('telescope.actions').close
-      },
-      n = { ['<C-t>'] = trouble.open },
-    },
-    dynamic_preview_title = true,
+fzf.setup({
+  files = {
+    hidden = false,
   },
-  pickers = {
-    buffers = {
-      theme = 'dropdown',
-      sort_mru = true,
-      ignore_current_buffer = true
-    },
-  }
+  buffers = {
+    sort_lastused = true,
+    ignore_current_buffer = true,
+  },
 })
-telescope.load_extension('fzf')
+local fzf_config = require('fzf-lua.config')
+fzf_config.defaults.actions.files['ctrl-t'] = require('trouble.sources.fzf').actions.open
 vim.cmd([[
-  nnoremap <silent><leader>ff <cmd>Telescope find_files<cr>
-  nnoremap <silent><leader>fb <cmd>Telescope buffers<cr>
-  nnoremap <silent><leader>fh <cmd>Telescope help_tags<cr>
-  nnoremap <silent><leader>fs <cmd>Telescope git_status<cr>
-  nnoremap <silent><leader>fw <cmd>Telescope grep_string<cr>
-  nnoremap <silent><leader>fal <cmd>Telescope lsp_workspace_symbols<cr>
-  nnoremap <silent><leader>fl <cmd>Telescope lsp_document_symbols<cr>
+  nnoremap <silent><leader>ff <cmd>FzfLua files<cr>
+  nnoremap <silent><leader>fb <cmd>FzfLua buffers<cr>
+  nnoremap <silent><leader>fh <cmd>FzfLua helptags<cr>
+  nnoremap <silent><leader>fs <cmd>FzfLua git_status<cr>
+  nnoremap <silent><leader>fw <cmd>FzfLua grep_cword<cr>
+  nnoremap <silent><leader>fal <cmd>FzfLua lsp_workspace_symbols<cr>
+  nnoremap <silent><leader>fl <cmd>FzfLua lsp_document_symbols<cr>
 ]])
 vim.keymap.set('n', '<leader>fg', function()
-  require('telescope.builtin').live_grep({
-    additional_args = function()
-      return { '--hidden' }
-    end,
+  fzf.live_grep({
+    rg_opts = hidden_rg_opts(),
   })
 end, { silent = true })
 
@@ -171,9 +171,9 @@ vim.api.nvim_create_user_command('Rg', function(opts)
   -- command cleanup
   vim.cmd('echo ""')
 
-  require('telescope.builtin').live_grep({
-    search_dirs = { path },
-    additional_args = opts.fargs
+  fzf.live_grep({
+    cwd = path,
+    rg_opts = hidden_rg_opts(opts.fargs),
   })
 end, { nargs = '*' })
 
