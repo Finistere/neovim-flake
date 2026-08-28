@@ -65,6 +65,7 @@
         gh # for blink-cmp-git
         delta
         lfWithPreview
+        zls # Zig
       ];
 
       fullExtraPackages =
@@ -78,7 +79,6 @@
           typescript-language-server
           bash-language-server
           graphql-language-service-cli
-          zls # Zig
           basedpyright # Python
 
           # none-ls

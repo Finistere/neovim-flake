@@ -136,6 +136,13 @@ vim.lsp.config('*', {
   capabilities = capabilities,
 })
 
+-- Allow projects to override ZLS
+local zls_cmd = os.getenv('ZLS_CMD')
+vim.lsp.config('zls', {
+  cmd = zls_cmd and { zls_cmd } or nil,
+})
+vim.lsp.enable('zls')
+
 if not minimal_profile then
   local null_ls = require('null-ls')
   null_ls.setup({
@@ -154,12 +161,6 @@ if not minimal_profile then
     },
   })
 
-  -- Allow projects to override ZLS
-  local zls_cmd = os.getenv('ZLS_CMD')
-  vim.lsp.config('zls', {
-    cmd = zls_cmd and { zls_cmd } or nil,
-  })
-
   vim.lsp.config('clangd', {
     cmd = { 'clangd', '--background-index', '--compile-commands-dir=.' },
   })
@@ -172,7 +173,6 @@ if not minimal_profile then
     'nil_ls',
     'taplo',
     'ts_ls',
-    'zls',
   })
 
   vim.g.rustaceanvim = {
