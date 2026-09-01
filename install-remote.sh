@@ -1,13 +1,13 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-set -euo pipefail
+set -eu
 
 usage() {
     echo "Usage: $0 <ssh-target> [package]" >&2
     echo "       package defaults to nvim-minimal; nvim selects the full package" >&2
 }
 
-if [[ $# -lt 1 || $# -gt 2 ]]; then
+if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
     usage
     exit 2
 fi
@@ -15,10 +15,12 @@ fi
 ssh_target=$1
 package=${2:-nvim-minimal}
 
-if [[ ! $package =~ ^[a-zA-Z0-9._-]+$ ]]; then
-    echo "Invalid package name: $package" >&2
-    exit 2
-fi
+case $package in
+    '' | *[!a-zA-Z0-9._-]*)
+        echo "Invalid package name: $package" >&2
+        exit 2
+        ;;
+esac
 
 for command_name in nix ssh scp; do
     if ! command -v "$command_name" >/dev/null 2>&1; then
@@ -27,16 +29,18 @@ for command_name in nix ssh scp; do
     fi
 done
 
-if [[ $(uname -s) != Linux ]]; then
+if [ "$(uname -s)" != Linux ]; then
     echo "This script must run on Linux because 'nix bundle' only supports Linux." >&2
     exit 1
 fi
 
-read -r remote_os remote_arch < <(
-    ssh "$ssh_target" 'printf "%s %s\n" "$(uname -s)" "$(uname -m)"'
+remote_platform=$(
+    ssh "$ssh_target" 'printf "%s:%s\n" "$(uname -s)" "$(uname -m)"'
 )
+remote_os=${remote_platform%%:*}
+remote_arch=${remote_platform#*:}
 
-if [[ $remote_os != Linux ]]; then
+if [ "$remote_os" != Linux ]; then
     echo "The target must run Linux; detected: $remote_os" >&2
     exit 1
 fi
@@ -58,10 +62,12 @@ temporary_directory=$(mktemp -d)
 trap 'rm -rf -- "$temporary_directory"' EXIT
 
 bundle_path="$temporary_directory/nvim"
-flake_package=".#packages.${target_system}.${package}"
+flake_reference=${NVIM_FLAKE:-github:Finistere/neovim-flake}
+flake_package="${flake_reference}#packages.${target_system}.${package}"
 
 echo "Bundling $flake_package for $ssh_target..."
-nix bundle "$flake_package" --out-link "$bundle_path"
+nix --extra-experimental-features 'nix-command flakes' \
+    bundle "$flake_package" --out-link "$bundle_path"
 
 remote_upload=".local/bin/.nvim-upload-$$"
 echo "Installing as ~/.local/bin/nvim on $ssh_target..."
