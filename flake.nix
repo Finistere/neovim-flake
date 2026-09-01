@@ -268,8 +268,9 @@
             };
           };
       in rec {
-        default = mkPackage {};
-        minimal = mkPackage {minimal = true;};
+        default = nvim;
+        nvim = mkPackage {};
+        nvim-minimal = mkPackage {minimal = true;};
       };
     packages = nixpkgs.lib.genAttrs supportedSystems packagesFor;
   in {
@@ -286,9 +287,9 @@
         program = "${packages.${system}.default}/bin/nvim";
         meta.description = "Finistere's Neovim distribution";
       };
-      minimal = {
+      nvim-minimal = {
         type = "app";
-        program = "${packages.${system}.minimal}/bin/nvim";
+        program = "${packages.${system}.nvim-minimal}/bin/nvim";
         meta.description = "Finistere's Neovim distribution without language servers";
       };
     });
