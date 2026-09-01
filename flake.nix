@@ -4,6 +4,7 @@
   inputs = {
     # use latest rust-analyzer
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nix-portable.url = "github:DavHau/nix-portable";
     nvim-rainbow-delimiter = {
       url = "git+https://gitlab.com/HiPhish/rainbow-delimiters.nvim.git";
       flake = false;
@@ -32,6 +33,31 @@
       "aarch64-linux"
       "x86_64-linux"
     ];
+    portableSystems = [
+      "aarch64-linux"
+      "x86_64-linux"
+    ];
+    portableBundlerFor = system: package:
+      (inputs.nix-portable.bundlers.${system}.default package).overrideAttrs (previous: {
+        buildCommand =
+          previous.buildCommand
+          + ''
+            # Bundled applications must use nix-portable's embedded Nix for its
+            # first-run runtime checks, not a nonexistent sibling of the app.
+            original='nixBin="$(dirname $bin)/nix"'
+            replacement=$(printf '%-28s' 'nixBin="$NP_NIX"')
+            # The application closure already includes Git, so do not let the
+            # generic nix-portable runtime download a second copy at launch.
+            git_check='if $doInstallGit'
+            git_disabled=$(printf '%-16s' 'if false')
+            for program in "$out"/bin/*; do
+              sed -i \
+                -e "s|$original|$replacement|" \
+                -e "s|$git_check|$git_disabled|g" \
+                "$program"
+            done
+          '';
+      });
     packagesFor = system: let
       pkgs = import nixpkgs {
         inherit system;
@@ -280,6 +306,10 @@
     };
 
     inherit packages;
+
+    bundlers = nixpkgs.lib.genAttrs portableSystems (system: {
+      nvim-portable = portableBundlerFor system;
+    });
 
     apps = nixpkgs.lib.genAttrs supportedSystems (system: {
       default = {
