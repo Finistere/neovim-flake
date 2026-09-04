@@ -139,7 +139,11 @@ vim.lsp.config('*', {
 -- Allow projects to override ZLS
 local zls_cmd = os.getenv('ZLS_CMD')
 vim.lsp.config('zls', {
-  cmd = zls_cmd and { zls_cmd } or nil,
+  -- Keep this definition self-contained: nvim-lspconfig, which normally
+  -- supplies these defaults, is intentionally not part of the minimal profile.
+  cmd = { zls_cmd or 'zls' },
+  filetypes = { 'zig', 'zir' },
+  root_markers = { 'zls.json', 'build.zig', '.git' },
 })
 vim.lsp.enable('zls')
 

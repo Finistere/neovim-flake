@@ -94,6 +94,7 @@
         gh # for blink-cmp-git
         delta
         lfWithPreview
+        zig
         zls # Zig
       ];
 
