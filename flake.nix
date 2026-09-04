@@ -88,6 +88,7 @@
 
       minimalExtraPackages = with pkgs; [
         # Utilities
+        fzf
         ripgrep
         fd
         gitMinimal
