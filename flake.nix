@@ -21,6 +21,12 @@
       url = "github:j-hui/fidget.nvim";
       flake = false;
     };
+    # TODO: Remove this override once nixpkgs leap-nvim is newer than 2026-08-30.
+    # That snapshot calls vim.iter(...):count(), which is unavailable in Neovim 0.12.4.
+    leap-nvim = {
+      url = "git+https://codeberg.org/andyg/leap.nvim.git";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -81,6 +87,8 @@
         exec ${pkgs.lib.getExe pkgs.lf} \
           -command ${pkgs.lib.escapeShellArg ''
             set previewer ${lfPreview}
+            set sortby name
+            set nodirfirst
             map <enter> open
           ''} \
           "$@"
@@ -213,7 +221,7 @@
           comment-nvim # toggle comment
           range-highlight-nvim # highlight ranges (:20,+4)
           todo-comments-nvim # highlight todo comments and list them in Trouble
-          leap-nvim # faster navigation within a file
+          (plugin "leap-nvim") # faster navigation within a file
           nvim-ufo # better folds
           nvim-surround # surround text objects
 

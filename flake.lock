@@ -63,6 +63,22 @@
         "type": "github"
       }
     },
+    "leap-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1788189809,
+        "narHash": "sha256-d2YnINKSEPpMkZ+gUgdK4agvGBIFVN3MtXTHKfPapew=",
+        "ref": "refs/heads/main",
+        "rev": "38af0ab56c6eb8757ee6006dd13ab79c2bc11a49",
+        "revCount": 781,
+        "type": "git",
+        "url": "https://codeberg.org/andyg/leap.nvim.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://codeberg.org/andyg/leap.nvim.git"
+      }
+    },
     "libgit2": {
       "flake": false,
       "locked": {
@@ -213,6 +229,7 @@
       "inputs": {
         "diffchar-nvim": "diffchar-nvim",
         "fidget-nvim": "fidget-nvim",
+        "leap-nvim": "leap-nvim",
         "nix-portable": "nix-portable",
         "nixpkgs": "nixpkgs_2",
         "nvim-rainbow-delimiter": "nvim-rainbow-delimiter",
