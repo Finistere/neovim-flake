@@ -153,9 +153,24 @@ build_container=$(
         --entrypoint /bin/sh \
         "$nix_image" \
         -eu -c '
+        report_failure() {
+            status=$?
+            if [ "$status" -ne 0 ]; then
+                echo "Build failed; builder filesystem usage:" >&2
+                df -h /nix /tmp /root >&2 || true
+                df -i /nix /tmp /root >&2 || true
+            fi
+            exit "$status"
+        }
+        trap report_failure EXIT
+
         # Rosetta cannot install the seccomp BPF program used by this filter.
+        # The persistent store accumulates old builds. Reclaim unused paths
+        # below 2 GiB free, stopping once 5 GiB is available.
         nix --extra-experimental-features "nix-command flakes" \
             --no-filter-syscalls \
+            --min-free 2147483648 \
+            --max-free 5368709120 \
             bundle \
             --bundler "$BUNDLER_REFERENCE" \
             --out-link /tmp/nvim-bundle \
@@ -167,7 +182,16 @@ build_container=$(
 if [ -n "$local_source" ]; then
     docker --context "$docker_context" cp "$local_source/." "$build_container:/source"
 fi
-docker --context "$docker_context" start --attach "$build_container"
+if docker --context "$docker_context" start --attach "$build_container"; then
+    :
+else
+    build_status=$?
+    echo "Bundling failed in the local Colima VM ($colima_profile)." >&2
+    echo "If its disk is full, increase disk in Zelenka's dotfiles Colima configuration and restart the profile." >&2
+    echo "For a temporary override (after stopping the profile), run:" >&2
+    echo "  colima --profile $colima_profile start --disk 100 --activate=false --save-config=false" >&2
+    exit "$build_status"
+fi
 docker --context "$docker_context" cp "$build_container:/tmp/nvim" "$bundle_path"
 docker --context "$docker_context" rm "$build_container" >/dev/null
 build_container=
