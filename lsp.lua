@@ -33,6 +33,64 @@ end
 
 local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
 
+-- Servers may return whole-file or unchanged edits; only write changed lines to the real buffer.
+local function apply_local_text_edits(batches, bufnr, encoding, annotations)
+  local old_lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+  local scratch = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_buf_set_lines(scratch, 0, -1, false, old_lines)
+  for _, edits in ipairs(batches) do
+    vim.lsp.util.apply_text_edits(edits, scratch, encoding, annotations)
+  end
+  local new_lines = vim.api.nvim_buf_get_lines(scratch, 0, -1, false)
+  vim.api.nvim_buf_delete(scratch, { force = true })
+
+  local first = 1
+  while first <= #old_lines and first <= #new_lines and old_lines[first] == new_lines[first] do
+    first = first + 1
+  end
+  if first > #old_lines and first > #new_lines then return end
+
+  local old_last = #old_lines
+  local new_last = #new_lines
+  while old_last >= first and new_last >= first and old_lines[old_last] == new_lines[new_last] do
+    old_last = old_last - 1
+    new_last = new_last - 1
+  end
+
+  local replacement = {}
+  for i = first, new_last do
+    table.insert(replacement, new_lines[i])
+  end
+  vim.api.nvim_buf_set_lines(bufnr, first - 1, old_last, false, replacement)
+end
+
+local function apply_code_action_edit(edit, bufnr, encoding)
+  local uri = vim.uri_from_bufnr(bufnr)
+  local batches = {}
+
+  if edit.documentChanges then
+    for _, change in ipairs(edit.documentChanges) do
+      if change.kind or change.textDocument.uri ~= uri then
+        vim.lsp.util.apply_workspace_edit(edit, encoding)
+        return
+      end
+      table.insert(batches, change.edits)
+    end
+  elseif edit.changes then
+    for changed_uri, edits in pairs(edit.changes) do
+      if changed_uri ~= uri then
+        vim.lsp.util.apply_workspace_edit(edit, encoding)
+        return
+      end
+      table.insert(batches, edits)
+    end
+  end
+
+  if #batches > 0 then
+    apply_local_text_edits(batches, bufnr, encoding, edit.changeAnnotations)
+  end
+end
+
 local function apply_code_action(client, kind, bufnr, timeout_ms)
   local params = vim.lsp.util.make_range_params(0, client.offset_encoding)
   params.context = { only = { kind }, diagnostics = {} }
@@ -42,7 +100,7 @@ local function apply_code_action(client, kind, bufnr, timeout_ms)
 
   for _, action in ipairs(response.result) do
     if action.edit then
-      vim.lsp.util.apply_workspace_edit(action.edit, client.offset_encoding)
+      apply_code_action_edit(action.edit, bufnr, client.offset_encoding)
     end
     if action.command then
       client:exec_cmd(action.command, { bufnr = bufnr })
@@ -59,6 +117,21 @@ local function preferred_formatter(client, bufnr)
   return #null_ls_clients == 0 or client.name == 'null-ls'
 end
 
+local function format_buffer(bufnr)
+  local clients = vim.lsp.get_clients({ bufnr = bufnr, method = 'textDocument/formatting' })
+  for _, client in pairs(clients) do
+    if preferred_formatter(client, bufnr) then
+      local params = vim.lsp.util.make_formatting_params()
+      local response, err = client:request_sync('textDocument/formatting', params, 1000, bufnr)
+      if response and response.result then
+        apply_local_text_edits({ response.result }, bufnr, client.offset_encoding)
+      elseif err then
+        vim.notify(string.format('[LSP][%s] %s', client.name, err), vim.log.levels.WARN)
+      end
+    end
+  end
+end
+
 local function format_on_save(bufnr)
   vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
   vim.api.nvim_create_autocmd('BufWritePre', {
@@ -70,11 +143,7 @@ local function format_on_save(bufnr)
         apply_code_action(zls, 'source.organizeImports', bufnr, 1000)
         apply_code_action(zls, 'source.fixAll', bufnr, 1000)
       end
-      vim.lsp.buf.format({
-        bufnr = bufnr,
-        async = false,
-        filter = function(client) return preferred_formatter(client, bufnr) end,
-      })
+      format_buffer(bufnr)
     end,
   })
 end
@@ -162,6 +231,9 @@ if not minimal_profile then
       -- null_ls.builtins.diagnostics.vale,
       --
       null_ls.builtins.formatting.prettierd, -- HTML/JS/Markdown/... formatting
+      null_ls.builtins.formatting.clang_format.with({
+        command = os.getenv('CLANG_FORMAT') or 'clang-format',
+      }),
     },
   })
 
