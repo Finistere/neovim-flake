@@ -128,6 +128,7 @@
           prettierd # js/html/markdown/... formatting
           taplo # toml formatting
           clang-tools
+          bazel-buildtools # buildifier (Bazel BUILD formatting / lint)
         ]);
     in
       with pkgs; let

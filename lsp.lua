@@ -33,17 +33,8 @@ end
 
 local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
 
--- Servers may return whole-file or unchanged edits; only write changed lines to the real buffer.
-local function apply_local_text_edits(batches, bufnr, encoding, annotations)
-  local old_lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
-  local scratch = vim.api.nvim_create_buf(false, true)
-  vim.api.nvim_buf_set_lines(scratch, 0, -1, false, old_lines)
-  for _, edits in ipairs(batches) do
-    vim.lsp.util.apply_text_edits(edits, scratch, encoding, annotations)
-  end
-  local new_lines = vim.api.nvim_buf_get_lines(scratch, 0, -1, false)
-  vim.api.nvim_buf_delete(scratch, { force = true })
-
+-- Only write the changed region to the real buffer, preserving marks, folds and undo granularity.
+local function set_changed_lines(bufnr, old_lines, new_lines)
   local first = 1
   while first <= #old_lines and first <= #new_lines and old_lines[first] == new_lines[first] do
     first = first + 1
@@ -62,6 +53,66 @@ local function apply_local_text_edits(batches, bufnr, encoding, annotations)
     table.insert(replacement, new_lines[i])
   end
   vim.api.nvim_buf_set_lines(bufnr, first - 1, old_last, false, replacement)
+end
+
+-- Servers may return whole-file or unchanged edits; only write changed lines to the real buffer.
+local function apply_local_text_edits(batches, bufnr, encoding, annotations)
+  local old_lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+  local scratch = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_buf_set_lines(scratch, 0, -1, false, old_lines)
+  for _, edits in ipairs(batches) do
+    vim.lsp.util.apply_text_edits(edits, scratch, encoding, annotations)
+  end
+  local new_lines = vim.api.nvim_buf_get_lines(scratch, 0, -1, false)
+  vim.api.nvim_buf_delete(scratch, { force = true })
+  set_changed_lines(bufnr, old_lines, new_lines)
+end
+
+-- Projects that aren't fully clang-formatted (CI only checks the diff) can set
+-- CLANG_FORMAT_CHANGED_LINES_ONLY=1 to format only lines changed since HEAD, like clang-format-diff.
+local clang_format_cmd = os.getenv('CLANG_FORMAT') or 'clang-format'
+local clang_format_changed_lines_only = os.getenv('CLANG_FORMAT_CHANGED_LINES_ONLY') == '1'
+local clang_format_filetypes = { c = true, cpp = true, cuda = true, proto = true }
+
+-- Returns `--lines` ranges changed since HEAD, or nil when the file isn't tracked (format everything).
+local function changed_line_ranges(path, lines)
+  local head = vim.system(
+    { 'git', 'show', 'HEAD:./' .. vim.fs.basename(path) },
+    { cwd = vim.fs.dirname(path), text = true }
+  ):wait()
+  if head.code ~= 0 then return nil end
+
+  local hunks = vim.text.diff(head.stdout, table.concat(lines, '\n') .. '\n', { result_type = 'indices' })
+  local ranges = {}
+  for _, hunk in ipairs(hunks) do
+    local start, count = hunk[3], hunk[4]
+    if count > 0 then
+      table.insert(ranges, string.format('--lines=%d:%d', start, start + count - 1))
+    end
+  end
+  return ranges
+end
+
+local function clang_format_changed_lines(bufnr)
+  if vim.fn.executable(clang_format_cmd) ~= 1 then
+    vim.notify(string.format('[clang-format] %s not found', clang_format_cmd), vim.log.levels.WARN)
+    return
+  end
+  local path = vim.api.nvim_buf_get_name(bufnr)
+  local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+  local cmd = { clang_format_cmd, '--style=file', '--assume-filename=' .. path }
+  local ranges = changed_line_ranges(path, lines)
+  if ranges then
+    if #ranges == 0 then return end
+    vim.list_extend(cmd, ranges)
+  end
+
+  local result = vim.system(cmd, { stdin = table.concat(lines, '\n') .. '\n', text = true }):wait(2000)
+  if result.code ~= 0 then
+    vim.notify(string.format('[clang-format] %s', result.stderr), vim.log.levels.WARN)
+    return
+  end
+  set_changed_lines(bufnr, lines, vim.split(result.stdout:gsub('\n$', ''), '\n', { plain = true }))
 end
 
 local function apply_code_action_edit(edit, bufnr, encoding)
@@ -143,6 +194,10 @@ local function format_on_save(bufnr)
         apply_code_action(zls, 'source.organizeImports', bufnr, 1000)
         apply_code_action(zls, 'source.fixAll', bufnr, 1000)
       end
+      if clang_format_changed_lines_only and clang_format_filetypes[vim.bo[bufnr].filetype] then
+        clang_format_changed_lines(bufnr)
+        return
+      end
       format_buffer(bufnr)
     end,
   })
@@ -175,6 +230,10 @@ local function attach_keymaps(client, bufnr)
   vim.keymap.set('n', 'gc', '<cmd>FzfLua lsp_incoming_calls<cr>', bopts)
   vim.keymap.set('n', 'go', '<cmd>FzfLua lsp_outgoing_calls<cr>', bopts)
   vim.keymap.set('', 'K', vim.lsp.buf.hover, bopts)
+
+  if client.name == 'clangd' then
+    vim.keymap.set('n', '<leader>ch', '<cmd>LspClangdSwitchSourceHeader<cr>', bopts)
+  end
 end
 
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -232,13 +291,40 @@ if not minimal_profile then
       --
       null_ls.builtins.formatting.prettierd, -- HTML/JS/Markdown/... formatting
       null_ls.builtins.formatting.clang_format.with({
-        command = os.getenv('CLANG_FORMAT') or 'clang-format',
+        command = clang_format_cmd,
       }),
+      -- Bazel BUILD / .bzl
+      null_ls.builtins.formatting.buildifier,
+      null_ls.builtins.diagnostics.buildifier,
     },
   })
 
+  -- Projects pass extra flags through CLANGD_FLAGS, which clangd reads itself. Any --query-driver
+  -- there also stops the nixpkgs clangd wrapper from injecting nix's libc++ headers, which breaks
+  -- projects built with another toolchain (see "Per-project configuration" in AGENTS.md).
   vim.lsp.config('clangd', {
-    cmd = { 'clangd', '--background-index', '--compile-commands-dir=.' },
+    cmd = {
+      'clangd',
+      '--background-index',
+      '--clang-tidy',
+      '--completion-style=detailed',
+      '--header-insertion=iwyu',
+      '--function-arg-placeholders=1',
+    },
+    root_dir = function(bufnr, on_dir)
+      -- Headers in Bazel's external/ cache join the clangd we jumped from: it already knows their
+      -- flags, while their own root (e.g. llvm-project's .clang-format) has no compile_commands.json.
+      if vim.api.nvim_buf_get_name(bufnr):find('/_bazel_[^/]+/%x+/') then
+        -- clangd can't map these realpaths back to an includer's flags, so their diagnostics are noise.
+        vim.diagnostic.enable(false, { bufnr = bufnr })
+        local client = vim.lsp.get_clients({ name = 'clangd' })[1]
+        if client and client.root_dir then return on_dir(client.root_dir) end
+      end
+      local root = vim.fs.root(bufnr, {
+        '.clangd', '.clang-tidy', '.clang-format', 'compile_commands.json', 'compile_flags.txt', 'configure.ac', '.git',
+      })
+      if root then on_dir(root) end
+    end,
   })
 
   vim.lsp.enable({
