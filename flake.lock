@@ -66,11 +66,11 @@
     "leap-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1789803530,
-        "narHash": "sha256-SXtPDUdu5cju3CQW64Pi21Ry4Swlbki5Qjwb5bizJnA=",
+        "lastModified": 1790514555,
+        "narHash": "sha256-Yd64QLzeKWcfJEWkvr9944aKPkgNmlsN/OpARVFRBes=",
         "ref": "refs/heads/main",
-        "rev": "32bde2e932417e8a065f039f00f0cebdd0da4710",
-        "revCount": 782,
+        "rev": "277e04fad21e3af05a55cc414757b09a704f2a92",
+        "revCount": 783,
         "type": "git",
         "url": "https://codeberg.org/andyg/leap.nvim.git"
       },
@@ -195,11 +195,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1790390834,
-        "narHash": "sha256-StRyS/lFHtIw/UgJk+xo+HA66mtoWeDUbkJdvf2Byn4=",
+        "lastModified": 1791487292,
+        "narHash": "sha256-tqM7xDEsaeK1p6VvRygeZ9LkQRpUUkbRT02BHv6hnTM=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "d54020a6ac3211e9f4201631bdf67678818c0cdf",
+        "rev": "8edc0c72e3a38faf5434e40d1f19431125fe4b30",
         "type": "github"
       },
       "original": {
@@ -212,11 +212,11 @@
     "nvim-rainbow-delimiter": {
       "flake": false,
       "locked": {
-        "lastModified": 1788553029,
-        "narHash": "sha256-KO1izvODUDYozDFdNm/rSlZ/FhqWEM17yGRuoP8JXik=",
+        "lastModified": 1791231132,
+        "narHash": "sha256-1xx1jAV0rX82pKR5EYJINxRuY7p4Pvnr2I5MZRQ7h7U=",
         "ref": "refs/heads/master",
-        "rev": "3a0fc08dd39e8bf034a4cfef3f2845bd5f565a2e",
-        "revCount": 1121,
+        "rev": "b55decda611755171bc5bf8f4c99603a75de4b41",
+        "revCount": 1124,
         "type": "git",
         "url": "https://gitlab.com/HiPhish/rainbow-delimiters.nvim.git"
       },
