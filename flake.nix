@@ -208,7 +208,10 @@
           lualine-nvim # bottom status line
           vim-floaterm # floating terminal window
           marks-nvim # show marks with gutter icons
-          diffview-plus-nvim # git diffs
+          # Keep jj revsets and conflict handling, with Git's similarity detection.
+          (diffview-plus-nvim.overrideAttrs (old: {
+            patches = (old.patches or []) ++ [./patches/diffview-jj-renames.patch];
+          }))
           (plugin "diffchar-nvim")
           trouble-nvim # friendlier bottom window for search results
 

@@ -1,0 +1,113 @@
+--- a/lua/diffview/vcs/adapters/jj/init.lua
++++ b/lua/diffview/vcs/adapters/jj/init.lua
+@@ -1748,6 +1748,66 @@
+   return status, path, oldpath
+ end
+ 
++-- jj currently detects exact renames only. Ask its Git backend for similarity
++-- matches, then apply only pairs that are still additions/deletions in jj's
++-- filtered file list. Keep jj responsible for revisions, content and conflicts.
++local function detect_git_renames(self, left, right)
++  if not left.commit or left.commit == JjRev.NULL_TREE_SHA then
++    return {}
++  end
++
++  local function query(args)
++    local job = Job({
++      command = self:bin(),
++      args = utils.vec_join(self:args(), "--ignore-working-copy", args),
++      cwd = self.ctx.toplevel,
++    })
++    if await(job) and job.code == 0 then
++      return job.stdout[1]
++    end
++  end
++
++  local git_dir = query({ "git", "root" })
++  if not git_dir then
++    return {}
++  end
++
++  -- tracked_files' jj diff already snapshotted @. Read that same snapshot,
++  -- rather than diffing Git's index or taking another working-copy snapshot.
++  local right_commit = right.commit
++  if right.type == RevType.LOCAL then
++    right_commit = query({ "log", "--no-graph", "-r", "@", "-T", "commit_id" })
++  end
++  if not right_commit then
++    return {}
++  end
++
++  local git_cmd = config.get_config().git_cmd
++  local job = Job({
++    command = git_cmd[1],
++    args = utils.vec_join(utils.vec_slice(git_cmd, 2), {
++      "--git-dir=" .. git_dir,
++      "diff", "--no-ext-diff", "--no-textconv",
++      "--find-renames", "--diff-filter=R", "--name-status", "-z",
++      left.commit, right_commit, "--",
++    }),
++    cwd = self.ctx.toplevel,
++  })
++  if not await(job) or job.code ~= 0 then
++    return {}
++  end
++
++  -- -z leaves spaces, tabs, quotes and braces in paths unescaped.
++  local fields = vim.split(table.concat(job.stdout, "\n"), "\0", { plain = true })
++  local renames = {}
++  for i = 1, #fields - 2, 3 do
++    if fields[i]:match("^R%d+$") then
++      renames[fields[i + 2]] = fields[i + 1]
++    end
++  end
++  return renames
++end
++
+ ---@param self JjAdapter
+ ---@param left Rev
+ ---@param right Rev
+@@ -1791,16 +1851,39 @@
+     end
+   end
+ 
+-  local files = {}
++  local entries, additions, deletions = {}, {}, {}
+   for _, line in ipairs(job.stdout) do
+     local status, path, oldpath = parse_tracked_files_line(line)
+ 
+     if status and path and not conflicting[path] then
++      local entry = { status = status, path = path, oldpath = oldpath }
++      entries[#entries + 1] = entry
++      if status == "A" then
++        additions[path] = entry
++      elseif status == "D" then
++        deletions[path] = entry
++      end
++    end
++  end
++
++  if next(additions) and next(deletions) then
++    for path, oldpath in pairs(detect_git_renames(self, left, right)) do
++      if additions[path] and deletions[oldpath] then
++        additions[path].status = "R"
++        additions[path].oldpath = oldpath
++        deletions[oldpath].skip = true
++      end
++    end
++  end
++
++  local files = {}
++  for _, entry in ipairs(entries) do
++    if not entry.skip then
+       files[#files + 1] = FileEntry.with_layout(opt.default_layout, {
+         adapter = self,
+-        path = path,
+-        oldpath = oldpath,
+-        status = status,
++        path = entry.path,
++        oldpath = entry.oldpath,
++        status = entry.status,
+         stats = {},
+         kind = kind,
+         revs = { a = left, b = right },
