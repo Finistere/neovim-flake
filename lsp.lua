@@ -142,19 +142,19 @@ local function apply_code_action_edit(edit, bufnr, encoding)
   end
 end
 
-local function apply_code_action(client, kind, bufnr, timeout_ms)
+local function apply_code_action(client, kind, bufnr)
   local params = vim.lsp.util.make_range_params(0, client.offset_encoding)
   params.context = { only = { kind }, diagnostics = {} }
 
-  local response = client:request_sync('textDocument/codeAction', params, timeout_ms, bufnr)
-  if not response or not response.result then return end
+  local response = client:request_sync('textDocument/codeAction', params, 2000, bufnr)
+  if not response or response.err or not response.result then return end
 
   for _, action in ipairs(response.result) do
     if action.edit then
       apply_code_action_edit(action.edit, bufnr, client.offset_encoding)
     end
     if action.command then
-      client:exec_cmd(action.command, { bufnr = bufnr })
+      client:exec_cmd(type(action.command) == 'table' and action.command or action, { bufnr = bufnr })
     end
   end
 end
@@ -191,8 +191,9 @@ local function format_on_save(bufnr)
     callback = function()
       local zls = vim.lsp.get_clients({ bufnr = bufnr, name = 'zls' })[1]
       if zls then
-        apply_code_action(zls, 'source.organizeImports', bufnr, 1000)
-        apply_code_action(zls, 'source.fixAll', bufnr, 1000)
+        -- Request import organization after applying the fixes.
+        apply_code_action(zls, 'source.fixAll', bufnr)
+        apply_code_action(zls, 'source.organizeImports', bufnr)
       end
       if clang_format_changed_lines_only and clang_format_filetypes[vim.bo[bufnr].filetype] then
         clang_format_changed_lines(bufnr)

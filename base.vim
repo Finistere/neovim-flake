@@ -62,6 +62,9 @@ set spell spelllang=en_us spelloptions=camel spellfile=~/flakes/neovim/spell/en.
 " File type specific
 "
 
+" Wrap Zig comments at 120 columns.
+autocmd FileType zig setlocal textwidth=120
+
 " 2 space width
 autocmd filetype nix,lua,typescript,graphql,javascript,json,fish setlocal tabstop=2 shiftwidth=2 softtabstop=2
 autocmd filetype markdown,md,mdx,json setlocal conceallevel=0
